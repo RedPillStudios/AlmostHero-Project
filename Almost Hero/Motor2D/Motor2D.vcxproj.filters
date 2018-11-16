@@ -37,6 +37,13 @@
     <ClCompile Include="j1Textures.cpp">
       <Filter>Modules\Controllers\Specific</Filter>
     </ClCompile>
+    <ClCompile Include="j1EntityManager.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="j1ButtonEntity.cpp">
+      <Filter>Entities\General</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Collisions.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -93,6 +100,19 @@
     <ClInclude Include="j1Textures.h">
       <Filter>Modules\Controllers\Specific</Filter>
     </ClInclude>
+    <ClInclude Include="Animation.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="j1EntityManager.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Entity.h">
+      <Filter>Entities\General</Filter>
+    </ClInclude>
+    <ClInclude Include="j1ButtonEntity.h">
+      <Filter>Entities\General</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Collisions.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -121,6 +141,15 @@
     </Filter>
     <Filter Include="Modules\Controllers\Specific">
       <UniqueIdentifier>{b9ef5455-0e36-4e92-87ad-fb4bacb86e7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{529257e2-03d9-42fb-a51d-4b095ef79b38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Physics">
+      <UniqueIdentifier>{29d2480e-83ca-49f6-87aa-5ff32e098cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\General">
+      <UniqueIdentifier>{919f42d8-6905-4780-bc2e-4a2e0375941f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
