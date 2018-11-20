@@ -27,25 +27,34 @@ bool j1Scene::Awake()
 	return ret;
 }
 
+// Called before quitting
+bool j1Scene::CleanUp()
+{
+	LOG("Freeing scene");
+
+	return true;
+}
+
 // Called before the first frame
 bool j1Scene::Start()
 {
 
-	red_note.nPosition = iPoint(820, 200);
-	red_note.nVelocity = fPoint(1.0f, 1.0f);
+	//for (int i = 0; i < MAX_RED_NOTES_ON_SCREEN; i++) 
+		//red_notes_array->PushBack(CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED));
+		
 
-	red_note.note_rect = { red_note.nPosition.x, red_note.nPosition.y, 35, 35 };
-	//red_note.note_tex = App->tex->Load("maps/path2.png");
-	red_note.nColor = NOTE_RED;
-	red_note.note_collider = App->collisions->AddCollider(red_note.note_rect, COLLIDER_NOTE, this);
-	
+
+	//Not notes stuff
 	guitar_tex = App->tex->Load("maps/Neck_Guitar.png");
-
 
 	Bottom_Limit.x = 400;
 	Bottom_Limit.y = 400;
 	Bottom_Limit.w = 500;
 	Bottom_Limit.h = 35;
+
+	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
+
+	red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED);
 
 	return true;
 }
@@ -90,12 +99,14 @@ bool j1Scene::Update(float dt)
 
 	App->render->Blit(guitar_tex, 640, 50);
 
-	App->render->DrawQuad(red_note.note_rect, 255, 0, 0, 255);
-	red_note.note_rect.y += red_note.nVelocity.x;
-	red_note.note_rect.x -= red_note.nVelocity.y;
+	App->render->DrawQuad(red_note->note_rect, 255, 0, 0, 255);
+	red_note->nPosition.x -= red_note->nVelocity.x;
+	red_note->nPosition.y += red_note->nVelocity.y;
+	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
 
 	App->render->DrawQuad(Bottom_Limit, 255, 0, 255, 255);
-	red_note.note_collider->SetPos(red_note.nPosition.x, red_note.nPosition.y);
+	red_note->note_collider->SetPos(red_note->nPosition.x, red_note->nPosition.y);
+	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
 	return true;
 }
@@ -111,10 +122,33 @@ bool j1Scene::PostUpdate()
 	return ret;
 }
 
-// Called before quitting
-bool j1Scene::CleanUp()
-{
-	LOG("Freeing scene");
+void j1Scene::OnCollision(Collider *c1, Collider *c2) {
 
-	return true;
+	if (/*(c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) ||*/ (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC)) {
+
+		
+		NOTE_COLOR aux_col = red_note->nColor;
+		red_note->note_collider->to_delete = true;
+		RELEASE(red_note);
+
+		if (red_note == nullptr)
+			red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), aux_col);
+		
+	}
+}
+
+Note* j1Scene::CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color) {
+
+	Note *note = new Note();
+
+	note->nPosition = pos;
+	note->nVelocity = vel;
+
+	note->note_rect = { (int)note->nPosition.x, (int)note->nPosition.y, 35, 35 };
+	//red_note.note_tex = App->tex->Load("maps/path2.png");
+
+	note->nColor = color;
+	note->note_collider = App->collisions->AddCollider(note->note_rect, COLLIDER_NOTE, this);
+
+	return note;
 }

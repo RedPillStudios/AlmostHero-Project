@@ -2,6 +2,10 @@
 #define __j1SCENE_H__
 
 #include "j1Module.h"
+#include "p2DynArray.h"
+
+#define MAX_RED_NOTES_ON_SCREEN 10
+
 
 struct SDL_Texture;
 
@@ -20,7 +24,7 @@ struct Note {
 	SDL_Texture *note_tex = nullptr;
 	SDL_Rect note_rect;
 
-	iPoint nPosition;
+	fPoint nPosition;
 	fPoint nVelocity;
 
 	Collider *note_collider = nullptr;
@@ -62,8 +66,15 @@ private:
 	SDL_Texture* guitar_tex;
 
 	SDL_Rect Bottom_Limit;
+	Collider* Bottom_coll;
 
-	Note red_note;
+	Note *red_note;
+
+	
+	p2DynArray<Note*> *red_notes_array;
+
+	void OnCollision(Collider *c1, Collider *c2);
+	Note* CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color);
 
 };
 
