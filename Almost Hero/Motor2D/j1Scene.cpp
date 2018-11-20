@@ -30,7 +30,13 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 
-	debug_tex = App->tex->Load("maps/path2.png");
+	Note red_note;
+	red_note.note_rect = { 820, 400, 35, 35 };
+	red_note.note_tex = App->tex->Load("maps/path2.png");
+	red_note;
+
+
+	//debug_tex = App->tex->Load("maps/path2.png");
 	guitar_tex = App->tex->Load("maps/Neck_Guitar.png");
 
 	Button_Rect.x = 820;

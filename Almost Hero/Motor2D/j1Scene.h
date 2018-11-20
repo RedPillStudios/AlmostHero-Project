@@ -5,12 +5,24 @@
 
 struct SDL_Texture;
 
+enum NOTE_COLOR {
+
+	NOTE_NON = -1,
+	NOTE_BLUE,
+	NOTE_RED,
+	NOTE_GREEN,
+	NOTE_VIOLET
+
+};
+
 struct Note {
 
-	SDL_Texture *note_tex;
-	SDL_Rect * note_rect;
+	SDL_Texture *note_tex = nullptr;
+	SDL_Rect note_rect;
 
-	Collider *note_collider;
+	Collider *note_collider = nullptr;
+
+	NOTE_COLOR nColor = NOTE_NON;
 
 };
 
