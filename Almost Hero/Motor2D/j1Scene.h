@@ -5,6 +5,15 @@
 
 struct SDL_Texture;
 
+struct Note {
+
+	SDL_Texture *note_tex;
+	SDL_Rect * note_rect;
+
+	Collider *note_collider;
+
+};
+
 class j1Scene : public j1Module
 {
 public:
@@ -42,4 +51,4 @@ private:
 
 };
 
-#endif // __j1SCENE_H__
+#endif

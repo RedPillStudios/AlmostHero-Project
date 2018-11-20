@@ -39,7 +39,7 @@ bool j1Scene::Start()
 	Button_Rect.h = 35;
 
 	Bottom_Limit.x = 400;
-	Bottom_Limit.y = 800;
+	Bottom_Limit.y = 400;
 	Bottom_Limit.w = 500;
 	Bottom_Limit.h = 35;
 
@@ -80,11 +80,11 @@ bool j1Scene::Update(float dt)
 	iPoint p = App->render->ScreenToWorld(x, y);
 	App->render->Blit(debug_tex, p.x, p.y);
 
-	App->render->Blit(guitar_tex, 640, 436);
+	App->render->Blit(guitar_tex, 640, 50);
 
 	App->render->DrawQuad(Button_Rect, 255, 0, 0, 255);
-	Button_Rect.y+= 3;
-	Button_Rect.x-= 0.2f;
+	Button_Rect.y += 1.0f;
+	Button_Rect.x -= 0.2f;
 
 	App->render->DrawQuad(Bottom_Limit, 255, 0, 255, 255);
 

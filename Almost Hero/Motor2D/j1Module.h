@@ -9,6 +9,7 @@
 #include "p2SString.h"
 #include "PugiXml\src\pugixml.hpp"
 
+struct Collider;
 class j1App;
 
 class j1Module

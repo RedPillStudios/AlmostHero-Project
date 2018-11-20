@@ -5,7 +5,9 @@
 #include "j1Module.h"
 #include "j1PerfTimer.h"
 #include "j1Timer.h"
+
 #include "PugiXml\src\pugixml.hpp"
+#include "SDL/include/SDL.h"
 
 // Modules
 class j1Window;
@@ -14,8 +16,7 @@ class j1Render;
 class j1Textures;
 class j1Audio;
 class j1Scene;
-class j1Map;
-class j1PathFinding;
+class j1Collisions;
 
 class j1App
 {
@@ -85,8 +86,7 @@ public:
 	j1Textures*			tex = NULL;
 	j1Audio*			audio = NULL;
 	j1Scene*			scene = NULL;
-	j1Map*				map = NULL;
-	j1PathFinding*		pathfinding = NULL;
+	j1Collisions*		collisions = NULL;
 
 private:
 

@@ -43,7 +43,9 @@
     <ClCompile Include="j1ButtonEntity.cpp">
       <Filter>Entities\General</Filter>
     </ClCompile>
-    <ClCompile Include="j1Collisions.cpp" />
+    <ClCompile Include="j1Collisions.cpp">
+      <Filter>Modules\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -112,7 +114,9 @@
     <ClInclude Include="j1ButtonEntity.h">
       <Filter>Entities\General</Filter>
     </ClInclude>
-    <ClInclude Include="j1Collisions.h" />
+    <ClInclude Include="j1Collisions.h">
+      <Filter>Modules\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

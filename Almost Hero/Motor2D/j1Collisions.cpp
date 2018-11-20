@@ -15,8 +15,8 @@ j1Collisions::j1Collisions()
 	}
 
 	//Set all matrix positions that must be true to true (the others remain false)
-	matrix[COLLIDER_STATIC][COLLIDER_BUTTON] = true;
-	matrix[COLLIDER_BUTTON][COLLIDER_STATIC] = true;
+	matrix[COLLIDER_STATIC][COLLIDER_NOTE] = true;
+	matrix[COLLIDER_NOTE][COLLIDER_STATIC] = true;
 
 }
 
@@ -82,10 +82,10 @@ bool j1Collisions::Update(float dt) {
 				if (matrix[c2->type][c1->type] && c2->callback)
 					c2->callback->OnCollision(c2, c1);
 
-				if (matrix[c1->type][c2->type] && c1->callback2)
+				/*if (matrix[c1->type][c2->type] && c1->callback2)
 					c1->callback2->OnCollision(c1, c2);
 				if (matrix[c2->type][c1->type] && c2->callback2)
-					c2->callback2->OnCollision(c2, c1);
+					c2->callback2->OnCollision(c2, c1);*/
 			}
 		}
 	}
@@ -119,7 +119,7 @@ void j1Collisions::DebugDraw() {
 		case COLLIDER_STATIC:
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
-		case COLLIDER_BUTTON:
+		case COLLIDER_NOTE:
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, 100);
 			break;
 		default:
@@ -159,20 +159,20 @@ Collider* j1Collisions::AddCollider(SDL_Rect rect, COLLIDER_TYPE type, j1Module 
 	return ret;
 }
 
-Collider* j1Collisions::AddColliderEntity(SDL_Rect rect, COLLIDER_TYPE type, j1Entity *callback) {
-
-	Collider *ret = nullptr;
-
-	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
-
-		if (colliders[i] == nullptr) {
-
-			ret = colliders[i] = new Collider(rect, type, callback);
-			break;
-		}
-	}
-	return ret;
-}
+//Collider* j1Collisions::AddColliderEntity(SDL_Rect rect, COLLIDER_TYPE type, j1Entity *callback) {
+//
+//	Collider *ret = nullptr;
+//
+//	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
+//
+//		if (colliders[i] == nullptr) {
+//
+//			ret = colliders[i] = new Collider(rect, type, callback);
+//			break;
+//		}
+//	}
+//	return ret;
+//}
 
 bool Collider::CheckCollision(const SDL_Rect &r) const {
 
