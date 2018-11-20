@@ -7,6 +7,7 @@
 #include "j1Render.h"
 #include "j1Window.h"
 #include "j1Scene.h"
+#include "j1Collisions.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -30,19 +31,16 @@ bool j1Scene::Awake()
 bool j1Scene::Start()
 {
 
-	Note red_note;
-	red_note.note_rect = { 820, 400, 35, 35 };
-	red_note.note_tex = App->tex->Load("maps/path2.png");
-	red_note;
+	red_note.nPosition = iPoint(820, 200);
+	red_note.nVelocity = fPoint(1.0f, 1.0f);
 
-
-	//debug_tex = App->tex->Load("maps/path2.png");
+	red_note.note_rect = { red_note.nPosition.x, red_note.nPosition.y, 35, 35 };
+	//red_note.note_tex = App->tex->Load("maps/path2.png");
+	red_note.nColor = NOTE_RED;
+	red_note.note_collider = App->collisions->AddCollider(red_note.note_rect, COLLIDER_NOTE, this);
+	
 	guitar_tex = App->tex->Load("maps/Neck_Guitar.png");
 
-	Button_Rect.x = 820;
-	Button_Rect.y = 400;
-	Button_Rect.w = 35;
-	Button_Rect.h = 35;
 
 	Bottom_Limit.x = 400;
 	Bottom_Limit.y = 400;
@@ -62,6 +60,10 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+
+	dt *= 200;
+	float camera_speed = dt;
+
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
 
@@ -70,31 +72,30 @@ bool j1Scene::Update(float dt)
 
 	// TODO 6: Make the camera movement independent of framerate
 	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += 1;
+		App->render->camera.y += camera_speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= 1;
+		App->render->camera.y -= camera_speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += 1;
+		App->render->camera.x += camera_speed;
 
 	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= 1;
+		App->render->camera.x -= camera_speed;
 
-	int x, y;
-	App->input->GetMousePosition(x, y);
-	iPoint p = App->render->ScreenToWorld(x, y);
-	App->render->Blit(debug_tex, p.x, p.y);
+	//int x, y;
+	//App->input->GetMousePosition(x, y);
+	//iPoint p = App->render->ScreenToWorld(x, y);
+	//App->render->Blit(red_note.note_tex, p.x, p.y);
 
 	App->render->Blit(guitar_tex, 640, 50);
 
-	App->render->DrawQuad(Button_Rect, 255, 0, 0, 255);
-	Button_Rect.y += 1.0f;
-	Button_Rect.x -= 0.2f;
+	App->render->DrawQuad(red_note.note_rect, 255, 0, 0, 255);
+	red_note.note_rect.y += red_note.nVelocity.x;
+	red_note.note_rect.x -= red_note.nVelocity.y;
 
 	App->render->DrawQuad(Bottom_Limit, 255, 0, 255, 255);
-
-
+	red_note.note_collider->SetPos(red_note.nPosition.x, red_note.nPosition.y);
 
 	return true;
 }

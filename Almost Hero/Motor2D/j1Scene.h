@@ -20,6 +20,9 @@ struct Note {
 	SDL_Texture *note_tex = nullptr;
 	SDL_Rect note_rect;
 
+	iPoint nPosition;
+	fPoint nVelocity;
+
 	Collider *note_collider = nullptr;
 
 	NOTE_COLOR nColor = NOTE_NON;
@@ -58,8 +61,9 @@ private:
 	SDL_Texture* debug_tex;
 	SDL_Texture* guitar_tex;
 
-	SDL_Rect Button_Rect;
 	SDL_Rect Bottom_Limit;
+
+	Note red_note;
 
 };
 
