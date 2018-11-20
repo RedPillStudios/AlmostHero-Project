@@ -31,7 +31,10 @@ bool j1Scene::Awake()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-
+	//RELEASE(red_note);
+	//RELEASE(Bottom_coll);
+	//RELEASE(debug_tex);
+	//RELEASE(guitar_tex);
 	return true;
 }
 
@@ -53,6 +56,13 @@ bool j1Scene::Start()
 	Bottom_Limit.h = 35;
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
+
+	Notes_smasher.x = 400;
+	Notes_smasher.y = 300;
+	Notes_smasher.w = 500;
+	Notes_smasher.h = 2;
+
+	nSmasher_coll = App->collisions->AddCollider(Notes_smasher, COLLIDER_SMASHER, this);
 
 	red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED);
 
@@ -105,8 +115,11 @@ bool j1Scene::Update(float dt)
 	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
 
 	App->render->DrawQuad(Bottom_Limit, 255, 0, 255, 255);
+	App->render->DrawQuad(Notes_smasher, 0, 0, 255, 255);
+
 	red_note->note_collider->SetPos(red_note->nPosition.x, red_note->nPosition.y);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
+	nSmasher_coll->SetPos(Notes_smasher.x, Notes_smasher.y);
 
 	return true;
 }
@@ -134,6 +147,20 @@ void j1Scene::OnCollision(Collider *c1, Collider *c2) {
 		if (red_note == nullptr)
 			red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), aux_col);
 		
+	}
+	
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+
+			NOTE_COLOR aux_col = red_note->nColor;
+			red_note->note_collider->to_delete = true;
+			RELEASE(red_note);
+
+			if (red_note == nullptr)
+				red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), aux_col);
+
+		}
 	}
 }
 

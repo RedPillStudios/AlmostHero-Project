@@ -68,10 +68,13 @@ private:
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
+	SDL_Rect Notes_smasher;
+	Collider *nSmasher_coll = nullptr;
+
 	Note *red_note;
 
 	
-	p2DynArray<Note*> *red_notes_array;
+	p2DynArray<Note*> *red_notes_array = nullptr;
 
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color);
