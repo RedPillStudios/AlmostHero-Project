@@ -24,6 +24,8 @@ struct Note {
 	SDL_Texture *note_tex = nullptr;
 	SDL_Rect note_rect;
 
+	float scale = 1.0f;
+
 	fPoint nPosition;
 	fPoint nVelocity;
 

@@ -129,14 +129,14 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,float scale_, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	uint scale = scale_;
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x * scale;
-	rect.y = (int)(camera.y * speed) + y * scale;
+	rect.x = (int)(camera.x * speed) + x;
+	rect.y = (int)(camera.y * speed) + y;
 
 	if(section != NULL)
 	{
@@ -170,10 +170,10 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	return ret;
 }
 
-bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, bool filled, bool use_camera) const
+bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a, float scale_, bool filled, bool use_camera) const
 {
 	bool ret = true;
-	uint scale = App->win->GetScale();
+	float scale = scale_;
 
 	SDL_SetRenderDrawBlendMode(renderer, SDL_BLENDMODE_BLEND);
 	SDL_SetRenderDrawColor(renderer, r, g, b, a);
@@ -181,8 +181,8 @@ bool j1Render::DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a
 	SDL_Rect rec(rect);
 	if(use_camera)
 	{
-		rec.x = (int)(camera.x + rect.x * scale);
-		rec.y = (int)(camera.y + rect.y * scale);
+		rec.x = (int)(camera.x + rect.x);
+		rec.y = (int)(camera.y + rect.y);
 		rec.w *= scale;
 		rec.h *= scale;
 	}

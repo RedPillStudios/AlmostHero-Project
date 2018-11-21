@@ -31,10 +31,13 @@ bool j1Scene::Awake()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
-	//RELEASE(red_note);
-	//RELEASE(Bottom_coll);
-	//RELEASE(debug_tex);
+
+	RELEASE(red_note->note_tex);
+	RELEASE(red_note);
+
+	RELEASE(debug_tex);
 	//RELEASE(guitar_tex);
+
 	return true;
 }
 
@@ -45,7 +48,7 @@ bool j1Scene::Start()
 	//for (int i = 0; i < MAX_RED_NOTES_ON_SCREEN; i++) 
 		//red_notes_array->PushBack(CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED));
 		
-
+	
 
 	//Not notes stuff
 	guitar_tex = App->tex->Load("maps/Neck_Guitar.png");
@@ -65,7 +68,6 @@ bool j1Scene::Start()
 	nSmasher_coll = App->collisions->AddCollider(Notes_smasher, COLLIDER_SMASHER, this);
 
 	red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED);
-
 	return true;
 }
 
@@ -79,6 +81,7 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	red_note->scale += 0.01f;
 
 	dt *= 200;
 	float camera_speed = dt;
@@ -107,9 +110,9 @@ bool j1Scene::Update(float dt)
 	//iPoint p = App->render->ScreenToWorld(x, y);
 	//App->render->Blit(red_note.note_tex, p.x, p.y);
 
-	App->render->Blit(guitar_tex, 640, 50);
+	App->render->Blit(guitar_tex, 640, 50,NULL);
 
-	App->render->DrawQuad(red_note->note_rect, 255, 0, 0, 255);
+	App->render->DrawQuad(red_note->note_rect, 255, 0, 0, 255, red_note->scale);
 	red_note->nPosition.x -= red_note->nVelocity.x;
 	red_note->nPosition.y += red_note->nVelocity.y;
 	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
