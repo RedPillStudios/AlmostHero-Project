@@ -64,7 +64,6 @@ public:
 
 private:
 
-	SDL_Texture* debug_tex;
 	SDL_Texture* guitar_tex;
 
 	SDL_Rect Bottom_Limit;
@@ -74,9 +73,6 @@ private:
 	Collider *nSmasher_coll = nullptr;
 
 	Note *red_note;
-
-	
-	p2DynArray<Note*> *red_notes_array = nullptr;
 
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color);

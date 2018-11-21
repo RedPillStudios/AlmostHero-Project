@@ -35,24 +35,19 @@ bool j1Scene::CleanUp()
 	RELEASE(red_note->note_tex);
 	RELEASE(red_note);
 
-	RELEASE(debug_tex);
-	//RELEASE(guitar_tex);
+	RELEASE(guitar_tex);
 
 	return true;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
-{
+{			
 
-	//for (int i = 0; i < MAX_RED_NOTES_ON_SCREEN; i++) 
-		//red_notes_array->PushBack(CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED));
-		
-	
-
-	//Not notes stuff
+	//Guitar texture
 	guitar_tex = App->tex->Load("maps/Neck_Guitar.png");
 
+	//Notes deleter
 	Bottom_Limit.x = 400;
 	Bottom_Limit.y = 400;
 	Bottom_Limit.w = 500;
@@ -60,6 +55,7 @@ bool j1Scene::Start()
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
+	//Notes Smasher
 	Notes_smasher.x = 400;
 	Notes_smasher.y = 300;
 	Notes_smasher.w = 500;
@@ -67,7 +63,9 @@ bool j1Scene::Start()
 
 	nSmasher_coll = App->collisions->AddCollider(Notes_smasher, COLLIDER_SMASHER, this);
 
+	//Red Note
 	red_note = CreateNote(fPoint(820.0f, 200.0f), fPoint(1.0f, 1.0f), NOTE_RED);
+	
 	return true;
 }
 
@@ -83,8 +81,7 @@ bool j1Scene::Update(float dt)
 {
 	red_note->scale += 0.01f;
 
-	dt *= 200;
-	float camera_speed = dt;
+	float camera_speed = dt * 200;
 
 	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
 		App->LoadGame("save_game.xml");
@@ -110,7 +107,7 @@ bool j1Scene::Update(float dt)
 	//iPoint p = App->render->ScreenToWorld(x, y);
 	//App->render->Blit(red_note.note_tex, p.x, p.y);
 
-	App->render->Blit(guitar_tex, 640, 50,NULL);
+	App->render->Blit(guitar_tex, 640, 50, NULL);
 
 	App->render->DrawQuad(red_note->note_rect, 255, 0, 0, 255, red_note->scale);
 	red_note->nPosition.x -= red_note->nVelocity.x;
@@ -175,7 +172,6 @@ Note* j1Scene::CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color) {
 	note->nVelocity = vel;
 
 	note->note_rect = { (int)note->nPosition.x, (int)note->nPosition.y, 35, 35 };
-	//red_note.note_tex = App->tex->Load("maps/path2.png");
 
 	note->nColor = color;
 	note->note_collider = App->collisions->AddCollider(note->note_rect, COLLIDER_NOTE, this);
