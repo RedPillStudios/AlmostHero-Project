@@ -18,6 +18,9 @@ j1Collisions::j1Collisions()
 	matrix[COLLIDER_STATIC][COLLIDER_NOTE] = true;
 	matrix[COLLIDER_NOTE][COLLIDER_STATIC] = true;
 
+	matrix[COLLIDER_SMASHER][COLLIDER_NOTE] = true;
+	matrix[COLLIDER_NOTE][COLLIDER_SMASHER] = true;
+
 }
 
 
@@ -118,6 +121,9 @@ void j1Collisions::DebugDraw() {
 			break;
 		case COLLIDER_STATIC:
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
+			break;
+		case COLLIDER_SMASHER:
+			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, 100);
 			break;
 		case COLLIDER_NOTE:
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, 100);

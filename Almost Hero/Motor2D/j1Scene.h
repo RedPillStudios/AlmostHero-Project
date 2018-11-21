@@ -24,6 +24,8 @@ struct Note {
 	SDL_Texture *note_tex = nullptr;
 	SDL_Rect note_rect;
 
+	float scale = 1.0f;
+
 	fPoint nPosition;
 	fPoint nVelocity;
 
@@ -62,16 +64,15 @@ public:
 
 private:
 
-	SDL_Texture* debug_tex;
 	SDL_Texture* guitar_tex;
 
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
-	Note *red_note;
+	SDL_Rect Notes_smasher;
+	Collider *nSmasher_coll = nullptr;
 
-	
-	p2DynArray<Note*> *red_notes_array;
+	Note *red_note;
 
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color);
