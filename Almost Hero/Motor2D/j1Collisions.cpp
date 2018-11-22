@@ -129,19 +129,19 @@ void j1Collisions::DebugDraw() {
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, 40);
 			break;
 		case COLLIDER_STATIC:
-			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 250);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 255);
 			break;
 		case COLLIDER_SMASHER_BLUE:
-			App->render->DrawQuad(colliders[i]->rect, 150, 0, 255, 250);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
 		case COLLIDER_SMASHER_YELLOW:
-			App->render->DrawQuad(colliders[i]->rect, 255, 234, 0, 100);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
 		case COLLIDER_SMASHER_VIOLET:
-			App->render->DrawQuad(colliders[i]->rect, 144, 0, 255, 100);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
 		case COLLIDER_SMASHER_PINK:
-			App->render->DrawQuad(colliders[i]->rect, 216, 0, 255, 100);
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
 		case COLLIDER_NOTE:
 			App->render->DrawQuad(colliders[i]->rect, 0, 255, 150, 100);

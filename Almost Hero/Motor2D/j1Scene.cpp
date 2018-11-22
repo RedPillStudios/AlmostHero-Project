@@ -55,17 +55,39 @@ bool j1Scene::Start()
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
-	//Notes Smasher
-	smBlue.smasher_rect.x = 690;
-	smBlue.smasher_rect.y = 520;
-	smBlue.smasher_rect.w = 50;
-	smBlue.smasher_rect.h = 2;
+	//Notes Smashers
+	int iX = 705, iY = 520, sW = 50, sH = 2, sSpace = 50;
+
+	smBlue.smasher_rect.x = iX;
+	smBlue.smasher_rect.y = iY;
+	smBlue.smasher_rect.w = sW;
+	smBlue.smasher_rect.h = sH;
 	
 	smBlue.smasher_collider = App->collisions->AddCollider(smBlue.smasher_rect, COLLIDER_SMASHER_BLUE, this);
-	//Smasher smBlue;
-	//Smasher smPink;
-	//Smasher smViolet;
-	//Smasher smYellow;
+
+
+	smYellow.smasher_rect.x = iX + sW + sSpace;
+	smYellow.smasher_rect.y = 520;
+	smYellow.smasher_rect.w = sW;
+	smYellow.smasher_rect.h = sH;
+
+	smYellow.smasher_collider = App->collisions->AddCollider(smYellow.smasher_rect, COLLIDER_SMASHER_YELLOW, this);
+
+
+	smViolet.smasher_rect.x = iX + 2*(sW + sSpace);
+	smViolet.smasher_rect.y = iY;
+	smViolet.smasher_rect.w = sW;
+	smViolet.smasher_rect.h = sH;
+
+	smViolet.smasher_collider = App->collisions->AddCollider(smViolet.smasher_rect, COLLIDER_SMASHER_VIOLET, this);
+
+
+	smPink.smasher_rect.x = iX + 3*(sW + sSpace);
+	smPink.smasher_rect.y = iY;
+	smPink.smasher_rect.w = sW;
+	smPink.smasher_rect.h = sH;
+
+	smPink.smasher_collider = App->collisions->AddCollider(smPink.smasher_rect, COLLIDER_SMASHER_PINK, this);
 
 
 	//Red Note
@@ -114,13 +136,26 @@ bool j1Scene::Update(float dt)
 	red_note->nPosition.y += red_note->nVelocity.y;
 	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
 
+	//Notes deleter blit & colider
 	App->render->DrawQuad(Bottom_Limit, 255, 0, 255, 255);
-	App->render->DrawQuad(smBlue.smasher_rect, 0, 0, 255, 255);
-
-	red_note->note_collider->SetPos(red_note->nPosition.x, red_note->nPosition.y);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
+
+	//Smashers blit and collider
+	App->render->DrawQuad(smBlue.smasher_rect, 0, 0, 255, 255);
 	smBlue.smasher_collider->SetPos(smBlue.smasher_rect.x, smBlue.smasher_rect.y);
 
+	App->render->DrawQuad(smViolet.smasher_rect, 150, 0, 255, 255);
+	smViolet.smasher_collider->SetPos(smViolet.smasher_rect.x, smViolet.smasher_rect.y);
+
+	App->render->DrawQuad(smPink.smasher_rect, 255, 0, 255, 255);
+	smPink.smasher_collider->SetPos(smPink.smasher_rect.x, smPink.smasher_rect.y);
+
+	App->render->DrawQuad(smYellow.smasher_rect, 255, 200, 0, 255);
+	smYellow.smasher_collider->SetPos(smYellow.smasher_rect.x, smYellow.smasher_rect.y);
+
+	//red_note Collider
+	red_note->note_collider->SetPos(red_note->nPosition.x, red_note->nPosition.y);
+	
 	return true;
 }
 
