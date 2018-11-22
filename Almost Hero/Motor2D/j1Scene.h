@@ -26,7 +26,7 @@ struct Note {
 	SDL_Texture *note_tex = nullptr;
 	SDL_Rect note_rect = { 0, 0, 35, 35 };
 
-	float scale = 1.0f;
+	float scale = 0.1f;
 
 	fPoint nPosition;
 
@@ -76,8 +76,11 @@ private:
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
-	Note *red_note;
+	//Notes
 	Note *violet_note;
+	Note *blue_note;
+	Note *yellow_note;
+	Note *pink_note;
 
 	//Note Smashers
 	Smasher smBlue;
@@ -92,6 +95,7 @@ private:
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, int note_num, NOTE_COLOR color);
 	Smasher CreateSmasher(int smasher_num, COLLIDER_TYPE smasher_collider);
+	void MoveNote(Note* note);
 
 };
 

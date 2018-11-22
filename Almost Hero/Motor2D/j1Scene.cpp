@@ -32,8 +32,8 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	RELEASE(red_note->note_tex);
-	RELEASE(red_note);
+	RELEASE(violet_note->note_tex);
+	RELEASE(violet_note);
 
 	return true;
 }
@@ -61,8 +61,11 @@ bool j1Scene::Start()
 
 
 	//Notes
-	red_note = CreateNote(nIpos, 0, NOTE_BLUE);
-	red_note->nPosition = nIpos;
+	violet_note = CreateNote(nIpos, 0, NOTE_VIOLET);
+	blue_note = CreateNote(nIpos, 1, NOTE_BLUE);
+	yellow_note = CreateNote(nIpos, 2, NOTE_YELLOW);
+	pink_note = CreateNote(nIpos, 3, NOTE_PINK);
+	
 
 	return true;
 }
@@ -97,16 +100,11 @@ bool j1Scene::Update(float dt)
 	App->render->DrawQuad(smYellow.smasher_rect, 255, 200, 0, 255);
 	smYellow.smasher_collider->SetPos(smYellow.smasher_rect.x, smYellow.smasher_rect.y);
 
-	//Notes drawing
-	red_note->scale += 0.01f;
-	App->render->DrawQuad(red_note->note_rect, 0, 150, 0, 150, red_note->scale);
-
-	red_note->nPosition.x -= nVelocity.x;
-	red_note->nPosition.y += nVelocity.y;
-
-	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
-
-	red_note->note_collider->SetPos(red_note->nPosition.x, red_note->nPosition.y);
+	//Notes drawing & moving
+	MoveNote(violet_note);
+	MoveNote(blue_note);
+	//MoveNote(yellow_note);
+	//MoveNote(pink_note);
 	
 	return true;
 }
@@ -127,12 +125,12 @@ void j1Scene::OnCollision(Collider *c1, Collider *c2) {
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 
 		
-		NOTE_COLOR aux_col = red_note->nColor;
-		red_note->note_collider->to_delete = true;
-		RELEASE(red_note);
+		NOTE_COLOR aux_col = violet_note->nColor;
+		violet_note->note_collider->to_delete = true;
+		RELEASE(violet_note);
 
-		if (red_note == nullptr)
-			red_note = CreateNote(nIpos, 0, aux_col);
+		if (violet_note == nullptr)
+			violet_note = CreateNote(nIpos, 0, aux_col);
 		
 	}
 	
@@ -140,12 +138,57 @@ void j1Scene::OnCollision(Collider *c1, Collider *c2) {
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 
-			NOTE_COLOR aux_col = red_note->nColor;
-			red_note->note_collider->to_delete = true;
-			RELEASE(red_note);
+			NOTE_COLOR aux_col = violet_note->nColor;
+			violet_note->note_collider->to_delete = true;
+			RELEASE(violet_note);
 
-			if (red_note == nullptr)
-				red_note = CreateNote(nIpos, 0, aux_col);
+			if (violet_note == nullptr)
+				violet_note = CreateNote(nIpos, 0, aux_col);
+
+
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+
+			NOTE_COLOR aux_col = blue_note->nColor;
+			blue_note->note_collider->to_delete = true;
+			RELEASE(blue_note);
+
+			if (blue_note == nullptr)
+				blue_note = CreateNote(nIpos, 1, aux_col);
+
+
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+
+			NOTE_COLOR aux_col = yellow_note->nColor;
+			yellow_note->note_collider->to_delete = true;
+			RELEASE(yellow_note);
+
+			if (yellow_note == nullptr)
+				yellow_note = CreateNote(nIpos, 2, aux_col);
+
+
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+
+			NOTE_COLOR aux_col = pink_note->nColor;
+			pink_note->note_collider->to_delete = true;
+			RELEASE(pink_note);
+
+			if (pink_note == nullptr)
+				pink_note = CreateNote(nIpos, 3, aux_col);
 
 
 		}
@@ -185,4 +228,20 @@ Smasher j1Scene::CreateSmasher(int smasher_num, COLLIDER_TYPE  smasher_collider)
 	aux.smasher_collider = App->collisions->AddCollider(aux.smasher_rect, smasher_collider, this);
 
 	return aux;
+}
+
+void j1Scene::MoveNote(Note* note) {
+
+	note->scale += 0.002f;
+	App->render->DrawQuad(note->note_rect, 0, 150, 0, 150, note->scale);
+
+	//note->nPosition = fPoint(note->note_rect.x, note->note_rect.y);
+
+	note->nPosition.x -= nVelocity.x;
+	note->nPosition.y += nVelocity.y;
+
+	note->note_rect = { (int)note->nPosition.x, (int)note->nPosition.y, 35, 35 };
+
+	note->note_collider->SetPos(note->nPosition.x, note->nPosition.y);
+
 }
