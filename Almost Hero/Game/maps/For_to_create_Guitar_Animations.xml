@@ -1,0 +1,8 @@
+for (int i = 0; i < 43; ++i) {
+		Guitar_Nck.Anim.PushBack({ countGuitar_x, countGuitar_y, 480, 125 });
+		countExp_x += 480;
+		if (countExp_x >= 480*7) {
+			countExp_y += 425;
+			countExp_x = 0;
+		}
+	}

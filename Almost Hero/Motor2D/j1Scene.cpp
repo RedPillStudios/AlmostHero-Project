@@ -43,10 +43,20 @@ bool j1Scene::CleanUp()
 // Called before the first frame
 bool j1Scene::Start()
 {			
-
 	//Guitar texture
-	guitar_tex = App->tex->Load("maps/Neck_Guitar.png");
+	guitar_tex = App->tex->Load("maps/Guitar_Sequence.png");
 
+	for (int i = 0; i < 43; ++i) {
+		Guitar.PushBack({ countGuitar.x, countGuitar.y, 480, 425 });
+		countGuitar.x += 480;
+		if (countGuitar.x >= 480 * 7) {
+			countGuitar.y += 425;
+			countGuitar.x = 0;
+		}
+	}
+	Guitar.speed = 0.20f;
+	Guitar.loop = true;
+	current_anim = &Guitar;
 	//Notes deleter
 	Bottom_Limit.x = 400;
 	Bottom_Limit.y = 400;
@@ -107,7 +117,7 @@ bool j1Scene::Update(float dt)
 	//iPoint p = App->render->ScreenToWorld(x, y);
 	//App->render->Blit(red_note.note_tex, p.x, p.y);
 
-	App->render->Blit(guitar_tex, 640, 50, NULL);
+	App->render->Blit(guitar_tex,1280/2-480/2 , 720-425, &current_anim->GetCurrentFrame());
 
 	App->render->DrawQuad(red_note->note_rect, 255, 0, 0, 255, red_note->scale);
 	red_note->nPosition.x -= red_note->nVelocity.x;

@@ -62,7 +62,7 @@ bool j1Window::Awake(pugi::xml_node& config)
 			flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
 		}
 
-		window = SDL_CreateWindow(App->GetTitle(), 0, 0, width, height, flags);
+		window = SDL_CreateWindow(App->GetTitle(), 150, 150, width, height, flags);
 
 		if(window == NULL)
 		{

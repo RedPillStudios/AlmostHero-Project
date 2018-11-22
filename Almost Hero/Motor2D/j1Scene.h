@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "p2DynArray.h"
+#include "Animation.h"
 
 #define MAX_RED_NOTES_ON_SCREEN 10
 
@@ -65,6 +66,10 @@ public:
 private:
 
 	SDL_Texture* guitar_tex;
+	Animation* current_anim;
+	Animation Guitar;
+
+	iPoint countGuitar;
 
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
