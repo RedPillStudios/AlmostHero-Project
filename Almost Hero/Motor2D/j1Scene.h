@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "p2DynArray.h"
+#include "j1Timer.h"
 
 #define MAX_RED_NOTES_ON_SCREEN 10
 
@@ -13,8 +14,8 @@ enum NOTE_COLOR {
 
 	NOTE_NON = -1,
 	NOTE_BLUE,
-	NOTE_RED,
-	NOTE_GREEN,
+	NOTE_YELLOW,
+	NOTE_PINK,
 	NOTE_VIOLET
 
 };
@@ -33,6 +34,12 @@ struct Note {
 
 	NOTE_COLOR nColor = NOTE_NON;
 
+};
+
+struct Smasher {
+
+	Collider* smasher_collider = nullptr;
+	SDL_Rect smasher_rect;
 };
 
 class j1Scene : public j1Module
@@ -69,10 +76,14 @@ private:
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
-	SDL_Rect Notes_smasher;
-	Collider *nSmasher_coll = nullptr;
-
+	j1Timer timer_long;
 	Note *red_note;
+
+	//Note Smashers
+	Smasher smBlue;
+	Smasher smPink;
+	Smasher smViolet;
+	Smasher smYellow;
 
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color);
