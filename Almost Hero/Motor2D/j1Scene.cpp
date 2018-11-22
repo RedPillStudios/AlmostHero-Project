@@ -35,8 +35,6 @@ bool j1Scene::CleanUp()
 	RELEASE(red_note->note_tex);
 	RELEASE(red_note);
 
-	//RELEASE(guitar_tex);
-
 	return true;
 }
 
@@ -56,43 +54,16 @@ bool j1Scene::Start()
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
 	//Notes Smashers
-	int iX = 705, iY = 520, sW = 50, sH = 2, sSpace = 50;
-
-	smBlue.smasher_rect.x = iX;
-	smBlue.smasher_rect.y = iY;
-	smBlue.smasher_rect.w = sW;
-	smBlue.smasher_rect.h = sH;
-	
-	smBlue.smasher_collider = App->collisions->AddCollider(smBlue.smasher_rect, COLLIDER_SMASHER_BLUE, this);
+	smViolet = CreateSmasher(0, COLLIDER_SMASHER_VIOLET);
+	smBlue = CreateSmasher(1, COLLIDER_SMASHER_BLUE);
+	smYellow = CreateSmasher(2, COLLIDER_SMASHER_YELLOW);
+	smPink = CreateSmasher(3, COLLIDER_SMASHER_PINK);
 
 
-	smYellow.smasher_rect.x = iX + sW + sSpace;
-	smYellow.smasher_rect.y = 520;
-	smYellow.smasher_rect.w = sW;
-	smYellow.smasher_rect.h = sH;
+	//Notes
+	red_note = CreateNote(nIpos, 0, NOTE_BLUE);
+	red_note->nPosition = nIpos;
 
-	smYellow.smasher_collider = App->collisions->AddCollider(smYellow.smasher_rect, COLLIDER_SMASHER_YELLOW, this);
-
-
-	smViolet.smasher_rect.x = iX + 2*(sW + sSpace);
-	smViolet.smasher_rect.y = iY;
-	smViolet.smasher_rect.w = sW;
-	smViolet.smasher_rect.h = sH;
-
-	smViolet.smasher_collider = App->collisions->AddCollider(smViolet.smasher_rect, COLLIDER_SMASHER_VIOLET, this);
-
-
-	smPink.smasher_rect.x = iX + 3*(sW + sSpace);
-	smPink.smasher_rect.y = iY;
-	smPink.smasher_rect.w = sW;
-	smPink.smasher_rect.h = sH;
-
-	smPink.smasher_collider = App->collisions->AddCollider(smPink.smasher_rect, COLLIDER_SMASHER_PINK, this);
-
-
-	//Red Note
-	red_note = CreateNote(fPoint(806.0f, 82.0f), fPoint(0.27f, 1.0f), NOTE_BLUE);
-	timer_long.Start();
 	return true;
 }
 
@@ -106,38 +77,11 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	red_note->scale += 0.01f;
-
-	float camera_speed = dt * 200;
-
-	if(App->input->GetKey(SDL_SCANCODE_L) == KEY_DOWN)
-		App->LoadGame("save_game.xml");
-
-	if(App->input->GetKey(SDL_SCANCODE_S) == KEY_DOWN)
-		App->SaveGame("save_game.xml");
-
-	//camera movement independent of framerate
-	if(App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
-		App->render->camera.y += camera_speed;
-
-	if(App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y -= camera_speed;
-
-	if(App->input->GetKey(SDL_SCANCODE_LEFT) == KEY_REPEAT)
-		App->render->camera.x += camera_speed;
-
-	if(App->input->GetKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT)
-		App->render->camera.x -= camera_speed;
 
 	App->render->Blit(guitar_tex, 640, 50, NULL);
 
-	App->render->DrawQuad(red_note->note_rect, 0, 150, 0, 150, red_note->scale);
-	red_note->nPosition.x -= red_note->nVelocity.x;
-	red_note->nPosition.y += red_note->nVelocity.y;
-	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
-
 	//Notes deleter blit & colider
-	App->render->DrawQuad(Bottom_Limit, 255, 0, 255, 255);
+	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
 	//Smashers blit and collider
@@ -153,7 +97,15 @@ bool j1Scene::Update(float dt)
 	App->render->DrawQuad(smYellow.smasher_rect, 255, 200, 0, 255);
 	smYellow.smasher_collider->SetPos(smYellow.smasher_rect.x, smYellow.smasher_rect.y);
 
-	//red_note Collider
+	//Notes drawing
+	red_note->scale += 0.01f;
+	App->render->DrawQuad(red_note->note_rect, 0, 150, 0, 150, red_note->scale);
+
+	red_note->nPosition.x -= nVelocity.x;
+	red_note->nPosition.y += nVelocity.y;
+
+	red_note->note_rect = { (int)red_note->nPosition.x, (int)red_note->nPosition.y, 35, 35 };
+
 	red_note->note_collider->SetPos(red_note->nPosition.x, red_note->nPosition.y);
 	
 	return true;
@@ -180,11 +132,11 @@ void j1Scene::OnCollision(Collider *c1, Collider *c2) {
 		RELEASE(red_note);
 
 		if (red_note == nullptr)
-			red_note = CreateNote(fPoint(806.0f, 82.0f), fPoint(0.27f, 1.0f), aux_col);
+			red_note = CreateNote(nIpos, 0, aux_col);
 		
 	}
 	
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 
@@ -193,25 +145,44 @@ void j1Scene::OnCollision(Collider *c1, Collider *c2) {
 			RELEASE(red_note);
 
 			if (red_note == nullptr)
-				red_note = CreateNote(fPoint(806.0f, 82.0f), fPoint(0.27f, 1.0f), aux_col);
+				red_note = CreateNote(nIpos, 0, aux_col);
 
-			LOG("TIME TO REACH: %f", timer_long.ReadSec());
-			bool a = true;
+
 		}
 	}
 }
 
-Note* j1Scene::CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color) {
+Note* j1Scene::CreateNote(fPoint pos, int note_num, NOTE_COLOR color) {
 
 	Note *note = new Note();
 
-	note->nPosition = pos;
-	note->nVelocity = vel;
+	int iX = nIpos.x, sW = 35, sSpace = 50;
 
-	note->note_rect = { (int)note->nPosition.x, (int)note->nPosition.y, 35, 35 };
+	note->nPosition = pos;
+
+	int Xf = iX + note_num * (sW + sSpace);
+
+	note->note_rect.x = Xf;
+	note->note_rect.y = nIpos.y;
 
 	note->nColor = color;
 	note->note_collider = App->collisions->AddCollider(note->note_rect, COLLIDER_NOTE, this);
 
 	return note;
+}
+
+
+Smasher j1Scene::CreateSmasher(int smasher_num, COLLIDER_TYPE  smasher_collider) {
+
+	int iX = 705, iY = 520, sW = 50, sH = 2, sSpace = 50;
+
+	Smasher aux;
+	aux.smasher_rect.x = iX + smasher_num * (sW + sSpace);
+	aux.smasher_rect.y = iY;
+	aux.smasher_rect.w = sW;
+	aux.smasher_rect.h = sH;
+
+	aux.smasher_collider = App->collisions->AddCollider(aux.smasher_rect, smasher_collider, this);
+
+	return aux;
 }
