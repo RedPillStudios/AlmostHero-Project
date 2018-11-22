@@ -12,33 +12,17 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
-
 	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
 	if (result == NULL)
 		LOG("pugi error : %s", result.description());
 
 	Buttons_node = Buttons_Document.child("config");
-	violet_Button = { Buttons_node.child("Notes").child("Violet").attribute("x").as_int(),Buttons_node.child("Notes").child("Violet").attribute("y").as_int(),Buttons_node.child("Notes").child("Violet").attribute("w").as_int(),Buttons_node.child("Notes").child("Violet").attribute("h").as_int() };
-	blue_Button = { Buttons_node.child("Notes").child("Blue").attribute("x").as_int(),Buttons_node.child("Notes").child("Blue").attribute("y").as_int(),Buttons_node.child("Notes").child("Blue").attribute("w").as_int(),Buttons_node.child("Notes").child("Blue").attribute("h").as_int() };
-	yellow_Button = { Buttons_node.child("Notes").child("Yellow").attribute("x").as_int(),Buttons_node.child("Notes").child("Yellow").attribute("y").as_int(),Buttons_node.child("Notes").child("Yellow").attribute("w").as_int(),Buttons_node.child("Notes").child("Yellow").attribute("h").as_int() };
-	pink_Button = { Buttons_node.child("Notes").child("Pink").attribute("x").as_int(),Buttons_node.child("Notes").child("Pink").attribute("y").as_int(),Buttons_node.child("Notes").child("Pink").attribute("w").as_int(),Buttons_node.child("Notes").child("Pink").attribute("h").as_int() };
 
-	Violet_Standard.PushBack({ Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("h").as_int() });
-	Violet_Pushed.PushBack({ Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("h").as_int() });
-	Violet_Enter.PushBack({ Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("h").as_int() });
-
-	Blue_Standard.PushBack({ Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("h").as_int() });
-	Blue_Pushed.PushBack({ Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("h").as_int() });
-	Blue_Enter.PushBack({ Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("h").as_int() });
-
-	Yellow_Standard.PushBack({ Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("h").as_int() });
-	Yellow_Pushed.PushBack({ Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("h").as_int() });
-	Yellow_Enter.PushBack({ Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("h").as_int() });
-
-	Pink_Standard.PushBack({ Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("h").as_int() });
-	Pink_Pushed.PushBack({ Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("h").as_int() });
-	Pink_Enter.PushBack({ Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("h").as_int() });
-
+	//Notes Smashers
+	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
+	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
+	smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
+	smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
 
 }
 
@@ -69,12 +53,28 @@ bool j1Scene::CleanUp()
 bool j1Scene::Start()
 {
 
-	Violet_Current_anim = &Violet_Standard;
+	smViolet.Current_anim = &smViolet.Standard_anim;
+	smBlue.Current_anim = &smBlue.Standard_anim;
+	smYellow.Current_anim = &smYellow.Standard_anim;
+	smPink.Current_anim = &smPink.Standard_anim;
 
-	//Guitar texture
-	guitar_tex = App->tex->Load("maps/Guitar_Sequence.png");
-	Buttons_Texture = App->tex->Load("maps/Buttons_and_Notes.png");
+	smViolet.smasher_collider = App->collisions->AddCollider(smViolet.smasher_rect, COLLIDER_SMASHER_VIOLET, this);
+	smBlue.smasher_collider = App->collisions->AddCollider(smBlue.smasher_rect, COLLIDER_SMASHER_BLUE, this);
+	smYellow.smasher_collider = App->collisions->AddCollider(smYellow.smasher_rect, COLLIDER_SMASHER_YELLOW, this);
+	smPink.smasher_collider = App->collisions->AddCollider(smPink.smasher_rect, COLLIDER_SMASHER_PINK, this);
 
+
+	//Notes
+	/*violet_note = CreateNote(nIpos, 0, NOTE_VIOLET);
+	blue_note = CreateNote(nIpos, 1, NOTE_BLUE);
+	yellow_note = CreateNote(nIpos, 2, NOTE_YELLOW);
+	pink_note = CreateNote(nIpos, 3, NOTE_PINK);*/
+
+	//Guitar & Buttons texture
+	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
+	Buttons_Texture = App->tex->Load("textures/Buttons_and_Notes.png");
+
+	//Guitar animation Pushbacks
 	for (int i = 0; i < 43; ++i) {
 		Guitar.PushBack({ countGuitar.x, countGuitar.y, 480, 425 });
 		countGuitar.x += 480;
@@ -86,29 +86,14 @@ bool j1Scene::Start()
 
 	Guitar.speed = 0.20f;
 	Guitar.loop = true;
-	current_anim = &Guitar;
 
-	//Notes deleter
+	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
 	Bottom_Limit.x = 643;
 	Bottom_Limit.y = 617;
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
-
-	//Notes Smashers
-	smViolet = CreateSmasher(0, COLLIDER_SMASHER_VIOLET);
-	smBlue = CreateSmasher(1, COLLIDER_SMASHER_BLUE);
-	smYellow = CreateSmasher(2, COLLIDER_SMASHER_YELLOW);
-	smPink = CreateSmasher(3, COLLIDER_SMASHER_PINK);
-
-
-	//Notes
-	/*violet_note = CreateNote(nIpos, 0, NOTE_VIOLET);
-	blue_note = CreateNote(nIpos, 1, NOTE_BLUE);
-	yellow_note = CreateNote(nIpos, 2, NOTE_YELLOW);
-	pink_note = CreateNote(nIpos, 3, NOTE_PINK);*/
-
 
 	return true;
 }
@@ -124,71 +109,70 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 
-	App->render->Blit(guitar_tex, 640, 50, NULL);
-
 	//Notes deleter blit & colider
 	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-		Violet_Current_anim = &Violet_Pushed;
-	else
-		Violet_Current_anim = &Violet_Standard;
+	//INPUTS
+	//1 (Violet)
+	 if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+		 smViolet.Current_anim = &smViolet.Pushed_anim;
+	 else
+		 smViolet.Current_anim = &smViolet.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
-		Violet_Current_anim = &Violet_Enter;
+	 if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+		 smViolet.Current_anim = &smViolet.Enter_anim;
 
 
+	 //2 (Blue)
 	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
-		 Blue_Current_anim = &Blue_Pushed;
+		 smBlue.Current_anim = &smBlue.Pushed_anim;
 	 else
-		 Blue_Current_anim = &Blue_Standard;
+		 smBlue.Current_anim = &smBlue.Standard_anim;
 
-	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
-		 Blue_Current_anim = &Blue_Enter;
+	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+		 smBlue.Current_anim = &smBlue.Enter_anim;
 
 
+	 //3 (Yellow)
 	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
-		 Yellow_Current_anim = &Yellow_Pushed;
+		 smYellow.Current_anim = &smYellow.Pushed_anim;
 	 else
-		 Yellow_Current_anim = &Yellow_Standard;
+		 smYellow.Current_anim = &smYellow.Standard_anim;
 
-	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
-		 Yellow_Current_anim = &Yellow_Enter;
+	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+		 smYellow.Current_anim = &smYellow.Enter_anim;
 
 
+	 //4 (Pink)
 	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
-		 Pink_Current_anim = &Pink_Pushed;
+		 smPink.Current_anim = &smPink.Pushed_anim;
 	 else
-		 Pink_Current_anim = &Pink_Standard;
+		 smPink.Current_anim = &smPink.Standard_anim;
 
-	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
-		 Pink_Current_anim = &Pink_Enter;
-
-
-//Blitting Guitar texture
-	App->render->Blit(guitar_tex,1280/2-480/2 , 720-425, &current_anim->GetCurrentFrame());
-
-//Blitting Buttons textures
-	App->render->Blit(Buttons_Texture, 100, 100, &violet_Button);
-	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2+25, 720-70, &Violet_Current_anim->GetCurrentFrame());
-	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2 + 135, 720 - 70, &Blue_Current_anim->GetCurrentFrame());
-	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2 + 245, 720 - 70, &Yellow_Current_anim->GetCurrentFrame());
-	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2 + 350, 720 - 70, &Pink_Current_anim->GetCurrentFrame());
+	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+		 smPink.Current_anim = &smPink.Enter_anim;
 
 
-	//Smashers blit and collider
-	App->render->DrawQuad(smBlue.smasher_rect, 0, 0, 255, 255);
-	smBlue.smasher_collider->SetPos(smBlue.smasher_rect.x, smBlue.smasher_rect.y);
+	 int y = 650;
+	 int x = 400;
 
-	App->render->DrawQuad(smViolet.smasher_rect, 150, 0, 255, 255);
-	smViolet.smasher_collider->SetPos(smViolet.smasher_rect.x, smViolet.smasher_rect.y);
+	//Blitting Guitar texture
+	App->render->Blit(guitar_tex, x , 720 - 425, &Guitar.GetCurrentFrame());
 
-	App->render->DrawQuad(smPink.smasher_rect, 255, 0, 255, 255);
-	smPink.smasher_collider->SetPos(smPink.smasher_rect.x, smPink.smasher_rect.y);
+	//Blitting Buttons textures
+	App->render->Blit(Buttons_Texture, 100, 100, &smViolet.smasher_rect);
+	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
+	App->render->Blit(Buttons_Texture, x + 135, y, &smBlue.Current_anim->GetCurrentFrame());
+	App->render->Blit(Buttons_Texture, x + 245, y, &smYellow.Current_anim->GetCurrentFrame());
+	App->render->Blit(Buttons_Texture, x + 350, y, &smPink.Current_anim->GetCurrentFrame());
 
-	App->render->DrawQuad(smYellow.smasher_rect, 255, 200, 0, 255);
-	smYellow.smasher_collider->SetPos(smYellow.smasher_rect.x, smYellow.smasher_rect.y);
+
+	//Smashers colliders
+	smBlue.smasher_collider->SetPos(x + 25, y);
+	smViolet.smasher_collider->SetPos(x + 135, y);
+	smPink.smasher_collider->SetPos(x + 245, y);
+	smYellow.smasher_collider->SetPos(x + 350, y);
 
 	//Notes drawing & moving
 	//MoveNote(violet_note);
@@ -304,22 +288,6 @@ Note* j1Scene::CreateNote(fPoint pos, int note_num, NOTE_COLOR color) {
 	return note;
 }
 
-
-Smasher j1Scene::CreateSmasher(int smasher_num, COLLIDER_TYPE  smasher_collider) {
-
-	int iX = 705, iY = 520, sW = 50, sH = 2, sSpace = 50;
-
-	Smasher aux;
-	aux.smasher_rect.x = iX + smasher_num * (sW + sSpace);
-	aux.smasher_rect.y = iY;
-	aux.smasher_rect.w = sW;
-	aux.smasher_rect.h = sH;
-
-	aux.smasher_collider = App->collisions->AddCollider(aux.smasher_rect, smasher_collider, this);
-
-	return aux;
-}
-
 void j1Scene::MoveNote(Note* note) {
 
 	note->scale += 0.002f;
@@ -333,5 +301,40 @@ void j1Scene::MoveNote(Note* note) {
 	note->note_rect = { (int)note->nPosition.x, (int)note->nPosition.y, 35, 35 };
 
 	note->note_collider->SetPos(note->nPosition.x, note->nPosition.y);
+
+}
+
+Smasher j1Scene::CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color) {
+
+	Smasher aux;
+	aux.smasher_rect = LoadButtons(node, color);
+
+	aux.Standard_anim.PushBack(SetNotesPushbacks(node, color, "Normal"));
+	aux.Pushed_anim.PushBack(SetNotesPushbacks(node, color, "Pushed"));
+	aux.Enter_anim.PushBack(SetNotesPushbacks(node, color, "Enter"));
+
+	return aux;
+}
+
+
+SDL_Rect j1Scene::LoadButtons(pugi::xml_node &node, const char* color) {
+
+	int x = node.child("Notes").child(color).attribute("x").as_int();
+	int y = node.child("Notes").child(color).attribute("y").as_int();
+	int w = node.child("Notes").child(color).attribute("w").as_int();
+	int h = node.child("Notes").child(color).attribute("h").as_int();
+
+	return { x, y, w, h };
+}
+
+SDL_Rect j1Scene::SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name) {
+
+
+	int x = node.child("Anims").child(color).child(anim_name).attribute("x").as_int();
+	int y = node.child("Anims").child(color).child(anim_name).attribute("y").as_int();
+	int w = node.child("Anims").child(color).child(anim_name).attribute("w").as_int();
+	int h = node.child("Anims").child(color).child(anim_name).attribute("h").as_int();
+
+	return { x, y, w, h };
 
 }

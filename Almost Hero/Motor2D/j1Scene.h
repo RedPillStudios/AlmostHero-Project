@@ -7,7 +7,7 @@
 #include "j1Timer.h"
 #include "j1Collisions.h"
 
-#define MAX_RED_NOTES_ON_SCREEN 10
+#define MAX_NOTES_ON_SCREEN 10
 
 
 struct SDL_Texture;
@@ -41,6 +41,12 @@ struct Smasher {
 
 	Collider* smasher_collider = nullptr;
 	SDL_Rect smasher_rect;
+
+	Animation* Current_anim = nullptr;
+	Animation Standard_anim;
+	Animation Pushed_anim;
+	Animation Enter_anim;
+
 };
 
 class j1Scene : public j1Module
@@ -74,8 +80,11 @@ public:
 
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, int note_num, NOTE_COLOR color);
-	Smasher CreateSmasher(int smasher_num, COLLIDER_TYPE smasher_collider);
+	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
 	void MoveNote(Note* note);
+
+	SDL_Rect LoadButtons(pugi::xml_node &node, const char* color);
+	SDL_Rect SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name);
 
 private:
 
@@ -83,17 +92,12 @@ private:
 	SDL_Texture * Buttons_Texture;
 	SDL_Texture* guitar_tex;
 
-//Buttons rects
-	SDL_Rect violet_Button;
-	SDL_Rect yellow_Button;
-	SDL_Rect blue_Button;
-	SDL_Rect pink_Button;
 
 private:
 
 	iPoint countGuitar;
 
-//Notes deleter
+	//Notes deleter
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
@@ -116,29 +120,7 @@ private:
 
 private:
 
-//Buttons Animations
-	Animation* Violet_Current_anim;
-	Animation Violet_Standard;
-	Animation Violet_Pushed;
-	Animation Violet_Enter;
-
-	Animation* Blue_Current_anim;
-	Animation Blue_Standard;
-	Animation Blue_Pushed;
-	Animation Blue_Enter;
-
-	Animation* Yellow_Current_anim;
-	Animation Yellow_Standard;
-	Animation Yellow_Pushed;
-	Animation Yellow_Enter;
-
-	Animation* Pink_Current_anim;
-	Animation Pink_Standard;
-	Animation Pink_Pushed;
-	Animation Pink_Enter;
-
-//Current & Guitar animation
-	Animation* current_anim;
+	//Guitar animation
 	Animation Guitar;
 
 private:
