@@ -18,8 +18,17 @@ j1Collisions::j1Collisions()
 	matrix[COLLIDER_STATIC][COLLIDER_NOTE] = true;
 	matrix[COLLIDER_NOTE][COLLIDER_STATIC] = true;
 
-	matrix[COLLIDER_SMASHER][COLLIDER_NOTE] = true;
-	matrix[COLLIDER_NOTE][COLLIDER_SMASHER] = true;
+	matrix[COLLIDER_SMASHER_BLUE][COLLIDER_NOTE] = true;
+	matrix[COLLIDER_NOTE][COLLIDER_SMASHER_BLUE] = true;
+
+	matrix[COLLIDER_SMASHER_YELLOW][COLLIDER_NOTE] = true;
+	matrix[COLLIDER_NOTE][COLLIDER_SMASHER_YELLOW] = true;
+
+	matrix[COLLIDER_SMASHER_VIOLET][COLLIDER_NOTE] = true;
+	matrix[COLLIDER_NOTE][COLLIDER_SMASHER_VIOLET] = true;
+
+	matrix[COLLIDER_SMASHER_PINK][COLLIDER_NOTE] = true;
+	matrix[COLLIDER_NOTE][COLLIDER_SMASHER_PINK] = true;
 
 }
 
@@ -120,13 +129,22 @@ void j1Collisions::DebugDraw() {
 			App->render->DrawQuad(colliders[i]->rect, 255, 255, 255, 40);
 			break;
 		case COLLIDER_STATIC:
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 255);
+			break;
+		case COLLIDER_SMASHER_BLUE:
 			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
-		case COLLIDER_SMASHER:
-			App->render->DrawQuad(colliders[i]->rect, 0, 0, 255, 100);
+		case COLLIDER_SMASHER_YELLOW:
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
+			break;
+		case COLLIDER_SMASHER_VIOLET:
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
+			break;
+		case COLLIDER_SMASHER_PINK:
+			App->render->DrawQuad(colliders[i]->rect, 255, 0, 0, 100);
 			break;
 		case COLLIDER_NOTE:
-			App->render->DrawQuad(colliders[i]->rect, 0, 255, 0, 100);
+			App->render->DrawQuad(colliders[i]->rect, 0, 255, 150, 100);
 			break;
 		default:
 			break;
