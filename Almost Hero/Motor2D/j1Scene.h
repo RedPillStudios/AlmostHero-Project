@@ -3,6 +3,7 @@
 
 #include "j1Module.h"
 #include "p2DynArray.h"
+#include "Animation.h"
 #include "j1Timer.h"
 #include "j1Collisions.h"
 
@@ -69,10 +70,30 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+public:
+
+	void OnCollision(Collider *c1, Collider *c2);
+	Note* CreateNote(fPoint pos, int note_num, NOTE_COLOR color);
+	Smasher CreateSmasher(int smasher_num, COLLIDER_TYPE smasher_collider);
+	void MoveNote(Note* note);
+
 private:
 
+	//Buttons & guitar texture
+	SDL_Texture * Buttons_Texture;
 	SDL_Texture* guitar_tex;
 
+//Buttons rects
+	SDL_Rect violet_Button;
+	SDL_Rect yellow_Button;
+	SDL_Rect blue_Button;
+	SDL_Rect pink_Button;
+
+private:
+
+	iPoint countGuitar;
+
+//Notes deleter
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
@@ -92,10 +113,38 @@ private:
 	fPoint nVelocity = fPoint(0.27f, 1.0f);
 	fPoint nIpos = fPoint(825.0f, 82.0f);
 
-	void OnCollision(Collider *c1, Collider *c2);
-	Note* CreateNote(fPoint pos, int note_num, NOTE_COLOR color);
-	Smasher CreateSmasher(int smasher_num, COLLIDER_TYPE smasher_collider);
-	void MoveNote(Note* note);
+
+private:
+
+//Buttons Animations
+	Animation* Violet_Current_anim;
+	Animation Violet_Standard;
+	Animation Violet_Pushed;
+	Animation Violet_Enter;
+
+	Animation* Blue_Current_anim;
+	Animation Blue_Standard;
+	Animation Blue_Pushed;
+	Animation Blue_Enter;
+
+	Animation* Yellow_Current_anim;
+	Animation Yellow_Standard;
+	Animation Yellow_Pushed;
+	Animation Yellow_Enter;
+
+	Animation* Pink_Current_anim;
+	Animation Pink_Standard;
+	Animation Pink_Pushed;
+	Animation Pink_Enter;
+
+//Current & Guitar animation
+	Animation* current_anim;
+	Animation Guitar;
+
+private:
+
+	pugi::xml_document Buttons_Document;
+	pugi::xml_node Buttons_node;
 
 };
 
