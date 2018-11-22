@@ -77,10 +77,10 @@ private:
 	Collider* Bottom_coll;
 
 	//Notes
-	Note *violet_note;
-	Note *blue_note;
-	Note *yellow_note;
-	Note *pink_note;
+	//Note *violet_note;
+	//Note *blue_note;
+	//Note *yellow_note;
+	//Note *pink_note;
 
 	//Note Smashers
 	Smasher smBlue;
