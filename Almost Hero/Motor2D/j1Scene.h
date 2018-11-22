@@ -64,8 +64,35 @@ public:
 	bool CleanUp();
 
 private:
-
+	SDL_Texture * Buttons_Texture;
 	SDL_Texture* guitar_tex;
+
+	SDL_Rect violet_Button;
+	SDL_Rect yellow_Button;
+	SDL_Rect blue_Button;
+	SDL_Rect pink_Button;
+
+	Animation* Violet_Current_anim;
+	Animation Violet_Standard;
+	Animation Violet_Pushed;
+	Animation Violet_Enter;
+
+	Animation* Blue_Current_anim;
+	Animation Blue_Standard;
+	Animation Blue_Pushed;
+	Animation Blue_Enter;
+
+	Animation* Yellow_Current_anim;
+	Animation Yellow_Standard;
+	Animation Yellow_Pushed;
+	Animation Yellow_Enter;
+
+	Animation* Pink_Current_anim;
+	Animation Pink_Standard;
+	Animation Pink_Pushed;
+	Animation Pink_Enter;
+
+
 	Animation* current_anim;
 	Animation Guitar;
 
@@ -81,6 +108,9 @@ private:
 
 	void OnCollision(Collider *c1, Collider *c2);
 	Note* CreateNote(fPoint pos, fPoint vel, NOTE_COLOR color);
+
+	pugi::xml_document Buttons_Document;
+	pugi::xml_node Buttons_node;
 
 };
 

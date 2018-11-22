@@ -12,6 +12,34 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
+
+	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
+	if (result == NULL)
+		LOG("pugi error : %s", result.description());
+
+	Buttons_node = Buttons_Document.child("config");
+	violet_Button = { Buttons_node.child("Notes").child("Violet").attribute("x").as_int(),Buttons_node.child("Notes").child("Violet").attribute("y").as_int(),Buttons_node.child("Notes").child("Violet").attribute("w").as_int(),Buttons_node.child("Notes").child("Violet").attribute("h").as_int() };
+	blue_Button = { Buttons_node.child("Notes").child("Blue").attribute("x").as_int(),Buttons_node.child("Notes").child("Blue").attribute("y").as_int(),Buttons_node.child("Notes").child("Blue").attribute("w").as_int(),Buttons_node.child("Notes").child("Blue").attribute("h").as_int() };
+	yellow_Button = { Buttons_node.child("Notes").child("Yellow").attribute("x").as_int(),Buttons_node.child("Notes").child("Yellow").attribute("y").as_int(),Buttons_node.child("Notes").child("Yellow").attribute("w").as_int(),Buttons_node.child("Notes").child("Yellow").attribute("h").as_int() };
+	pink_Button = { Buttons_node.child("Notes").child("Pink").attribute("x").as_int(),Buttons_node.child("Notes").child("Pink").attribute("y").as_int(),Buttons_node.child("Notes").child("Pink").attribute("w").as_int(),Buttons_node.child("Notes").child("Pink").attribute("h").as_int() };
+	
+	Violet_Standard.PushBack({ Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Violet").child("Normal").attribute("h").as_int() });
+	Violet_Pushed.PushBack({ Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Violet").child("Pushed").attribute("h").as_int() });
+	Violet_Enter.PushBack({ Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Violet").child("Enter").attribute("h").as_int() });
+
+	Blue_Standard.PushBack({ Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Blue").child("Normal").attribute("h").as_int() });
+	Blue_Pushed.PushBack({ Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Blue").child("Pushed").attribute("h").as_int() });
+	Blue_Enter.PushBack({ Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Blue").child("Enter").attribute("h").as_int() });
+
+	Yellow_Standard.PushBack({ Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Normal").attribute("h").as_int() });
+	Yellow_Pushed.PushBack({ Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Pushed").attribute("h").as_int() });
+	Yellow_Enter.PushBack({ Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Yellow").child("Enter").attribute("h").as_int() });
+
+	Pink_Standard.PushBack({ Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("x").as_int(),Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("y").as_int(),Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("w").as_int(),Buttons_node.child("Buttons").child("Pink").child("Normal").attribute("h").as_int() });
+	Pink_Pushed.PushBack({ Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("x").as_int(),Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("y").as_int(),Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("w").as_int(),Buttons_node.child("Buttons").child("Pink").child("Pushed").attribute("h").as_int() });
+	Pink_Enter.PushBack({ Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("x").as_int(),Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("y").as_int(),Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("w").as_int(),Buttons_node.child("Buttons").child("Pink").child("Enter").attribute("h").as_int() });
+
+
 }
 
 // Destructor
@@ -35,16 +63,16 @@ bool j1Scene::CleanUp()
 	RELEASE(red_note->note_tex);
 	RELEASE(red_note);
 
-	RELEASE(guitar_tex);
-
 	return true;
 }
 
 // Called before the first frame
 bool j1Scene::Start()
 {			
+	Violet_Current_anim = &Violet_Standard;
 	//Guitar texture
 	guitar_tex = App->tex->Load("maps/Guitar_Sequence.png");
+	Buttons_Texture = App->tex->Load("maps/Buttons_and_Notes.png");
 
 	for (int i = 0; i < 43; ++i) {
 		Guitar.PushBack({ countGuitar.x, countGuitar.y, 480, 425 });
@@ -117,7 +145,59 @@ bool j1Scene::Update(float dt)
 	//iPoint p = App->render->ScreenToWorld(x, y);
 	//App->render->Blit(red_note.note_tex, p.x, p.y);
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
+		Violet_Current_anim = &Violet_Pushed;
+	}
+	else
+		Violet_Current_anim = &Violet_Standard;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		Violet_Current_anim = &Violet_Enter;
+	}
+
+	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
+		 Blue_Current_anim = &Blue_Pushed;
+	 }
+	 else
+		 Blue_Current_anim = &Blue_Standard;
+
+	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		 Blue_Current_anim = &Blue_Enter;
+	 }
+
+	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
+		 Yellow_Current_anim = &Yellow_Pushed;
+	 }
+	 else
+		 Yellow_Current_anim = &Yellow_Standard;
+
+	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		 Yellow_Current_anim = &Yellow_Enter;
+	 }
+
+	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
+		 Pink_Current_anim = &Pink_Pushed;
+	 }
+	 else
+		 Pink_Current_anim = &Pink_Standard;
+
+	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		 Pink_Current_anim = &Pink_Enter;
+	 }
+
+	
+
+
+
+	App->render->Blit(Buttons_Texture, 100, 100, &violet_Button);
+
 	App->render->Blit(guitar_tex,1280/2-480/2 , 720-425, &current_anim->GetCurrentFrame());
+
+
+	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2+25, 720-70, &Violet_Current_anim->GetCurrentFrame());
+	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2 + 135, 720 - 70, &Blue_Current_anim->GetCurrentFrame());
+	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2 + 245, 720 - 70, &Yellow_Current_anim->GetCurrentFrame());
+	App->render->Blit(Buttons_Texture, 1280 / 2 - 480 / 2 + 350, 720 - 70, &Pink_Current_anim->GetCurrentFrame());
 
 	App->render->DrawQuad(red_note->note_rect, 255, 0, 0, 255, red_note->scale);
 	red_note->nPosition.x -= red_note->nVelocity.x;
