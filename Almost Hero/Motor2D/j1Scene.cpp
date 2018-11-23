@@ -55,10 +55,11 @@ bool j1Scene::Start()
 	smYellow.Current_anim = &smYellow.Standard_anim;
 	smPink.Current_anim = &smPink.Standard_anim;
 
-	smViolet.smasher_collider = App->collisions->AddCollider(smViolet.smasher_rect, COLLIDER_SMASHER_VIOLET, this);
-	smBlue.smasher_collider = App->collisions->AddCollider(smBlue.smasher_rect, COLLIDER_SMASHER_BLUE, this);
-	smYellow.smasher_collider = App->collisions->AddCollider(smYellow.smasher_rect, COLLIDER_SMASHER_YELLOW, this);
-	smPink.smasher_collider = App->collisions->AddCollider(smPink.smasher_rect, COLLIDER_SMASHER_PINK, this);
+	SDL_Rect button_collider_rect = { smViolet.smasher_rect.x + smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.y - smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.w * 0.4f,smViolet.smasher_rect.h * 0.4f };
+	smViolet.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_VIOLET, this);
+	smBlue.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_BLUE, this);
+	smYellow.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_YELLOW, this);
+	smPink.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_PINK, this);
 
 	//Guitar & Buttons texture
 	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
@@ -78,13 +79,14 @@ bool j1Scene::Start()
 	Guitar.loop = true;
 
 	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
-	Bottom_Limit.x = 643;
-	Bottom_Limit.y = 617;
+	Bottom_Limit.x = 401;
+	Bottom_Limit.y = 719;
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
+	timer_creation.Start();
 	return true;
 }
 
@@ -106,11 +108,14 @@ bool j1Scene::Update(float dt)
 	HandleInput();
 
 
+
+	
 	 int y = 650;
 	 int x = 400;
 
 	//Blitting Guitar texture
 	App->render->Blit(guitar_tex, x , 720 - 425, &Guitar.GetCurrentFrame());
+
 
 	//Blitting Buttons textures
 	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
@@ -120,10 +125,27 @@ bool j1Scene::Update(float dt)
 
 
 	//Smashers colliders
-	smBlue.smasher_collider->SetPos(x + 25, y);
-	smViolet.smasher_collider->SetPos(x + 135, y);
-	smPink.smasher_collider->SetPos(x + 245, y);
-	smYellow.smasher_collider->SetPos(x + 350, y);
+	smBlue.smasher_collider->SetPos(x + 25 + smBlue.smasher_rect.w * 0.3f, y + smBlue.smasher_rect.h * 0.35f);
+	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.3f + 135, y + smViolet.smasher_rect.h * 0.35f);
+	smPink.smasher_collider->SetPos(x + 245 + smPink.smasher_rect.w * 0.3f, y + smPink.smasher_rect.h * 0.35f);
+	smYellow.smasher_collider->SetPos(x + 350 + smYellow.smasher_rect.w * 0.3f, y + smYellow.smasher_rect.h * 0.35f);
+
+
+
+	if (timer_creation.ReadSec() >= 1) {
+
+		if (vi_notes.count() < 20) {
+			vi_notes.add(App->note->CreateNote(NOTE_COLOR::NOTE_VIOLET));
+			timer_creation.Start();
+		}
+	}
+
+	p2List_item<Note*> *notes_item = vi_notes.start;
+	for (; notes_item != nullptr; notes_item = notes_item->next) {
+
+		notes_item->data->Update(dt);
+
+	}
 
 	return true;
 }

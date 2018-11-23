@@ -18,14 +18,11 @@ bool Note::Start() {
 	note_tex = App->tex->Load("textures/Buttons_and_Notes.png");
 
 	//Notes
-	violet_note = CreateNote(initial_pos, 0, NOTE_VIOLET);
-	position = initial_pos;
+	violet_note = CreateNote(NOTE_VIOLET);
 	/*violet_note = CreateNote(nIpos, 0, NOTE_VIOLET);
 	blue_note = CreateNote(nIpos, 1, NOTE_BLUE);
 	yellow_note = CreateNote(nIpos, 2, NOTE_YELLOW);
 	pink_note = CreateNote(nIpos, 3, NOTE_PINK);*/
-
-	violet_note->note_tex = note_tex;
 
 	return true;
 
@@ -35,44 +32,60 @@ bool Note::Start() {
 bool Note::CleanUp() {
 
 	LOG("Cleaning Up Notes");
-	//RELEASE(violet_note->note_tex);
 	RELEASE(violet_note);
 	return true;
 }
 
 // Called each loop iteration
 bool Note::Update(float dt) {
-	
-	if(scale <= 0.8f)
+
+	if(scale <= 0.65f)
 		scale += 0.0027f;
-
-	//App->render->DrawQuad(violet_note->note_rect, 0, 0, 255, 255);
 	
-	//violet_note->position += violet_note->velocity;
+	/*violet_note->position += violet_note->velocity;
 
-	violet_note->note_collider->SetPos(violet_note->position.x - violet_note->note_rect.w * 0.5f, violet_note->position.y - violet_note->note_rect.h * 0.5f);
+	violet_note->note_collider->SetPos(violet_note->position.x - violet_note->note_rect.w * 0.25f, violet_note->position.y - violet_note->note_rect.h * 0.25f);
 	App->render->Blit(note_tex, violet_note->position.x, violet_note->position.y, &violet_note->note_rect, scale, 1.0f, 0.0f, 53, 32);
+*/
+
+	position += velocity;
+
+	if (this->note_collider != nullptr) {
+		note_collider->SetPos(this->position.x - this->note_rect.w * 0.25f, this->position.y - this->note_rect.h * 0.25f);
+		App->render->Blit(note_tex, this->position.x, this->position.y, &this->note_rect, scale, 1.0f, 0.0f, 53, 32);
+	}
 
 
 	return true;
 }
 
 
-Note* Note::CreateNote(fPoint pos, int note_num, NOTE_COLOR color) {
+Note* Note::CreateNote(NOTE_COLOR color) {
 
 	Note *note = new Note();
+	scale = 0.2f;
+	
+	switch (color) {
 
-	int sW = 35, sSpace = 50;
+	case NOTE_COLOR::NOTE_VIOLET: 
 
-	note->position = initial_pos;
+		note->note_tex = note_tex;
+		note->position = initial_pos;
+		note->nColor = color;
+		note->note_rect = { 0, 0, 107, 64 };
+		break;
 
-	int Xf = initial_pos.x + note_num * (sW + sSpace);
+	case NOTE_COLOR::NOTE_NON:
+		LOG("NOTE NON!");
+		break;
 
-	/*note->note_rect.x = Xf;
-	note->note_rect.y = initial_pos.y;*/
+	default:
+		break;
+	}
+	
 
-	note->nColor = color;
-	note->note_collider = App->collisions->AddCollider(note->note_rect, COLLIDER_NOTE, this);
+	SDL_Rect collider_rect = { note->note_rect.x * 0.5f, note->note_rect.y * 0.5f, note->note_rect.w * 0.5f, note->note_rect.h * 0.5f };
+	note->note_collider = App->collisions->AddCollider(collider_rect, COLLIDER_NOTE, this);
 
 	return note;
 }
@@ -80,77 +93,77 @@ Note* Note::CreateNote(fPoint pos, int note_num, NOTE_COLOR color) {
 
 void Note::OnCollision(Collider *c1, Collider *c2) {
 
-		//if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
-
-	//
-	//	NOTE_COLOR aux_col = violet_note->nColor;
-	//	violet_note->note_collider->to_delete = true;
-	//	RELEASE(violet_note);
-
-	//	if (violet_note == nullptr)
-	//		violet_note = CreateNote(nIpos, 0, aux_col);
-	//
-	//}
-	//
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
-
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-	//		NOTE_COLOR aux_col = violet_note->nColor;
-	//		violet_note->note_collider->to_delete = true;
-	//		RELEASE(violet_note);
-
-	//		if (violet_note == nullptr)
-	//			violet_note = CreateNote(nIpos, 0, aux_col);
+	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 
 
-	//	}
-	//}
+		NOTE_COLOR aux_col = violet_note->nColor;
+		violet_note->note_collider->to_delete = true;
+		RELEASE(violet_note);
+		
+		if (violet_note == nullptr)
+			violet_note = CreateNote(aux_col);
 
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
+	}
 
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+	/*if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
 
-	//		NOTE_COLOR aux_col = blue_note->nColor;
-	//		blue_note->note_collider->to_delete = true;
-	//		RELEASE(blue_note);
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 
-	//		if (blue_note == nullptr)
-	//			blue_note = CreateNote(nIpos, 1, aux_col);
+			NOTE_COLOR aux_col = violet_note->nColor;
+			violet_note->note_collider->to_delete = true;
+			RELEASE(violet_note);
 
-
-	//	}
-	//}
-
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
-
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-	//		NOTE_COLOR aux_col = yellow_note->nColor;
-	//		yellow_note->note_collider->to_delete = true;
-	//		RELEASE(yellow_note);
-
-	//		if (yellow_note == nullptr)
-	//			yellow_note = CreateNote(nIpos, 2, aux_col);
+			if (violet_note == nullptr)
+				violet_note = CreateNote(nIpos, 0, aux_col);
 
 
-	//	}
-	//}
+		}
+	}
 
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
 
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
 
-	//		NOTE_COLOR aux_col = pink_note->nColor;
-	//		pink_note->note_collider->to_delete = true;
-	//		RELEASE(pink_note);
+			NOTE_COLOR aux_col = blue_note->nColor;
+			blue_note->note_collider->to_delete = true;
+			RELEASE(blue_note);
 
-	//		if (pink_note == nullptr)
-	//			pink_note = CreateNote(nIpos, 3, aux_col);
+			if (blue_note == nullptr)
+				blue_note = CreateNote(nIpos, 1, aux_col);
 
 
-	//	}
-	//}
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+
+			NOTE_COLOR aux_col = yellow_note->nColor;
+			yellow_note->note_collider->to_delete = true;
+			RELEASE(yellow_note);
+
+			if (yellow_note == nullptr)
+				yellow_note = CreateNote(nIpos, 2, aux_col);
+
+
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
+
+			NOTE_COLOR aux_col = pink_note->nColor;
+			pink_note->note_collider->to_delete = true;
+			RELEASE(pink_note);
+
+			if (pink_note == nullptr)
+				pink_note = CreateNote(nIpos, 3, aux_col);
+
+
+		}
+	}*/
 }
 
 

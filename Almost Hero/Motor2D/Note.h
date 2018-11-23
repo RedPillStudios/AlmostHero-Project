@@ -6,6 +6,7 @@
 #include "Animation.h"
 #include "j1Timer.h"
 #include "j1Collisions.h"
+#include "j1Timer.h"
 
 #define MAX_NOTES_ON_SCREEN 10
 
@@ -45,20 +46,18 @@ public:
 private:
 
 	void OnCollision(Collider *c1, Collider *c2);
-	Note* CreateNote(fPoint pos, int note_num, NOTE_COLOR color);
-
+	
 public:
 
 	//Notes
 	Note *violet_note;
-	//Note *blue_note;
 	//Note *yellow_note;
 	//Note *pink_note;
 
 
 	//Notes attributes
 	fPoint velocity = fPoint(-0.8f, 2.5f);
-	fPoint initial_pos = fPoint(573.0f, 250.0f);
+	fPoint initial_pos = fPoint(615.0f, 250.0f);
 	fPoint position;
 
 
@@ -66,10 +65,12 @@ public:
 	NOTE_COLOR nColor = NOTE_NON;
 	SDL_Texture *note_tex = nullptr;
 
+	Note* CreateNote(NOTE_COLOR color);
+
+
 private:
 
-
-	SDL_Rect note_rect = { 0, 0, 107, 64 };
+	SDL_Rect note_rect;
 	float scale = 0.2f;
 
 };

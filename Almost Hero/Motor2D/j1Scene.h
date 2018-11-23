@@ -80,6 +80,10 @@ private:
 	//Guitar animation
 	Animation Guitar;
 
+	//List of violet notes
+	p2List<Note*> vi_notes;
+	j1Timer timer_creation;
+
 private:
 
 	pugi::xml_document Buttons_Document;
