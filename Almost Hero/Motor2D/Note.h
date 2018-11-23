@@ -2,13 +2,10 @@
 #define _NOTE_H_
 
 #include "j1Module.h"
-#include "p2DynArray.h"
+#include "p2List.h"
+#include "p2Point.h"
 #include "Animation.h"
-#include "j1Timer.h"
-#include "j1Collisions.h"
-#include "j1Timer.h"
-
-#define MAX_NOTES_ON_SCREEN 10
+#include "p2DynArray.h"
 
 
 struct SDL_Texture;
@@ -43,35 +40,28 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-private:
-
-	void OnCollision(Collider *c1, Collider *c2);
-	
 public:
 
-	//Notes
-	Note *violet_note;
-	//Note *yellow_note;
-	//Note *pink_note;
+	Note* CreateNote(NOTE_COLOR color);
+	void DestroyNote(Note* note);
+	void OnCollision(Collider* c1, Collider* c2);
+
+public:
 
 
 	//Notes attributes
-	fPoint velocity = fPoint(-0.8f, 2.5f);
-	fPoint initial_pos = fPoint(615.0f, 250.0f);
+	fPoint velocity = fPoint(-0.73f, 2.5f);
+	fPoint initial_pos = fPoint(598.0f, 280.0f);
 	fPoint position;
-
 
 	Collider *note_collider = nullptr;
 	NOTE_COLOR nColor = NOTE_NON;
-	SDL_Texture *note_tex = nullptr;
-
-	Note* CreateNote(NOTE_COLOR color);
-
 
 private:
 
-	SDL_Rect note_rect;
 	float scale = 0.2f;
+	SDL_Rect note_rect;
+	SDL_Texture *note_tex = nullptr;
 
 };
 

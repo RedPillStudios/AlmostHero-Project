@@ -119,6 +119,9 @@
       <Filter>Modules\Physics</Filter>
     </ClInclude>
     <ClInclude Include="Note.h" />
+    <ClInclude Include="Vector4D.h">
+      <Filter>Core\Containers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">

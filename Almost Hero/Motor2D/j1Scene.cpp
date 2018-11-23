@@ -43,6 +43,14 @@ bool j1Scene::Awake()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+
+	p2List_item<Note*> *notes_item = notes.start;
+	for (; notes_item != nullptr; notes_item = notes_item->next)
+		notes_item->data->DestroyNote(notes_item->data);
+
+	notes.clear();
+	notes_positions.Clear();
+
 	return true;
 }
 
@@ -55,7 +63,7 @@ bool j1Scene::Start()
 	smYellow.Current_anim = &smYellow.Standard_anim;
 	smPink.Current_anim = &smPink.Standard_anim;
 
-	SDL_Rect button_collider_rect = { smViolet.smasher_rect.x + smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.y - smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.w * 0.4f,smViolet.smasher_rect.h * 0.4f };
+	SDL_Rect button_collider_rect = { smViolet.smasher_rect.x + smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.y - smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.h * 0.15f };
 	smViolet.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_VIOLET, this);
 	smBlue.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_BLUE, this);
 	smYellow.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_YELLOW, this);
@@ -86,7 +94,13 @@ bool j1Scene::Start()
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
-	timer_creation.Start();
+	notes_positions.PushBack(pos1);
+	notes_positions.PushBack(pos2);
+	notes_positions.PushBack(pos3);
+	notes_positions.PushBack(pos4);
+	notes_positions.PushBack(pos5);
+
+	PERF_START(read_next_array_pos);
 	return true;
 }
 
@@ -106,9 +120,6 @@ bool j1Scene::Update(float dt)
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
 	HandleInput();
-
-
-
 	
 	 int y = 650;
 	 int x = 400;
@@ -125,27 +136,25 @@ bool j1Scene::Update(float dt)
 
 
 	//Smashers colliders
-	smBlue.smasher_collider->SetPos(x + 25 + smBlue.smasher_rect.w * 0.3f, y + smBlue.smasher_rect.h * 0.35f);
-	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.3f + 135, y + smViolet.smasher_rect.h * 0.35f);
-	smPink.smasher_collider->SetPos(x + 245 + smPink.smasher_rect.w * 0.3f, y + smPink.smasher_rect.h * 0.35f);
-	smYellow.smasher_collider->SetPos(x + 350 + smYellow.smasher_rect.w * 0.3f, y + smYellow.smasher_rect.h * 0.35f);
+	smBlue.smasher_collider->SetPos(x + 25 + smBlue.smasher_rect.w * 0.33f, y + smBlue.smasher_rect.h * 0.48f);
+	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 135, y + smViolet.smasher_rect.h * 0.48f);
+	smPink.smasher_collider->SetPos(x + 245 + smPink.smasher_rect.w * 0.33f, y + smPink.smasher_rect.h * 0.48f);
+	smYellow.smasher_collider->SetPos(x + 350 + smYellow.smasher_rect.w * 0.33f, y + smYellow.smasher_rect.h * 0.48f);
 
 
+	if (read_next_array_pos.ReadSec() >= 1) {
 
-	if (timer_creation.ReadSec() >= 1) {
+		ReadArray(notes_positions[counter]);
+		read_next_array_pos.Start();
+		counter++;
 
-		if (vi_notes.count() < 20) {
-			vi_notes.add(App->note->CreateNote(NOTE_COLOR::NOTE_VIOLET));
-			timer_creation.Start();
-		}
+		if (counter == notes_positions.Count())
+			counter = 0;
 	}
 
-	p2List_item<Note*> *notes_item = vi_notes.start;
-	for (; notes_item != nullptr; notes_item = notes_item->next) {
-
+	p2List_item<Note*> *notes_item = notes.start;
+	for (; notes_item != nullptr; notes_item = notes_item->next) 
 		notes_item->data->Update(dt);
-
-	}
 
 	return true;
 }
@@ -186,7 +195,6 @@ SDL_Rect j1Scene::LoadButtons(pugi::xml_node &node, const char* color) {
 }
 
 SDL_Rect j1Scene::SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name) {
-
 
 	int x = node.child("Anims").child(color).child(anim_name).attribute("x").as_int();
 	int y = node.child("Anims").child(color).child(anim_name).attribute("y").as_int();
@@ -238,5 +246,27 @@ void j1Scene::HandleInput() {
 
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
 		smPink.Current_anim = &smPink.Enter_anim;
+
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y++;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		App->render->camera.y--;
+}
+
+
+void j1Scene::ReadArray(iPoint4d vec) {
+
+	if (vec.x == 1)
+		App->note->CreateNote(NOTE_VIOLET);
+
+	if (vec.y == 1)
+		App->note->CreateNote(NOTE_BLUE);
+
+	if (vec.z == 1)
+		App->note->CreateNote(NOTE_YELLOW);
+
+	if (vec.k == 1)
+		App->note->CreateNote(NOTE_PINK);
 
 }

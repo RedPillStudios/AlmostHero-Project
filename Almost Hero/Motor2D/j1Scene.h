@@ -7,6 +7,7 @@
 #include "j1Timer.h"
 #include "j1Collisions.h"
 #include "Note.h"
+#include "Vector4D.h"
 
 
 struct SDL_Texture;
@@ -56,13 +57,14 @@ private:
 
 	SDL_Rect LoadButtons(pugi::xml_node &node, const char* color);
 	SDL_Rect SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name);
+	void ReadArray(iPoint4d vec);
 
 	void HandleInput();
 
 private:
 
 	//Buttons & guitar texture
-	SDL_Texture * Buttons_Texture;
+	SDL_Texture* Buttons_Texture;
 	SDL_Texture* guitar_tex;
 
 	iPoint countGuitar;
@@ -80,9 +82,22 @@ private:
 	//Guitar animation
 	Animation Guitar;
 
-	//List of violet notes
-	p2List<Note*> vi_notes;
-	j1Timer timer_creation;
+private:
+
+	p2DynArray<iPoint4d> notes_positions;
+
+	iPoint4d pos1 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos2 = iPoint4d(0, 1, 0, 0);
+	iPoint4d pos3 = iPoint4d(0, 0, 1, 0);
+	iPoint4d pos4 = iPoint4d(0, 0, 0, 1);
+	iPoint4d pos5 = iPoint4d(1, 1, 1, 1);
+
+	j1Timer read_next_array_pos;
+	int counter = 0;
+
+public:
+
+	p2List<Note*> notes;
 
 private:
 
