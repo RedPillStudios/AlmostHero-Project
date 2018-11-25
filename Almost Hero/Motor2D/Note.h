@@ -51,7 +51,9 @@ public:
 
 
 	//Notes attributes
-	fPoint velocity = fPoint(-0.73f, 2.5f);
+	float max_velocity = 2.5;
+	//fPoint velocity = fPoint(-0.73f, 2.5f);
+	fPoint velocity = fPoint(-0.73f, 0.2f);
 	fPoint initial_pos = fPoint(598.0f, 280.0f);
 	fPoint position;
 

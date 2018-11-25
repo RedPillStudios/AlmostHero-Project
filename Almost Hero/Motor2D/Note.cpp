@@ -41,6 +41,9 @@ bool Note::Update(float dt) {
 		scale += 0.0027f;
 	
 	position += velocity;
+	if (velocity.y <= max_velocity) {
+		velocity.y += 0.02f;
+	}
 
 	if (note_collider != nullptr) {
 

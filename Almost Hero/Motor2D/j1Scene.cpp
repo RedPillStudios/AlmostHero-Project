@@ -93,6 +93,26 @@ bool j1Scene::Start()
 	notes_positions.PushBack(pos2);
 	notes_positions.PushBack(pos3);
 	notes_positions.PushBack(pos4);
+	notes_positions.PushBack(pos5);
+	notes_positions.PushBack(pos6);
+	notes_positions.PushBack(pos7); 
+	notes_positions.PushBack(pos9);
+	notes_positions.PushBack(pos10);
+	notes_positions.PushBack(pos11);
+	notes_positions.PushBack(pos12);
+	notes_positions.PushBack(pos13);
+	notes_positions.PushBack(pos14);
+	notes_positions.PushBack(pos15);
+	notes_positions.PushBack(pos16);
+	notes_positions.PushBack(pos17);
+	notes_positions.PushBack(pos18);
+	notes_positions.PushBack(pos19);
+	notes_positions.PushBack(pos20);
+	notes_positions.PushBack(pos21);
+	notes_positions.PushBack(pos22);
+	notes_positions.PushBack(pos23);
+
+	//notes_positions.PushBack(pos4);
 	//notes_positions.PushBack(pos5);
 
 	PERF_START(read_next_array_pos);
@@ -139,7 +159,7 @@ bool j1Scene::Update(float dt)
 	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
 
 
-	if (read_next_array_pos.Read() >= 100) {
+	if (read_next_array_pos.Read() >= 300) {
 
 		ReadArray(notes_positions[counter]);
 		read_next_array_pos.Start();
