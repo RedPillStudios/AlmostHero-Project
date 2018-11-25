@@ -6,6 +6,7 @@
 #include "p2Point.h"
 #include "Animation.h"
 #include "p2DynArray.h"
+#include "j1Timer.h"
 
 
 struct SDL_Texture;
@@ -55,6 +56,7 @@ public:
 	fPoint position;
 
 	Collider *note_collider = nullptr;
+	Collider *last_collided = nullptr;
 	NOTE_COLOR nColor = NOTE_NON;
 
 private:
@@ -62,6 +64,8 @@ private:
 	float scale = 0.2f;
 	SDL_Rect note_rect;
 	SDL_Texture *note_tex = nullptr;
+
+	j1Timer last_collided_change;
 
 };
 

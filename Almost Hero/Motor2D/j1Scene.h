@@ -87,10 +87,10 @@ private:
 	p2DynArray<iPoint4d> notes_positions;
 
 	iPoint4d pos1 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos2 = iPoint4d(0, 1, 0, 0);
-	iPoint4d pos3 = iPoint4d(0, 0, 1, 0);
-	iPoint4d pos4 = iPoint4d(0, 0, 0, 1);
-	iPoint4d pos5 = iPoint4d(1, 1, 1, 1);
+	iPoint4d pos2 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos3 = iPoint4d(0, 1, 0, 0);
+	iPoint4d pos4 = iPoint4d(0, 0, 0, 0);
+	//iPoint4d pos5 = iPoint4d(1, 1, 1, 1);
 
 	j1Timer read_next_array_pos;
 	int counter = 0;

@@ -18,7 +18,7 @@ Note::~Note()
 // Called before the first frame
 bool Note::Start() {
 
-	note_tex = App->tex->Load("textures/Buttons_and_Notes.png");	
+	note_tex = App->tex->Load("textures/Buttons_and_Notes.png");
 	return true;
 
 }
@@ -33,12 +33,16 @@ bool Note::CleanUp() {
 // Called each loop iteration
 bool Note::Update(float dt) {
 
+	if (last_collided_change.Read() >= 10000) {
+        last_collided = nullptr;
+	}
+
 	if(scale <= 0.65f)
 		scale += 0.0027f;
 	
 	position += velocity;
 
-	if (this->note_collider != nullptr) {
+	if (note_collider != nullptr) {
 
 		note_collider->SetPos(position.x - note_rect.w * 0.25f, position.y - note_rect.h * 0.25f);
 		App->render->Blit(note_tex, position.x, position.y, &note_rect, scale, 1.0f, 0.0f, 53, 32);
@@ -125,14 +129,52 @@ void Note::DestroyNote(Note* note) {
 
 void Note::OnCollision(Collider *c1, Collider *c2) {
 
+	if (last_collided == c1)
+		return;
+	else {
+
+		PERF_START(last_collided_change);
+        last_collided = c1;
+	}
+
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 		DestroyNote(this);
 
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
 
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
+
+			p2List_item<Note*> *item = App->scene->notes.start;
+			for (; item; item = item->next) {
+
+				if (item->data->nColor == NOTE_VIOLET) {
+
+					DestroyNote(item->data);
+       				return;
+				}
+			}
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
+
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
 			DestroyNote(this);
-		
+
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+			DestroyNote(this);
+
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+			DestroyNote(this);
+
 	}
 
 	/*if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {

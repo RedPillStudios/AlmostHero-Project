@@ -12,18 +12,6 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
-	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
-	if (result == NULL)
-		LOG("pugi error : %s", result.description());
-
-	Buttons_node = Buttons_Document.child("config");
-
-	//Notes Smashers
-	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
-	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
-	smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
-	smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
-
 }
 
 // Destructor
@@ -35,6 +23,7 @@ bool j1Scene::Awake()
 {
 	LOG("Loading Scene");
 	bool ret = true;
+
 
 	return ret;
 }
@@ -58,16 +47,22 @@ bool j1Scene::CleanUp()
 bool j1Scene::Start()
 {
 
+	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
+	if (result == NULL)
+		LOG("pugi error : %s", result.description());
+
+	Buttons_node = Buttons_Document.child("config");
+
+	//Notes Smashers
+	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
+	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
+	smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
+	smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
+
 	smViolet.Current_anim = &smViolet.Standard_anim;
 	smBlue.Current_anim = &smBlue.Standard_anim;
 	smYellow.Current_anim = &smYellow.Standard_anim;
 	smPink.Current_anim = &smPink.Standard_anim;
-
-	SDL_Rect button_collider_rect = { smViolet.smasher_rect.x + smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.y - smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.w * 0.4f, smViolet.smasher_rect.h * 0.15f };
-	smViolet.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_VIOLET, this);
-	smBlue.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_BLUE, this);
-	smYellow.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_YELLOW, this);
-	smPink.smasher_collider = App->collisions->AddCollider(button_collider_rect, COLLIDER_SMASHER_PINK, this);
 
 	//Guitar & Buttons texture
 	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
@@ -98,7 +93,7 @@ bool j1Scene::Start()
 	notes_positions.PushBack(pos2);
 	notes_positions.PushBack(pos3);
 	notes_positions.PushBack(pos4);
-	notes_positions.PushBack(pos5);
+	//notes_positions.PushBack(pos5);
 
 	PERF_START(read_next_array_pos);
 	return true;
@@ -136,13 +131,15 @@ bool j1Scene::Update(float dt)
 
 
 	//Smashers colliders
-	smBlue.smasher_collider->SetPos(x + 25 + smBlue.smasher_rect.w * 0.33f, y + smBlue.smasher_rect.h * 0.48f);
-	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 135, y + smViolet.smasher_rect.h * 0.48f);
-	smPink.smasher_collider->SetPos(x + 245 + smPink.smasher_rect.w * 0.33f, y + smPink.smasher_rect.h * 0.48f);
-	smYellow.smasher_collider->SetPos(x + 350 + smYellow.smasher_rect.w * 0.33f, y + smYellow.smasher_rect.h * 0.48f);
+
+	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f);
+	smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f);
+
+	smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f);
+	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
 
 
-	if (read_next_array_pos.ReadSec() >= 1) {
+	if (read_next_array_pos.Read() >= 100) {
 
 		ReadArray(notes_positions[counter]);
 		read_next_array_pos.Start();
@@ -179,6 +176,9 @@ Smasher j1Scene::CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &n
 	aux.Standard_anim.PushBack(SetNotesPushbacks(node, color, "Normal"));
 	aux.Pushed_anim.PushBack(SetNotesPushbacks(node, color, "Pushed"));
 	aux.Enter_anim.PushBack(SetNotesPushbacks(node, color, "Enter"));
+
+	SDL_Rect button_collider_rect = { aux.smasher_rect.x + aux.smasher_rect.w * 0.4f, aux.smasher_rect.y - aux.smasher_rect.w * 0.4f, aux.smasher_rect.w * 0.4f, aux.smasher_rect.h * 0.15f };
+	aux.smasher_collider = App->collisions->AddCollider(button_collider_rect, smasher_collider, this);
 
 	return aux;
 }
