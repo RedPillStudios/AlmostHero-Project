@@ -33,25 +33,36 @@ bool Note::CleanUp() {
 // Called each loop iteration
 bool Note::Update(float dt) {
 
-	if (last_collided_change.Read() >= 10000) {
-        last_collided = nullptr;
-	}
 
-	if(scale <= 0.65f)
-		scale += 0.0027f;
+		if (last_collided_change.Read() >= 1000) {
+			last_collided = nullptr;
+		}
+		
+		if (scale <= 0.65f)
+			scale += 0.0020f;
+
+		position += velocity;
+		if (velocity.y <= maxVelocity.y) {
+			velocity.y += Acceleration.y;
+		}
+
+		if (maxVelocity.x <= 0) {
+			if (velocity.x >= maxVelocity.x) {
+				velocity.x -= Acceleration.x;
+			}
+		}
+		else if (maxVelocity.x >=0) {
+			if (velocity.x <= maxVelocity.x) {
+				velocity.x += Acceleration.x;
+			}
+		}
+
+		if (note_collider != nullptr) {
+
+			note_collider->SetPos(position.x - note_rect.w * 0.25f, position.y - note_rect.h * 0.25f);
+			App->render->Blit(note_tex, position.x, position.y, &note_rect, scale, 1.0f, 0.0f, 53, 32);
+		}
 	
-	position += velocity;
-	if (velocity.y <= max_velocity) {
-		velocity.y += 0.02f;
-	}
-
-	if (note_collider != nullptr) {
-
-		note_collider->SetPos(position.x - note_rect.w * 0.25f, position.y - note_rect.h * 0.25f);
-		App->render->Blit(note_tex, position.x, position.y, &note_rect, scale, 1.0f, 0.0f, 53, 32);
-	}
-
-
 	return true;
 }
 
@@ -69,33 +80,41 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 		note->position = initial_pos;
 		note->nColor = color;
 		note->note_rect = { 0, 0, 107, 64 };
+		note->Acceleration = fPoint(0.0060f, 0.017f);
+		note->maxVelocity = fPoint{ -0.79f,5.00f };
 		break;
 
 	case NOTE_COLOR::NOTE_BLUE:
 
 		note->note_tex = note_tex;
 		note->position = initial_pos + fPoint(30.0f , 0.0f);
-		note->velocity = velocity + fPoint(0.5f, 0.0f);
+		note->velocity = fPoint(0.0f, 0.2f);
 		note->nColor = color;
 		note->note_rect = { 107, 0, 107, 64 };
+		note->Acceleration = fPoint(0.0040f, 0.017f);
+		note->maxVelocity = fPoint(-0.15, 5.00f);
 		break;
 
-		case NOTE_COLOR::NOTE_YELLOW:
+	case NOTE_COLOR::NOTE_YELLOW:
 
 		note->note_tex = note_tex;
 		note->position = initial_pos + fPoint(60.0f, 0.0f);
 		note->nColor = color;
-		note->velocity = velocity + fPoint(1.0f, 0.0f);
+		note->velocity =  fPoint(0.0f, 0.2f);
 		note->note_rect = { 214, 0, 107, 64 };
+		note->Acceleration = fPoint(0.0060f,0.017f);
+		note->maxVelocity = fPoint( 0.2f,5.00f );
 		break;
 
-		case NOTE_COLOR::NOTE_PINK:
+	case NOTE_COLOR::NOTE_PINK:
 
 		note->note_tex = note_tex;
 		note->position = initial_pos + fPoint(90.0f, 0.0f);
 		note->nColor = color;
-		note->velocity = velocity + fPoint(1.47f, 0.0f);
+		note->velocity = fPoint(0.0f, 0.2f);
 		note->note_rect = { 321, 0, 107, 64 };
+		note->Acceleration = fPoint(0.0080f, 0.017f);
+		note->maxVelocity = fPoint(0.79f, 5.00f);
 		break;
 
 	case NOTE_COLOR::NOTE_NON:
@@ -119,7 +138,6 @@ void Note::DestroyNote(Note* note) {
 	for (; item; item = item->next) {
 
 		if (item->data == note) {
-
 			if (note->note_collider != nullptr)
 				note->note_collider->to_delete = true;
 
@@ -149,9 +167,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 			p2List_item<Note*> *item = App->scene->notes.start;
 			for (; item; item = item->next) {
-
 				if (item->data->nColor == NOTE_VIOLET) {
-
 					DestroyNote(item->data);
        				return;
 				}

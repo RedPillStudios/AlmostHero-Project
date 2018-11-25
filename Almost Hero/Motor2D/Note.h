@@ -51,11 +51,13 @@ public:
 
 
 	//Notes attributes
-	float max_velocity = 2.5;
+
 	//fPoint velocity = fPoint(-0.73f, 2.5f);
-	fPoint velocity = fPoint(-0.73f, 0.2f);
-	fPoint initial_pos = fPoint(598.0f, 280.0f);
+	fPoint velocity = fPoint(0.0f, 0.2f);
+	fPoint initial_pos = fPoint(595.0f, 280.0f);
 	fPoint position;
+	fPoint Acceleration;
+	fPoint maxVelocity = fPoint(0.0f, 5.0f);
 
 	Collider *note_collider = nullptr;
 	Collider *last_collided = nullptr;

@@ -141,7 +141,7 @@ bool j1Scene::Update(float dt)
 
 	//Blitting Guitar texture
 	App->render->Blit(guitar_tex, x , 720 - 425, &Guitar.GetCurrentFrame());
-
+	
 
 	//Blitting Buttons textures
 	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
@@ -159,7 +159,7 @@ bool j1Scene::Update(float dt)
 	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
 
 
-	if (read_next_array_pos.Read() >= 300) {
+	if (read_next_array_pos.Read() >= 350) {
 
 		ReadArray(notes_positions[counter]);
 		read_next_array_pos.Start();
