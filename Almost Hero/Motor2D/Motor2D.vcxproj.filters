@@ -46,6 +46,7 @@
     <ClCompile Include="j1Collisions.cpp">
       <Filter>Modules\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="Note.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -116,6 +117,10 @@
     </ClInclude>
     <ClInclude Include="j1Collisions.h">
       <Filter>Modules\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="Note.h" />
+    <ClInclude Include="Vector4D.h">
+      <Filter>Core\Containers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -129,14 +129,12 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,float scale_, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale_, float speed, double angle, int pivot_x, int pivot_y) const
 {
 	bool ret = true;
-	uint scale = scale_;
+	float scale = scale_;
 
 	SDL_Rect rect;
-	rect.x = (int)(camera.x * speed) + x;
-	rect.y = (int)(camera.y * speed) + y;
 
 	if(section != NULL)
 	{
@@ -150,6 +148,17 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 
 	rect.w *= scale;
 	rect.h *= scale;
+
+	if (scale == 1.0f) {
+
+		rect.x = (int)(camera.x * speed) + x;
+		rect.y = (int)(camera.y * speed) + y;
+	}
+	else {
+
+		rect.x = (int)(camera.x * speed) + x - rect.w * 0.5f;
+		rect.y = (int)(camera.y * speed) + y - rect.h * 0.5f;
+	}
 
 	SDL_Point* p = NULL;
 	SDL_Point pivot;

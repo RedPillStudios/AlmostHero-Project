@@ -12,18 +12,6 @@
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
-	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
-	if (result == NULL)
-		LOG("pugi error : %s", result.description());
-
-	Buttons_node = Buttons_Document.child("config");
-
-	//Notes Smashers
-	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
-	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
-	smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
-	smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
-
 }
 
 // Destructor
@@ -36,6 +24,7 @@ bool j1Scene::Awake()
 	LOG("Loading Scene");
 	bool ret = true;
 
+
 	return ret;
 }
 
@@ -44,8 +33,13 @@ bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
 
-	//RELEASE(violet_note->note_tex);
-	//RELEASE(violet_note);
+	p2List_item<Note*> *notes_item = notes.start;
+	for (; notes_item != nullptr; notes_item = notes_item->next)
+		notes_item->data->DestroyNote(notes_item->data);
+
+	notes.clear();
+	notes_positions.Clear();
+
 	return true;
 }
 
@@ -53,22 +47,22 @@ bool j1Scene::CleanUp()
 bool j1Scene::Start()
 {
 
+	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
+	if (result == NULL)
+		LOG("pugi error : %s", result.description());
+
+	Buttons_node = Buttons_Document.child("config");
+
+	//Notes Smashers
+	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
+	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
+	smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
+	smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
+
 	smViolet.Current_anim = &smViolet.Standard_anim;
 	smBlue.Current_anim = &smBlue.Standard_anim;
 	smYellow.Current_anim = &smYellow.Standard_anim;
 	smPink.Current_anim = &smPink.Standard_anim;
-
-	smViolet.smasher_collider = App->collisions->AddCollider(smViolet.smasher_rect, COLLIDER_SMASHER_VIOLET, this);
-	smBlue.smasher_collider = App->collisions->AddCollider(smBlue.smasher_rect, COLLIDER_SMASHER_BLUE, this);
-	smYellow.smasher_collider = App->collisions->AddCollider(smYellow.smasher_rect, COLLIDER_SMASHER_YELLOW, this);
-	smPink.smasher_collider = App->collisions->AddCollider(smPink.smasher_rect, COLLIDER_SMASHER_PINK, this);
-
-
-	//Notes
-	/*violet_note = CreateNote(nIpos, 0, NOTE_VIOLET);
-	blue_note = CreateNote(nIpos, 1, NOTE_BLUE);
-	yellow_note = CreateNote(nIpos, 2, NOTE_YELLOW);
-	pink_note = CreateNote(nIpos, 3, NOTE_PINK);*/
 
 	//Guitar & Buttons texture
 	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
@@ -76,9 +70,12 @@ bool j1Scene::Start()
 
 	//Guitar animation Pushbacks
 	for (int i = 0; i < 43; ++i) {
+		
 		Guitar.PushBack({ countGuitar.x, countGuitar.y, 480, 425 });
 		countGuitar.x += 480;
+
 		if (countGuitar.x >= 480 * 7) {
+
 			countGuitar.y += 425;
 			countGuitar.x = 0;
 		}
@@ -88,13 +85,45 @@ bool j1Scene::Start()
 	Guitar.loop = true;
 
 	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
-	Bottom_Limit.x = 643;
-	Bottom_Limit.y = 617;
+	Bottom_Limit.x = 401;
+	Bottom_Limit.y = 719;
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
+	notes_positions.PushBack(pos1);
+	notes_positions.PushBack(pos2);
+	notes_positions.PushBack(pos3);
+	notes_positions.PushBack(pos4);
+	notes_positions.PushBack(pos5);
+	notes_positions.PushBack(pos6);
+	notes_positions.PushBack(pos7);
+	notes_positions.PushBack(pos9);
+	notes_positions.PushBack(pos10);
+	notes_positions.PushBack(pos11);
+	notes_positions.PushBack(pos12);
+	notes_positions.PushBack(pos13);
+	notes_positions.PushBack(pos14);
+	notes_positions.PushBack(pos15);
+	notes_positions.PushBack(pos16);
+	notes_positions.PushBack(pos17);
+	notes_positions.PushBack(pos18);
+	notes_positions.PushBack(pos19);
+	notes_positions.PushBack(pos20);
+	notes_positions.PushBack(pos21);
+	notes_positions.PushBack(pos22);
+	notes_positions.PushBack(pos23);
+
+
+	PERF_START(read_next_array_pos);
+
+	PERF_START(App->note->Violet_collided_timer);
+	PERF_START(App->note->Blue_collided_timer);
+	PERF_START(App->note->Yellow_collided_timer);
+	PERF_START(App->note->Pink_collided_timer);
+
+	PERF_START(App->note->General_collided_timer);
 	return true;
 }
 
@@ -113,46 +142,7 @@ bool j1Scene::Update(float dt)
 	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
-	//INPUTS
-	//1 (Violet)
-	 if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-		 smViolet.Current_anim = &smViolet.Pushed_anim;
-	 else
-		 smViolet.Current_anim = &smViolet.Standard_anim;
-
-	 if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-		 smViolet.Current_anim = &smViolet.Enter_anim;
-
-
-	 //2 (Blue)
-	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
-		 smBlue.Current_anim = &smBlue.Pushed_anim;
-	 else
-		 smBlue.Current_anim = &smBlue.Standard_anim;
-
-	 if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-		 smBlue.Current_anim = &smBlue.Enter_anim;
-
-
-	 //3 (Yellow)
-	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
-		 smYellow.Current_anim = &smYellow.Pushed_anim;
-	 else
-		 smYellow.Current_anim = &smYellow.Standard_anim;
-
-	 if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-		 smYellow.Current_anim = &smYellow.Enter_anim;
-
-
-	 //4 (Pink)
-	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
-		 smPink.Current_anim = &smPink.Pushed_anim;
-	 else
-		 smPink.Current_anim = &smPink.Standard_anim;
-
-	 if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
-		 smPink.Current_anim = &smPink.Enter_anim;
-
+	HandleInput();
 
 	 int y = 650;
 	 int x = 400;
@@ -160,8 +150,8 @@ bool j1Scene::Update(float dt)
 	//Blitting Guitar texture
 	App->render->Blit(guitar_tex, x , 720 - 425, &Guitar.GetCurrentFrame());
 
+
 	//Blitting Buttons textures
-	App->render->Blit(Buttons_Texture, 100, 100, &smViolet.smasher_rect);
 	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
 	App->render->Blit(Buttons_Texture, x + 135, y, &smBlue.Current_anim->GetCurrentFrame());
 	App->render->Blit(Buttons_Texture, x + 245, y, &smYellow.Current_anim->GetCurrentFrame());
@@ -169,16 +159,27 @@ bool j1Scene::Update(float dt)
 
 
 	//Smashers colliders
-	smBlue.smasher_collider->SetPos(x + 25, y);
-	smViolet.smasher_collider->SetPos(x + 135, y);
-	smPink.smasher_collider->SetPos(x + 245, y);
-	smYellow.smasher_collider->SetPos(x + 350, y);
 
-	//Notes drawing & moving
-	//MoveNote(violet_note);
-	//MoveNote(blue_note);
-	//MoveNote(yellow_note);
-	//MoveNote(pink_note);
+	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f);
+	smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f);
+
+	smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f);
+	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
+
+
+	if (read_next_array_pos.Read() >= 350) {
+
+		ReadArray(notes_positions[counter]);
+		read_next_array_pos.Start();
+		counter++;
+
+		if (counter == notes_positions.Count())
+			counter = 0;
+	}
+
+	p2List_item<Note*> *notes_item = notes.start;
+	for (; notes_item != nullptr; notes_item = notes_item->next)
+		notes_item->data->Update(dt);
 
 	return true;
 }
@@ -194,115 +195,6 @@ bool j1Scene::PostUpdate()
 	return ret;
 }
 
-void j1Scene::OnCollision(Collider *c1, Collider *c2) {
-
-	//if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
-
-	//
-	//	NOTE_COLOR aux_col = violet_note->nColor;
-	//	violet_note->note_collider->to_delete = true;
-	//	RELEASE(violet_note);
-
-	//	if (violet_note == nullptr)
-	//		violet_note = CreateNote(nIpos, 0, aux_col);
-	//
-	//}
-	//
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
-
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-	//		NOTE_COLOR aux_col = violet_note->nColor;
-	//		violet_note->note_collider->to_delete = true;
-	//		RELEASE(violet_note);
-
-	//		if (violet_note == nullptr)
-	//			violet_note = CreateNote(nIpos, 0, aux_col);
-
-
-	//	}
-	//}
-
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
-
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-	//		NOTE_COLOR aux_col = blue_note->nColor;
-	//		blue_note->note_collider->to_delete = true;
-	//		RELEASE(blue_note);
-
-	//		if (blue_note == nullptr)
-	//			blue_note = CreateNote(nIpos, 1, aux_col);
-
-
-	//	}
-	//}
-
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
-
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-	//		NOTE_COLOR aux_col = yellow_note->nColor;
-	//		yellow_note->note_collider->to_delete = true;
-	//		RELEASE(yellow_note);
-
-	//		if (yellow_note == nullptr)
-	//			yellow_note = CreateNote(nIpos, 2, aux_col);
-
-
-	//	}
-	//}
-
-	//if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
-
-	//	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-	//		NOTE_COLOR aux_col = pink_note->nColor;
-	//		pink_note->note_collider->to_delete = true;
-	//		RELEASE(pink_note);
-
-	//		if (pink_note == nullptr)
-	//			pink_note = CreateNote(nIpos, 3, aux_col);
-
-
-	//	}
-	//}
-}
-
-Note* j1Scene::CreateNote(fPoint pos, int note_num, NOTE_COLOR color) {
-
-	Note *note = new Note();
-
-	int iX = nIpos.x, sW = 35, sSpace = 50;
-
-	note->nPosition = pos;
-
-	int Xf = iX + note_num * (sW + sSpace);
-
-	note->note_rect.x = Xf;
-	note->note_rect.y = nIpos.y;
-
-	note->nColor = color;
-	note->note_collider = App->collisions->AddCollider(note->note_rect, COLLIDER_NOTE, this);
-
-	return note;
-}
-
-void j1Scene::MoveNote(Note* note) {
-
-	note->scale += 0.002f;
-	App->render->DrawQuad(note->note_rect, 0, 150, 0, 150, note->scale);
-
-	//note->nPosition = fPoint(note->note_rect.x, note->note_rect.y);
-
-	note->nPosition.x -= nVelocity.x;
-	note->nPosition.y += nVelocity.y;
-
-	note->note_rect = { (int)note->nPosition.x, (int)note->nPosition.y, 35, 35 };
-
-	note->note_collider->SetPos(note->nPosition.x, note->nPosition.y);
-
-}
 
 Smasher j1Scene::CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color) {
 
@@ -312,6 +204,9 @@ Smasher j1Scene::CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &n
 	aux.Standard_anim.PushBack(SetNotesPushbacks(node, color, "Normal"));
 	aux.Pushed_anim.PushBack(SetNotesPushbacks(node, color, "Pushed"));
 	aux.Enter_anim.PushBack(SetNotesPushbacks(node, color, "Enter"));
+
+	SDL_Rect button_collider_rect = { aux.smasher_rect.x + aux.smasher_rect.w * 0.4f, aux.smasher_rect.y - aux.smasher_rect.w * 0.4f, aux.smasher_rect.w * 0.4f, aux.smasher_rect.h * 0.15f };
+	aux.smasher_collider = App->collisions->AddCollider(button_collider_rect, smasher_collider, this);
 
 	return aux;
 }
@@ -329,12 +224,77 @@ SDL_Rect j1Scene::LoadButtons(pugi::xml_node &node, const char* color) {
 
 SDL_Rect j1Scene::SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name) {
 
-
 	int x = node.child("Anims").child(color).child(anim_name).attribute("x").as_int();
 	int y = node.child("Anims").child(color).child(anim_name).attribute("y").as_int();
 	int w = node.child("Anims").child(color).child(anim_name).attribute("w").as_int();
 	int h = node.child("Anims").child(color).child(anim_name).attribute("h").as_int();
 
 	return { x, y, w, h };
+
+}
+
+void j1Scene::HandleInput() {
+
+	//INPUTS
+	//1 (Violet)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
+		smViolet.Current_anim = &smViolet.Pushed_anim;
+	else
+		smViolet.Current_anim = &smViolet.Standard_anim;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+		smViolet.Current_anim = &smViolet.Enter_anim;
+
+
+	//2 (Blue)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
+		smBlue.Current_anim = &smBlue.Pushed_anim;
+	else
+		smBlue.Current_anim = &smBlue.Standard_anim;
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+		smBlue.Current_anim = &smBlue.Enter_anim;
+
+
+	//3 (Yellow)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		smYellow.Current_anim = &smYellow.Pushed_anim;
+	else
+		smYellow.Current_anim = &smYellow.Standard_anim;
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+		smYellow.Current_anim = &smYellow.Enter_anim;
+
+
+	//4 (Pink)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		smPink.Current_anim = &smPink.Pushed_anim;
+	else
+		smPink.Current_anim = &smPink.Standard_anim;
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+		smPink.Current_anim = &smPink.Enter_anim;
+
+
+	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+		App->render->camera.y++;
+	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
+		App->render->camera.y--;
+}
+
+
+void j1Scene::ReadArray(iPoint4d vec) {
+
+	if (vec.x == 1)
+		App->note->CreateNote(NOTE_VIOLET);
+
+	if (vec.y == 1)
+		App->note->CreateNote(NOTE_BLUE);
+
+	if (vec.z == 1)
+		App->note->CreateNote(NOTE_YELLOW);
+
+	if (vec.k == 1)
+		App->note->CreateNote(NOTE_PINK);
 
 }

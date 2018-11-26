@@ -6,36 +6,11 @@
 #include "Animation.h"
 #include "j1Timer.h"
 #include "j1Collisions.h"
-
-#define MAX_NOTES_ON_SCREEN 10
+#include "Note.h"
+#include "Vector4D.h"
 
 
 struct SDL_Texture;
-
-enum NOTE_COLOR {
-
-	NOTE_NON = -1,
-	NOTE_BLUE,
-	NOTE_YELLOW,
-	NOTE_PINK,
-	NOTE_VIOLET
-
-};
-
-struct Note {
-
-	SDL_Texture *note_tex = nullptr;
-	SDL_Rect note_rect = { 0, 0, 35, 35 };
-
-	float scale = 0.1f;
-
-	fPoint nPosition;
-
-	Collider *note_collider = nullptr;
-
-	NOTE_COLOR nColor = NOTE_NON;
-
-};
 
 struct Smasher {
 
@@ -76,24 +51,21 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-public:
-
-	void OnCollision(Collider *c1, Collider *c2);
-	Note* CreateNote(fPoint pos, int note_num, NOTE_COLOR color);
+private:
+	
 	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
-	void MoveNote(Note* note);
 
 	SDL_Rect LoadButtons(pugi::xml_node &node, const char* color);
 	SDL_Rect SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name);
+	void ReadArray(iPoint4d vec);
+
+	void HandleInput();
 
 private:
 
 	//Buttons & guitar texture
-	SDL_Texture * Buttons_Texture;
+	SDL_Texture* Buttons_Texture;
 	SDL_Texture* guitar_tex;
-
-
-private:
 
 	iPoint countGuitar;
 
@@ -101,27 +73,52 @@ private:
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
 
-	//Notes
-	//Note *violet_note;
-	//Note *blue_note;
-	//Note *yellow_note;
-	//Note *pink_note;
-
 	//Note Smashers
 	Smasher smBlue;
 	Smasher smPink;
 	Smasher smViolet;
 	Smasher smYellow;
 
-	//Notes attributes
-	fPoint nVelocity = fPoint(0.27f, 1.0f);
-	fPoint nIpos = fPoint(825.0f, 82.0f);
-
+	//Guitar animation
+	Animation Guitar;
 
 private:
 
-	//Guitar animation
-	Animation Guitar;
+	p2DynArray<iPoint4d> notes_positions;
+
+	iPoint4d pos1 = iPoint4d(1, 1, 1, 1);
+	iPoint4d pos2 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos3 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos4 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos5 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos6 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos7 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos8 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos9 = iPoint4d(1, 0,0, 0);
+	iPoint4d pos10 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos11 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos12 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos13 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos14 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos15 = iPoint4d(1, 0, 0, 0);
+	iPoint4d pos16 = iPoint4d(0, 0, 0, 0);
+
+	iPoint4d pos17 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos18 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos19 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos20 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos21 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos22 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos23 = iPoint4d(0, 0, 0, 0);
+	iPoint4d pos24 = iPoint4d(0, 0, 0, 0);
+	//iPoint4d pos5 = iPoint4d(1, 1, 1, 1);
+
+	j1Timer read_next_array_pos;
+	int counter = 0;
+
+public:
+
+	p2List<Note*> notes;
 
 private:
 
