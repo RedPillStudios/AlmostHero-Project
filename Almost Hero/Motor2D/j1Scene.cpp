@@ -65,6 +65,8 @@ bool j1Scene::Start()
 	smPink.Current_anim = &smPink.Standard_anim;
 
 	//Guitar & Buttons texture
+	Multiplier_tex = App->tex->Load("textures/Multiplliers.png");
+	PowerUp_Light_tex = App->tex->Load("textures/Power_Up_Effects.png");
 	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
 	Buttons_Texture = App->tex->Load("textures/Buttons_and_Notes.png");
 
@@ -83,6 +85,70 @@ bool j1Scene::Start()
 
 	Guitar.speed = 0.20f;
 	Guitar.loop = true;
+
+	countGuitar = { 0,0 };
+	
+	//Left Light animation Pushbacks
+	for (int i = 0; i < 12; ++i) {
+		Left_Light.PushBack({ countGuitar.x, countGuitar.y, 230, 450 });
+		countGuitar.x += 230;
+		if (countGuitar.x >= 230 * 5) {
+			countGuitar.y += 450;
+			countGuitar.x = 0;
+		}
+	}
+	Left_Light.speed = 0.30f;
+	Left_Light.loop = true;
+
+	//Right Light animation Pushbacks
+	for (int i = 12; i < 24; ++i) {
+		Right_Light.PushBack({ countGuitar.x, countGuitar.y, 230, 450 });
+		countGuitar.x += 230;
+		if (countGuitar.x >= 230 * 5) {
+			countGuitar.y += 450;
+			countGuitar.x = 0;
+		}
+	}
+	Right_Light.speed = 0.30f;
+	Right_Light.loop = true;
+
+	//Setting animation multiplier
+	countGuitar = { 0,0 };
+	for (int i = 0; i < 9; ++i) {
+		x1.PushBack({ countGuitar.x, countGuitar.y, 400, 400 });
+		countGuitar.x += 400;
+		if (countGuitar.x >= 400 * 6) {
+			countGuitar.y += 400;
+			countGuitar.x = 0;
+		}
+	}
+	for (int i = 9; i < 18; ++i) {
+		x2.PushBack({ countGuitar.x, countGuitar.y, 400, 400 });
+		countGuitar.x += 400;
+		if (countGuitar.x >= 400 * 6) {
+			countGuitar.y += 400;
+			countGuitar.x = 0;
+		}
+	}
+	for (int i = 18; i < 27; ++i) {
+		x3.PushBack({ countGuitar.x, countGuitar.y, 400, 400 });
+		countGuitar.x += 400;
+		if (countGuitar.x >= 400 * 6) {
+			countGuitar.y += 400;
+			countGuitar.x = 0;
+		}
+	}
+	for (int i = 27; i < 36; ++i) {
+		x4.PushBack({ countGuitar.x, countGuitar.y, 400, 400 });
+		countGuitar.x += 400;
+		if (countGuitar.x >= 400 * 6) {
+			countGuitar.y += 400;
+			countGuitar.x = 0;
+		}
+	}
+	x1.speed = x2.speed = x3.speed = x4.speed = 0.25f;
+
+	Multipliers_current_anim = &x1;
 
 	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
 	Bottom_Limit.x = 401;
@@ -177,6 +243,26 @@ bool j1Scene::Update(float dt)
 			counter = 0;
 	}
 
+	//Blitting Light PowerUps
+	App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
+	App->render->Blit(PowerUp_Light_tex, x + 225, 720 - 370, &Right_Light.GetCurrentFrame(), 1, 1, -19, 0, 0);
+
+	if (App->note->numNotes > 10 && App->note->numNotes <= 20) {
+		Multipliers_current_anim = &x2;
+	}
+	else if (App->note->numNotes > 20 && App->note->numNotes <= 30) {
+		Multipliers_current_anim = &x3;
+	}
+	else if (App->note->numNotes > 30) {
+		Multipliers_current_anim = &x4;
+	}
+	else {
+		Multipliers_current_anim = &x1;
+	}
+
+	//Blitting Multiplier
+	App->render->Blit(Multiplier_tex, -25, 300, &Multipliers_current_anim->GetCurrentFrame());
+
 	p2List_item<Note*> *notes_item = notes.start;
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
@@ -242,8 +328,17 @@ void j1Scene::HandleInput() {
 	else
 		smViolet.Current_anim = &smViolet.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
 		smViolet.Current_anim = &smViolet.Enter_anim;
+		if (App->note->colliding == false) {
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+	}
 
 
 	//2 (Blue)

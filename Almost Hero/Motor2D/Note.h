@@ -43,6 +43,7 @@ public:
 
 public:
 
+	bool colliding = false;
 	Note* CreateNote(NOTE_COLOR color);
 	void DestroyNote(Note* note);
 	void OnCollision(Collider* c1, Collider* c2);
@@ -54,6 +55,7 @@ public:
 	j1Timer Pink_collided_timer;
 	j1Timer General_collided_timer;
 
+	int numNotes;
 
 public:
 

@@ -56,7 +56,33 @@ private:
 	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
 
 	SDL_Rect LoadButtons(pugi::xml_node &node, const char* color);
+
 	SDL_Rect SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name);
+
+	void UpdateMultiplier() {
+		multiplier++;
+		if (multiplier > 4) {
+			multiplier = 1;
+		}
+		switch (multiplier)
+		{
+		case 1:
+			Multipliers_current_anim = &x1;
+			break;
+		case 2:
+			Multipliers_current_anim = &x2;
+			break;
+		case 3:
+			Multipliers_current_anim = &x3;
+			break;
+		case 4:
+			Multipliers_current_anim = &x4;
+			break;
+		default:
+			break;
+		}
+	}
+
 	void ReadArray(iPoint4d vec);
 
 	void HandleInput();
@@ -64,8 +90,10 @@ private:
 private:
 
 	//Buttons & guitar texture
+	SDL_Texture* Multiplier_tex;
 	SDL_Texture* Buttons_Texture;
 	SDL_Texture* guitar_tex;
+	SDL_Texture* PowerUp_Light_tex;
 
 	iPoint countGuitar;
 
@@ -81,6 +109,19 @@ private:
 
 	//Guitar animation
 	Animation Guitar;
+
+	//Lights PowerUp animation
+	Animation Left_Light;
+	Animation Right_Light;
+
+	//Multiplier animation
+	Animation* Multipliers_current_anim = nullptr;
+	Animation x1;
+	Animation x2;
+	Animation x3;
+	Animation x4;
+
+	int multiplier = 1;
 
 private:
 
