@@ -35,7 +35,7 @@ bool Note::CleanUp() {
 // Called each loop iteration
 bool Note::Update(float dt) {
 
-	
+
 		if (scale <= 0.65f)
 			scale += 0.0020f;
 
@@ -60,7 +60,7 @@ bool Note::Update(float dt) {
 			note_collider->SetPos(position.x - note_rect.w * 0.25f, position.y - note_rect.h * 0.25f);
 			App->render->Blit(note_tex, position.x, position.y, &note_rect, scale, 1.0f, 0.0f, 53, 32);
 		}
-	
+
 	return true;
 }
 
@@ -69,10 +69,10 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 
 	Note *note = new Note();
 	note->scale = 0.2f;
-	
+
 	switch (color) {
 
-	case NOTE_COLOR::NOTE_VIOLET: 
+	case NOTE_COLOR::NOTE_VIOLET:
 
 		note->note_tex = note_tex;
 		note->position = initial_pos;
@@ -122,7 +122,7 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 	default:
 		break;
 	}
-	
+
 	SDL_Rect collider_rect = { note->note_rect.x * 0.5f, note->note_rect.y * 0.5f, note->note_rect.w * 0.5f, note->note_rect.h * 0.5f };
 	note->note_collider = App->collisions->AddCollider(collider_rect, COLLIDER_NOTE, this);
 
@@ -146,10 +146,11 @@ void Note::DestroyNote(Note* note) {
 }
 
 void Note::OnCollision(Collider *c1, Collider *c2) {
-	
+
 
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 		if (General_collided_timer.Read() >= 100) {
+
 			DestroyNote(App->scene->notes.start->data);
 			PERF_START(General_collided_timer);
 		}
@@ -159,15 +160,16 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
 			if (Violet_collided_timer.Read() >= 100){
-				p2List_item<Note*> *item = App->scene->notes.start;
-			for (; item; item = item->next) {
 
-				if (item->data->nColor == NOTE_VIOLET) {
-					DestroyNote(item->data);
-					PERF_START(Violet_collided_timer);
-					break;
+				p2List_item<Note*> *item = App->scene->notes.start;
+				for (; item; item = item->next) {
+					if (item->data->nColor == NOTE_VIOLET) {
+
+						DestroyNote(item->data);
+						PERF_START(Violet_collided_timer);
+						break;
+					}
 				}
-			}
 		  }
 		}
 	}
@@ -175,10 +177,11 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
 			if (Blue_collided_timer.Read() >= 100) {
+
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
-
 					if (item->data->nColor == NOTE_BLUE) {
+
 						DestroyNote(item->data);
 						PERF_START(Blue_collided_timer);
 						break;
@@ -191,10 +194,11 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
 			if (Yellow_collided_timer.Read() >= 100) {
+
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
-
 					if (item->data->nColor == NOTE_YELLOW) {
+
 						DestroyNote(item->data);
 						PERF_START(Yellow_collided_timer);
 						break;
@@ -207,10 +211,11 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
 			if (Pink_collided_timer.Read() >= 100) {
+
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
-
 					if (item->data->nColor == NOTE_PINK) {
+
 						DestroyNote(item->data);
 						PERF_START(Pink_collided_timer);
 						break;
@@ -219,51 +224,4 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 			}
 		}
 	}
-
-	/*if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-			NOTE_COLOR aux_col = blue_note->nColor;
-			blue_note->note_collider->to_delete = true;
-			RELEASE(blue_note);
-
-			if (blue_note == nullptr)
-				blue_note = CreateNote(nIpos, 1, aux_col);
-
-
-		}
-	}
-
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-			NOTE_COLOR aux_col = yellow_note->nColor;
-			yellow_note->note_collider->to_delete = true;
-			RELEASE(yellow_note);
-
-			if (yellow_note == nullptr)
-				yellow_note = CreateNote(nIpos, 2, aux_col);
-
-
-		}
-	}
-
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_Q) == KEY_REPEAT) {
-
-			NOTE_COLOR aux_col = pink_note->nColor;
-			pink_note->note_collider->to_delete = true;
-			RELEASE(pink_note);
-
-			if (pink_note == nullptr)
-				pink_note = CreateNote(nIpos, 3, aux_col);
-
-
-		}
-	}*/
-
-
 }

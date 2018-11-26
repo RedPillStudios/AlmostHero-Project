@@ -70,9 +70,12 @@ bool j1Scene::Start()
 
 	//Guitar animation Pushbacks
 	for (int i = 0; i < 43; ++i) {
+		
 		Guitar.PushBack({ countGuitar.x, countGuitar.y, 480, 425 });
 		countGuitar.x += 480;
+
 		if (countGuitar.x >= 480 * 7) {
+
 			countGuitar.y += 425;
 			countGuitar.x = 0;
 		}
@@ -95,7 +98,7 @@ bool j1Scene::Start()
 	notes_positions.PushBack(pos4);
 	notes_positions.PushBack(pos5);
 	notes_positions.PushBack(pos6);
-	notes_positions.PushBack(pos7); 
+	notes_positions.PushBack(pos7);
 	notes_positions.PushBack(pos9);
 	notes_positions.PushBack(pos10);
 	notes_positions.PushBack(pos11);
@@ -112,11 +115,9 @@ bool j1Scene::Start()
 	notes_positions.PushBack(pos22);
 	notes_positions.PushBack(pos23);
 
-	//notes_positions.PushBack(pos4);
-	//notes_positions.PushBack(pos5);
 
 	PERF_START(read_next_array_pos);
-	
+
 	PERF_START(App->note->Violet_collided_timer);
 	PERF_START(App->note->Blue_collided_timer);
 	PERF_START(App->note->Yellow_collided_timer);
@@ -142,13 +143,13 @@ bool j1Scene::Update(float dt)
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
 	HandleInput();
-	
+
 	 int y = 650;
 	 int x = 400;
 
 	//Blitting Guitar texture
 	App->render->Blit(guitar_tex, x , 720 - 425, &Guitar.GetCurrentFrame());
-	
+
 
 	//Blitting Buttons textures
 	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
@@ -177,7 +178,7 @@ bool j1Scene::Update(float dt)
 	}
 
 	p2List_item<Note*> *notes_item = notes.start;
-	for (; notes_item != nullptr; notes_item = notes_item->next) 
+	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
 
 	return true;
