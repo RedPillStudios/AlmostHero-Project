@@ -86,17 +86,17 @@ private:
 
 	p2DynArray<iPoint4d> notes_positions;
 
-	iPoint4d pos1 = iPoint4d(1, 1, 0, 0);
+	iPoint4d pos1 = iPoint4d(1, 1, 1, 1);
 	iPoint4d pos2 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos3 = iPoint4d(1, 1, 1, 1);
+	iPoint4d pos3 = iPoint4d(1, 0, 0, 0);
 	iPoint4d pos4 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos5 = iPoint4d(1, 0, 1, 0);
+	iPoint4d pos5 = iPoint4d(1, 0, 0, 0);
 	iPoint4d pos6 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos7 = iPoint4d(1, 0, 1, 0);
+	iPoint4d pos7 = iPoint4d(1, 0, 0, 0);
 	iPoint4d pos8 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos9 = iPoint4d(1, 0, 1, 0);
+	iPoint4d pos9 = iPoint4d(1, 0,0, 0);
 	iPoint4d pos10 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos11 = iPoint4d(1, 0, 1, 0);
+	iPoint4d pos11 = iPoint4d(1, 0, 0, 0);
 	iPoint4d pos12 = iPoint4d(0, 0, 0, 0);
 	iPoint4d pos13 = iPoint4d(1, 0, 0, 0);
 	iPoint4d pos14 = iPoint4d(0, 0, 0, 0);

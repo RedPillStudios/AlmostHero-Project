@@ -47,6 +47,14 @@ public:
 	void DestroyNote(Note* note);
 	void OnCollision(Collider* c1, Collider* c2);
 
+
+	j1Timer Violet_collided_timer;
+	j1Timer	Blue_collided_timer;
+	j1Timer Yellow_collided_timer;
+	j1Timer Pink_collided_timer;
+	j1Timer General_collided_timer;
+
+
 public:
 
 
@@ -63,13 +71,14 @@ public:
 	Collider *last_collided = nullptr;
 	NOTE_COLOR nColor = NOTE_NON;
 
+
+
 private:
 
 	float scale = 0.2f;
 	SDL_Rect note_rect;
 	SDL_Texture *note_tex = nullptr;
 
-	j1Timer last_collided_change;
 
 };
 

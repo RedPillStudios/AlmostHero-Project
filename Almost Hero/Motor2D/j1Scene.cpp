@@ -116,6 +116,13 @@ bool j1Scene::Start()
 	//notes_positions.PushBack(pos5);
 
 	PERF_START(read_next_array_pos);
+	
+	PERF_START(App->note->Violet_collided_timer);
+	PERF_START(App->note->Blue_collided_timer);
+	PERF_START(App->note->Yellow_collided_timer);
+	PERF_START(App->note->Pink_collided_timer);
+
+	PERF_START(App->note->General_collided_timer);
 	return true;
 }
 
@@ -234,7 +241,7 @@ void j1Scene::HandleInput() {
 	else
 		smViolet.Current_anim = &smViolet.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smViolet.Current_anim = &smViolet.Enter_anim;
 
 
@@ -244,7 +251,7 @@ void j1Scene::HandleInput() {
 	else
 		smBlue.Current_anim = &smBlue.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smBlue.Current_anim = &smBlue.Enter_anim;
 
 
@@ -254,7 +261,7 @@ void j1Scene::HandleInput() {
 	else
 		smYellow.Current_anim = &smYellow.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smYellow.Current_anim = &smYellow.Enter_anim;
 
 
@@ -264,7 +271,7 @@ void j1Scene::HandleInput() {
 	else
 		smPink.Current_anim = &smPink.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smPink.Current_anim = &smPink.Enter_anim;
 
 

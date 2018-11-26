@@ -21,6 +21,8 @@ bool Note::Start() {
 	note_tex = App->tex->Load("textures/Buttons_and_Notes.png");
 	return true;
 
+
+
 }
 
 // Called before quitting
@@ -33,11 +35,7 @@ bool Note::CleanUp() {
 // Called each loop iteration
 bool Note::Update(float dt) {
 
-
-		if (last_collided_change.Read() >= 1000) {
-			last_collided = nullptr;
-		}
-		
+	
 		if (scale <= 0.65f)
 			scale += 0.0020f;
 
@@ -138,9 +136,8 @@ void Note::DestroyNote(Note* note) {
 	for (; item; item = item->next) {
 
 		if (item->data == note) {
-			if (note->note_collider != nullptr)
-				note->note_collider->to_delete = true;
-
+ 			if (item->data->note_collider != nullptr)
+				item->data->note_collider->to_delete = true;
 			App->scene->notes.del(item);
 			break;
 
@@ -149,51 +146,78 @@ void Note::DestroyNote(Note* note) {
 }
 
 void Note::OnCollision(Collider *c1, Collider *c2) {
+	
 
-	if (last_collided == c1)
-		return;
-	else {
-
-		PERF_START(last_collided_change);
-        last_collided = c1;
+	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
+		if (General_collided_timer.Read() >= 100) {
+			DestroyNote(App->scene->notes.start->data);
+			PERF_START(General_collided_timer);
+		}
 	}
-
-	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
-		DestroyNote(this);
 
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
-
-			p2List_item<Note*> *item = App->scene->notes.start;
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
+			if (Violet_collided_timer.Read() >= 100){
+				p2List_item<Note*> *item = App->scene->notes.start;
 			for (; item; item = item->next) {
+
 				if (item->data->nColor == NOTE_VIOLET) {
 					DestroyNote(item->data);
-       				return;
+					PERF_START(Violet_collided_timer);
+					break;
+				}
+			}
+		  }
+		}
+	}
+
+	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
+			if (Blue_collided_timer.Read() >= 100) {
+				p2List_item<Note*> *item = App->scene->notes.start;
+				for (; item; item = item->next) {
+
+					if (item->data->nColor == NOTE_BLUE) {
+						DestroyNote(item->data);
+						PERF_START(Blue_collided_timer);
+						break;
+					}
 				}
 			}
 		}
 	}
 
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
-
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-			DestroyNote(this);
-
-	}
-
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
+			if (Yellow_collided_timer.Read() >= 100) {
+				p2List_item<Note*> *item = App->scene->notes.start;
+				for (; item; item = item->next) {
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-			DestroyNote(this);
-
+					if (item->data->nColor == NOTE_YELLOW) {
+						DestroyNote(item->data);
+						PERF_START(Yellow_collided_timer);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
+		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
+			if (Pink_collided_timer.Read() >= 100) {
+				p2List_item<Note*> *item = App->scene->notes.start;
+				for (; item; item = item->next) {
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
-			DestroyNote(this);
-
+					if (item->data->nColor == NOTE_PINK) {
+						DestroyNote(item->data);
+						PERF_START(Pink_collided_timer);
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	/*if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
