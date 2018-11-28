@@ -26,7 +26,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	audio = new j1Audio();
 	scene = new j1Scene();
 	collisions = new j1Collisions();
-	note = new Note();
+//	note = new Note();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -35,7 +35,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(scene);
-	AddModule(note);
+//	AddModule(note);
 	AddModule(collisions);
 
 

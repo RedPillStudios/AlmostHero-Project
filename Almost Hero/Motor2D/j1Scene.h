@@ -159,7 +159,7 @@ private:
 
 public:
 
-	p2List<Note*> notes;
+	//p2List<Note*> notes;
 
 private:
 

@@ -55,11 +55,15 @@ bool j1Collisions::PreUpdate() {
 	bool ret = true;
 
 	for (uint i = 0; i < MAX_COLLIDERS; ++i) {
+		
+		if (colliders[i] != nullptr) {
 
-		if (colliders[i] != nullptr && colliders[i]->to_delete) {
-
-			delete colliders[i];
-			colliders[i] = nullptr;
+			LOG("Iteration: %i \n", i);
+			if (colliders[i]->to_delete == true) {
+				
+				delete colliders[i];
+				colliders[i] = nullptr;
+			}
 		}
 	}
 
@@ -68,7 +72,6 @@ bool j1Collisions::PreUpdate() {
 
 
 bool j1Collisions::Update(float dt) {
-
 
 	Collider *c1;
 	Collider *c2;
