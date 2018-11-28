@@ -147,12 +147,22 @@ void Note::DestroyNote(Note* note) {
 
 void Note::OnCollision(Collider *c1, Collider *c2) {
 
+	colliding = true;
 
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 		if (General_collided_timer.Read() >= 100) {
 
 			DestroyNote(App->scene->notes.start->data);
 			PERF_START(General_collided_timer);
+			numNotes = 0;
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+			colliding = false;
 		}
 	}
 
@@ -167,6 +177,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 						DestroyNote(item->data);
 						PERF_START(Violet_collided_timer);
+						numNotes++;
+
 						break;
 					}
 				}
@@ -176,6 +188,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
+
 			if (Blue_collided_timer.Read() >= 100) {
 
 				p2List_item<Note*> *item = App->scene->notes.start;
@@ -184,6 +197,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 						DestroyNote(item->data);
 						PERF_START(Blue_collided_timer);
+						numNotes++;
+			
 						break;
 					}
 				}
@@ -193,6 +208,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
+
 			if (Yellow_collided_timer.Read() >= 100) {
 
 				p2List_item<Note*> *item = App->scene->notes.start;
@@ -201,6 +217,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 						DestroyNote(item->data);
 						PERF_START(Yellow_collided_timer);
+						numNotes++;
+				
 						break;
 					}
 				}
@@ -210,6 +228,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
+
 			if (Pink_collided_timer.Read() >= 100) {
 
 				p2List_item<Note*> *item = App->scene->notes.start;
@@ -218,6 +237,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 						DestroyNote(item->data);
 						PERF_START(Pink_collided_timer);
+						numNotes++;
 						break;
 					}
 				}

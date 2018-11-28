@@ -67,8 +67,38 @@ bool j1Render::PreUpdate()
 	return true;
 }
 
+void j1Render::CameraShake(float power) {
+
+	int a = rand() % 4;
+	switch (a) {
+	case 0:
+		camera.x += 1 * power;
+		break;
+	case 1:
+		camera.x -= 1 * power;
+		break;
+	case 2:
+		camera.y += 1 * power;
+		break;
+	case 3:
+		camera.y -= 1 * power;
+	}
+
+}
+
+
 bool j1Render::PostUpdate()
 {
+
+	if (DoCameraShake) {
+		if (CameraShake_Time.ReadSec() < Time_Doing_Shake)
+			CameraShake(power);
+		else {
+			DoCameraShake = false;
+			ResetCamera();
+		}
+	}
+
 	SDL_SetRenderDrawColor(renderer, background.r, background.g, background.g, background.a);
 	SDL_RenderPresent(renderer);
 	return true;

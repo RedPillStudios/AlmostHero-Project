@@ -4,6 +4,7 @@
 #include "SDL/include/SDL.h"
 #include "p2Point.h"
 #include "j1Module.h"
+#include "j1Timer.h"
 
 class j1Render : public j1Module
 {
@@ -35,6 +36,17 @@ public:
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
 	iPoint ScreenToWorld(int x, int y) const;
+	void ResetCamera() {
+		camera.x = 0;
+		camera.y = 0;
+	}
+
+	//Camera Shake
+	void CameraShake(float power);
+	bool DoCameraShake = false;
+	float power = 0;
+	float Time_Doing_Shake;
+	j1Timer CameraShake_Time;
 
 	// Draw & Blit
 	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
