@@ -225,7 +225,6 @@ bool j1Scene::Update(float dt)
 
 
 	//Smashers colliders
-
 	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f);
 	smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f);
 
@@ -329,7 +328,9 @@ void j1Scene::HandleInput() {
 		smViolet.Current_anim = &smViolet.Standard_anim;
 
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		
 		smViolet.Current_anim = &smViolet.Enter_anim;
+		
 		if (App->note->colliding == false) {
 			if (App->render->DoCameraShake == false) {
 				App->render->DoCameraShake = true;

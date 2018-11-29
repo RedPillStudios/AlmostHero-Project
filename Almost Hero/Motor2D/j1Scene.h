@@ -152,7 +152,6 @@ private:
 	iPoint4d pos22 = iPoint4d(0, 0, 0, 0);
 	iPoint4d pos23 = iPoint4d(0, 0, 0, 0);
 	iPoint4d pos24 = iPoint4d(0, 0, 0, 0);
-	//iPoint4d pos5 = iPoint4d(1, 1, 1, 1);
 
 	j1Timer read_next_array_pos;
 	int counter = 0;

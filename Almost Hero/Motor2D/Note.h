@@ -81,7 +81,6 @@ private:
 	SDL_Rect note_rect;
 	SDL_Texture *note_tex = nullptr;
 
-
 };
 
 #endif

@@ -7,6 +7,7 @@
 
 Note::Note()
 {
+	name.create("Note");
 }
 
 
