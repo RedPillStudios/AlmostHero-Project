@@ -59,29 +59,7 @@ private:
 
 	SDL_Rect SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name);
 
-	void UpdateMultiplier() {
-		multiplier++;
-		if (multiplier > 4) {
-			multiplier = 1;
-		}
-		switch (multiplier)
-		{
-		case 1:
-			Multipliers_current_anim = &x1;
-			break;
-		case 2:
-			Multipliers_current_anim = &x2;
-			break;
-		case 3:
-			Multipliers_current_anim = &x3;
-			break;
-		case 4:
-			Multipliers_current_anim = &x4;
-			break;
-		default:
-			break;
-		}
-	}
+	void UpdateMultiplier();
 
 	void ReadArray(iPoint4d vec);
 
