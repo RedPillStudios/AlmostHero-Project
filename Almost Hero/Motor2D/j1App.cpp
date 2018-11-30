@@ -12,6 +12,8 @@
 #include "j1Scene.h"
 #include "j1Collisions.h"
 #include "Note.h"
+#include "j1Fonts.h"
+#include "j1Gui.h"
 #include "j1App.h"
 
 // Constructor
@@ -27,6 +29,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	collisions = new j1Collisions();
 	note = new Note();
+	font = new j1Fonts();
+	gui = new j1Gui();
 
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
@@ -37,6 +41,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(scene);
 	AddModule(note);
 	AddModule(collisions);
+	AddModule(font);
+	AddModule(gui);
 
 
 	// render last to swap buffer
@@ -174,7 +180,7 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	dt = (float)frame_time.ReadSec();
-	LOG("DT: %f ms CURRENT FRAME TIME: %f", dt, (float)frame_time.Read());
+	//LOG("DT: %f ms CURRENT FRAME TIME: %f", dt, (float)frame_time.Read());
 	
 	frame_time.Start();
 }
@@ -215,7 +221,7 @@ void j1App::FinishUpdate()
 	if (last_frame_ms < capped_ms)
 		SDL_Delay(capped_ms - last_frame_ms);
 
-	LOG("Waited for %i and got back in %f", capped_ms - last_frame_ms, ptimer.ReadMs() - ptime);
+	//LOG("Waited for %i and got back in %f", capped_ms - last_frame_ms, ptimer.ReadMs() - ptime);
 
 }
 

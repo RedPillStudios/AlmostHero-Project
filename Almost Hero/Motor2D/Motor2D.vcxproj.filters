@@ -43,6 +43,10 @@
     <ClCompile Include="Note.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Modules\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Gui.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -111,6 +115,10 @@
     <ClInclude Include="Note.h">
       <Filter>Modules</Filter>
     </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Modules\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Gui.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
@@ -142,6 +150,9 @@
     </Filter>
     <Filter Include="Modules\Physics">
       <UniqueIdentifier>{29d2480e-83ca-49f6-87aa-5ff32e098cf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\UI">
+      <UniqueIdentifier>{71e41ba0-6cbf-42d5-b7c4-c1e34e0b1745}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

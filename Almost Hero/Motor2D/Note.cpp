@@ -4,6 +4,7 @@
 #include "j1Collisions.h"
 #include "j1Input.h"
 #include "j1Scene.h"
+#include "j1Fonts.h"
 
 Note::Note()
 {
@@ -20,10 +21,15 @@ Note::~Note()
 bool Note::Start() {
 
 	note_tex = App->tex->Load("textures/Buttons_and_Notes.png");
+
+
+
+	int w, h;
+	App->font->CalcSize("SCORE", w, h);
+	App->gui->CreateUIElement({ 0, 0, w, h }, iPoint(0, 20), App->font->Print("SCORE", { 255, 0, 0, 255 }));
+
+
 	return true;
-
-
-
 }
 
 // Called before quitting

@@ -67,7 +67,7 @@ bool j1Collisions::PreUpdate() {
 		
 		if (colliders[i] != nullptr) {
 
-			LOG("Iteration: %i \n", i);
+		//	LOG("Iteration: %i \n", i);
 			if (colliders[i]->to_delete == true) {
 				
 				delete colliders[i];

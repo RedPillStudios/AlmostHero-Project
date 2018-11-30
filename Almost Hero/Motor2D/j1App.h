@@ -18,6 +18,8 @@ class j1Audio;
 class j1Scene;
 class j1Collisions;
 class Note;
+class j1Fonts;
+class j1Gui;
 
 class j1App
 {
@@ -89,6 +91,8 @@ public:
 	j1Scene*			scene = NULL;
 	j1Collisions*		collisions = NULL;
 	Note*				note = NULL;
+	j1Fonts*			font = NULL;
+	j1Gui*				gui = NULL;
 
 private:
 

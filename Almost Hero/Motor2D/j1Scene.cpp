@@ -332,6 +332,7 @@ void j1Scene::HandleInput() {
 		smViolet.Current_anim = &smViolet.Enter_anim;
 		
 		if (App->note->colliding == false) {
+
 			if (App->render->DoCameraShake == false) {
 				App->render->DoCameraShake = true;
 				App->render->power = 2.0f;
