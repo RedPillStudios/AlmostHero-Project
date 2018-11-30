@@ -8,6 +8,7 @@
 #include "j1Window.h"
 #include "j1Scene.h"
 #include "j1Collisions.h"
+#include "Video.h"
 
 j1Scene::j1Scene() : j1Module()
 {
@@ -190,6 +191,9 @@ bool j1Scene::Start()
 	PERF_START(App->note->Pink_collided_timer);
 
 	PERF_START(App->note->General_collided_timer);
+
+	App->video->PlayVideo("GodDamn_Audio.ogv", { 0,-50,1280,850 });
+
 	return true;
 }
 
@@ -265,6 +269,8 @@ bool j1Scene::Update(float dt)
 	p2List_item<Note*> *notes_item = notes.start;
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
+
+
 
 	return true;
 }

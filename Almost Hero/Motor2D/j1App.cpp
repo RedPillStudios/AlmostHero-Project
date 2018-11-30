@@ -13,6 +13,7 @@
 #include "j1Collisions.h"
 #include "Note.h"
 #include "j1App.h"
+#include "Video.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -27,16 +28,18 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	collisions = new j1Collisions();
 	note = new Note();
-
+	video = new Video();
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(video);
 	AddModule(scene);
 	AddModule(note);
 	AddModule(collisions);
+
 
 
 	// render last to swap buffer

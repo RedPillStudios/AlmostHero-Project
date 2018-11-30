@@ -43,6 +43,12 @@
     <ClCompile Include="Note.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
+    <ClCompile Include="theoraplay.c">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -110,6 +116,12 @@
     </ClInclude>
     <ClInclude Include="Note.h">
       <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClInclude>
+    <ClInclude Include="Video.h">
+      <Filter>Modules\Controllers\Specific</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

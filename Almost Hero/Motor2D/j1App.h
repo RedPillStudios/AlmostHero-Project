@@ -18,6 +18,7 @@ class j1Audio;
 class j1Scene;
 class j1Collisions;
 class Note;
+class Video;
 
 class j1App
 {
@@ -89,6 +90,7 @@ public:
 	j1Scene*			scene = NULL;
 	j1Collisions*		collisions = NULL;
 	Note*				note = NULL;
+	Video*				video = NULL;
 
 private:
 
