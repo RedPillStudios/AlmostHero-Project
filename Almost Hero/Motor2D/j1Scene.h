@@ -51,6 +51,9 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	int multiplier = 1;
+	int score = 55;
+
 private:
 	
 	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
@@ -99,7 +102,7 @@ private:
 	Animation x3;
 	Animation x4;
 
-	int multiplier = 1;
+
 
 private:
 
@@ -133,6 +136,9 @@ private:
 
 	j1Timer read_next_array_pos;
 	int counter = 0;
+
+	SDL_Rect scoreRect = { 0, 0, 20, 20 };
+	char score_text[100];
 
 public:
 

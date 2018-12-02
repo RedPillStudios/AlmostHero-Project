@@ -8,7 +8,7 @@
 #include "j1Window.h"
 #include "j1Scene.h"
 #include "j1Collisions.h"
-
+#include "j1Fonts.h"
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
@@ -52,7 +52,7 @@ bool j1Scene::Start()
 		LOG("pugi error : %s", result.description());
 
 	Buttons_node = Buttons_Document.child("config");
-
+	App->font->Load("fonts/ShonenPunk custom.ttf", 60);
 	//Notes Smashers
 	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
 	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
@@ -99,7 +99,7 @@ bool j1Scene::Start()
 	}
 	Left_Light.speed = 0.30f;
 	Left_Light.loop = true;
-
+	
 	//Right Light animation Pushbacks
 	for (int i = 12; i < 24; ++i) {
 		Right_Light.PushBack({ countGuitar.x, countGuitar.y, 230, 450 });
@@ -146,8 +146,8 @@ bool j1Scene::Start()
 			countGuitar.x = 0;
 		}
 	}
-	x1.speed = x2.speed = x3.speed = x4.speed = 0.25f;
 
+	x1.speed = x2.speed = x3.speed = x4.speed = 0.25f;
 	Multipliers_current_anim = &x1;
 
 	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
@@ -190,6 +190,9 @@ bool j1Scene::Start()
 	PERF_START(App->note->Pink_collided_timer);
 
 	PERF_START(App->note->General_collided_timer);
+
+	multiplier = 1;
+	score = 0;
 	return true;
 }
 
@@ -248,20 +251,25 @@ bool j1Scene::Update(float dt)
 
 	if (App->note->numNotes > 10 && App->note->numNotes <= 20) {
 		Multipliers_current_anim = &x2;
+		multiplier = 2;
 	}
 	else if (App->note->numNotes > 20 && App->note->numNotes <= 30) {
 		Multipliers_current_anim = &x3;
+		multiplier = 3;
 	}
 	else if (App->note->numNotes > 30) {
 		Multipliers_current_anim = &x4;
+		multiplier = 4;
 	}
 	else {
 		Multipliers_current_anim = &x1;
+		multiplier = 1;
 	}
-
 	//Blitting Multiplier
 	App->render->Blit(Multiplier_tex, -25, 300, &Multipliers_current_anim->GetCurrentFrame());
-
+	sprintf(score_text, "%d", score);
+	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 },App->font->fonts.end->data), 900, 400,&scoreRect,1,false);
 	p2List_item<Note*> *notes_item = notes.start;
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);

@@ -185,7 +185,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						DestroyNote(item->data);
 						PERF_START(Violet_collided_timer);
 						numNotes++;
-
+						App->scene->score += 250 * App->scene->multiplier;
 						break;
 					}
 				}
@@ -205,7 +205,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						DestroyNote(item->data);
 						PERF_START(Blue_collided_timer);
 						numNotes++;
-			
+						App->scene->score += 250 * App->scene->multiplier;
 						break;
 					}
 				}
@@ -225,7 +225,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						DestroyNote(item->data);
 						PERF_START(Yellow_collided_timer);
 						numNotes++;
-				
+						App->scene->score += 250 * App->scene->multiplier;
 						break;
 					}
 				}
@@ -245,6 +245,7 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						DestroyNote(item->data);
 						PERF_START(Pink_collided_timer);
 						numNotes++;
+						App->scene->score += 250 * App->scene->multiplier;
 						break;
 					}
 				}

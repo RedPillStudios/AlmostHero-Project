@@ -26,7 +26,7 @@ public:
 	bool CleanUp();
 
 	// Load Font
-	_TTF_Font* const Load(const char* path, int size = 12);
+	_TTF_Font* const Load(const char* path, int size = 40);
 
 	// Create a surface from text
 	SDL_Texture* Print(const char* text, SDL_Color color = { 255, 255, 255, 255 }, _TTF_Font* font = NULL);

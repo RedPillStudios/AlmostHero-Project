@@ -38,11 +38,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(gui);
 	AddModule(scene);
 	AddModule(note);
 	AddModule(collisions);
 	AddModule(font);
-	AddModule(gui);
+
 
 
 	// render last to swap buffer
