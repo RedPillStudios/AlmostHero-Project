@@ -52,7 +52,7 @@ public:
 	bool CleanUp();
 
 	int multiplier = 1;
-	int score = 55;
+	int score = 0;
 
 private:
 	
@@ -67,6 +67,8 @@ private:
 	void ReadArray(iPoint4d vec);
 
 	void HandleInput();
+
+	bool Save(pugi::xml_node& data_) const;
 
 private:
 

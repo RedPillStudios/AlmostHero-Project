@@ -336,6 +336,9 @@ SDL_Rect j1Scene::SetNotesPushbacks(pugi::xml_node &node, const char* color, con
 
 void j1Scene::HandleInput() {
 
+	if (App->input->GetKey(SDL_SCANCODE_S))
+		App->SaveGame("saved_data.xml");
+
 	//INPUTS
 	//1 (Violet)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
@@ -435,4 +438,14 @@ void j1Scene::UpdateMultiplier() {
 	default:
 		break;
 	}
+}
+
+
+// Save Game State
+bool j1Scene::Save(pugi::xml_node& data) const
+{
+	pugi::xml_node scen = data.append_child("scene");
+	scen.append_attribute("score") = score;
+
+	return true;
 }
