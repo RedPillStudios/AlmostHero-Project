@@ -15,6 +15,7 @@
 #include "j1Fonts.h"
 #include "j1Gui.h"
 #include "j1App.h"
+#include "Video.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -31,7 +32,8 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	note = new Note();
 	font = new j1Fonts();
 	gui = new j1Gui();
-
+	video = new Video();
+  
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
@@ -39,10 +41,12 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(tex);
 	AddModule(audio);
 	AddModule(gui);
+	AddModule(video);
 	AddModule(scene);
 	AddModule(note);
 	AddModule(collisions);
 	AddModule(font);
+
 
 
 

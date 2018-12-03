@@ -9,6 +9,8 @@
 #include "j1Scene.h"
 #include "j1Collisions.h"
 #include "j1Fonts.h"
+#include "Video.h"
+
 j1Scene::j1Scene() : j1Module()
 {
 	name.create("scene");
@@ -193,6 +195,8 @@ bool j1Scene::Start()
 
 	multiplier = 1;
 	score = 0;
+	App->video->PlayVideo("GodDamn_Audio.ogv", { 0,-50,1280,850 });
+  
 	return true;
 }
 
@@ -273,6 +277,8 @@ bool j1Scene::Update(float dt)
 	p2List_item<Note*> *notes_item = notes.start;
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
+
+
 
 	return true;
 }

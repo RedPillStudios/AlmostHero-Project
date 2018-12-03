@@ -42,11 +42,16 @@
     </ClCompile>
     <ClCompile Include="Note.cpp">
       <Filter>Modules</Filter>
-    </ClCompile>
     <ClCompile Include="j1Fonts.cpp">
       <Filter>Modules\UI</Filter>
     </ClCompile>
     <ClCompile Include="j1Gui.cpp" />
+    <ClCompile Include="theoraplay.c">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="p2Defs.h">
@@ -119,6 +124,12 @@
       <Filter>Modules\UI</Filter>
     </ClInclude>
     <ClInclude Include="j1Gui.h" />
+    <ClInclude Include="theoraplay.h">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClInclude>
+    <ClInclude Include="Video.h">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
