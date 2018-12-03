@@ -71,6 +71,7 @@ bool j1Gui::CleanUp()
 const SDL_Texture* j1Gui::GetAtlas() const
 {
 	//return atlas;
+	return nullptr;
 }
 
 // class Gui ---------------------------------------------------

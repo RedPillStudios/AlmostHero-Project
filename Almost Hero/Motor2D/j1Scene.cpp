@@ -1,3 +1,5 @@
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "p2Defs.h"
 #include "p2Log.h"
 #include "j1App.h"
@@ -269,16 +271,16 @@ bool j1Scene::Update(float dt)
 		Multipliers_current_anim = &x1;
 		multiplier = 1;
 	}
+
 	//Blitting Multiplier
 	App->render->Blit(Multiplier_tex, -25, 300, &Multipliers_current_anim->GetCurrentFrame());
 	sprintf(score_text, "%d", score);
 	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 },App->font->fonts.end->data), 900, 400,&scoreRect,1,false);
+
 	p2List_item<Note*> *notes_item = notes.start;
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
-
-
 
 	return true;
 }
