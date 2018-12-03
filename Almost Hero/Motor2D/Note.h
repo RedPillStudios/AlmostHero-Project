@@ -7,6 +7,7 @@
 #include "Animation.h"
 #include "p2DynArray.h"
 #include "j1Timer.h"
+#include "j1Gui.h"
 
 
 struct SDL_Texture;
@@ -74,10 +75,13 @@ public:
 	NOTE_COLOR nColor = NOTE_NON;
 
 
-
 private:
 
 	float scale = 0.2f;
+	UI_Element *score_text = nullptr;
+	const char* int_score_to_char = nullptr;
+	int score = 10;
+
 	SDL_Rect note_rect;
 	SDL_Texture *note_tex = nullptr;
 
