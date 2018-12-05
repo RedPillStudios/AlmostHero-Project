@@ -57,6 +57,7 @@ bool j1Scene::Start()
 
 	Buttons_node = Buttons_Document.child("config");
 	App->font->Load("fonts/ShonenPunk custom.ttf", 60);
+
 	//Notes Smashers
 	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
 	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
@@ -162,30 +163,6 @@ bool j1Scene::Start()
 
 	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
 
-	notes_positions.PushBack(pos1);
-	notes_positions.PushBack(pos2);
-	notes_positions.PushBack(pos3);
-	notes_positions.PushBack(pos4);
-	notes_positions.PushBack(pos5);
-	notes_positions.PushBack(pos6);
-	notes_positions.PushBack(pos7);
-	notes_positions.PushBack(pos9);
-	notes_positions.PushBack(pos10);
-	notes_positions.PushBack(pos11);
-	notes_positions.PushBack(pos12);
-	notes_positions.PushBack(pos13);
-	notes_positions.PushBack(pos14);
-	notes_positions.PushBack(pos15);
-	notes_positions.PushBack(pos16);
-	notes_positions.PushBack(pos17);
-	notes_positions.PushBack(pos18);
-	notes_positions.PushBack(pos19);
-	notes_positions.PushBack(pos20);
-	notes_positions.PushBack(pos21);
-	notes_positions.PushBack(pos22);
-	notes_positions.PushBack(pos23);
-
-
 	PERF_START(read_next_array_pos);
 
 	PERF_START(App->note->Violet_collided_timer);
@@ -195,10 +172,12 @@ bool j1Scene::Start()
 
 	PERF_START(App->note->General_collided_timer);
 
+	LoadSongArray();
 	multiplier = 1;
 	score = 0;
 	App->video->PlayVideo("GodDamn_Audio.ogv", { 0,-50,1280,850 });
   
+
 	return true;
 }
 
@@ -448,4 +427,28 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	scen.append_attribute("score") = score;
 
 	return true;
+}
+
+
+void j1Scene::LoadSongArray() {
+
+
+	pugi::xml_parse_result result = Notes_Array_Document.load_file("Notes_Settings.xml");
+	if (result == NULL)
+		LOG("pugi error : %s", result.description());
+
+	Notes_Position_node = Notes_Array_Document.child("array");
+
+	pugi::xml_node node = Notes_Position_node;
+	for (node = node.child("pos"); node; node = node.next_sibling("pos")) {
+
+		int x = node.attribute("x").as_int();
+		int y = node.attribute("y").as_int();
+		int z = node.attribute("z").as_int();
+		int k = node.attribute("k").as_int();
+
+		iPoint4d pos = iPoint4d(x, y, z, k);
+		notes_positions.PushBack(pos);
+
+	}
 }

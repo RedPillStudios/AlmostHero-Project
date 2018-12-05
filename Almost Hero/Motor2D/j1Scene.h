@@ -105,36 +105,11 @@ private:
 	Animation x4;
 
 
-
 private:
 
+	void LoadSongArray();
+
 	p2DynArray<iPoint4d> notes_positions;
-
-	iPoint4d pos1 = iPoint4d(1, 1, 1, 1);
-	iPoint4d pos2 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos3 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos4 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos5 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos6 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos7 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos8 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos9 = iPoint4d(1, 0,0, 0);
-	iPoint4d pos10 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos11 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos12 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos13 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos14 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos15 = iPoint4d(1, 0, 0, 0);
-	iPoint4d pos16 = iPoint4d(0, 0, 0, 0);
-
-	iPoint4d pos17 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos18 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos19 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos20 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos21 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos22 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos23 = iPoint4d(0, 0, 0, 0);
-	iPoint4d pos24 = iPoint4d(0, 0, 0, 0);
 
 	j1Timer read_next_array_pos;
 	int counter = 0;
@@ -151,6 +126,8 @@ private:
 	pugi::xml_document Buttons_Document;
 	pugi::xml_node Buttons_node;
 
+	pugi::xml_document Notes_Array_Document;
+	pugi::xml_node Notes_Position_node;
 };
 
 #endif
