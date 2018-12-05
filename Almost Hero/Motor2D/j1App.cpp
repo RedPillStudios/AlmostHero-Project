@@ -47,9 +47,6 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(collisions);
 	AddModule(font);
 
-
-
-
 	// render last to swap buffer
 	AddModule(render);
 
@@ -167,7 +164,6 @@ bool j1App::Update()
 pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
-
 	pugi::xml_parse_result result = config_file.load_file("config.xml");
 
 	if(result == NULL)
@@ -185,7 +181,6 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	dt = (float)frame_time.ReadSec();
-	//LOG("DT: %f ms CURRENT FRAME TIME: %f", dt, (float)frame_time.Read());
 	
 	frame_time.Start();
 }
@@ -345,6 +340,7 @@ void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
+	load_game = file;
 	want_to_load = true;
 	//load_game.create("%s%s", fs->GetSaveDirectory(), file);
 }
@@ -424,11 +420,8 @@ bool j1App::SavegameNow() const
 
 	if(ret == true)
 	{
-		std::stringstream stream;
-		data.save(stream);
 
-		// we are done, so write data to disk
-		//fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
+		data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	}
 	else

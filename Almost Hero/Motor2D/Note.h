@@ -56,7 +56,10 @@ public:
 	j1Timer Pink_collided_timer;
 	j1Timer General_collided_timer;
 
-	int numNotes;
+	int numNotes = 0;
+
+	int total_song_notes = 0;
+	int total_smashed_notes = 0;
 
 public:
 

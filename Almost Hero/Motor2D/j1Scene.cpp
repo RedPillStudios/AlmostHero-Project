@@ -424,7 +424,10 @@ void j1Scene::UpdateMultiplier() {
 bool j1Scene::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node scen = data.append_child("scene");
+
 	scen.append_attribute("score") = score;
+	scen.append_attribute("total_smashed_notes") = App->note->total_smashed_notes;
+	scen.append_attribute("total_song_notes_before_quitingORending") = App->note->total_song_notes;
 
 	return true;
 }

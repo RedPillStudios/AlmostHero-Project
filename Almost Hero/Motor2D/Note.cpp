@@ -22,8 +22,6 @@ bool Note::Start() {
 
 	note_tex = App->tex->Load("textures/Buttons_and_Notes.png");
 
-
-
 	int w, h;
 	App->font->CalcSize("SCORE", w, h);
 	App->gui->CreateUIElement({ 0, 0, w, h }, iPoint(0, 20), App->font->Print("SCORE", { 255, 0, 0, 255 }));
@@ -41,7 +39,6 @@ bool Note::CleanUp() {
 
 // Called each loop iteration
 bool Note::Update(float dt) {
-
 
 		if (scale <= 0.65f)
 			scale += 0.0020f;
@@ -77,13 +74,14 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 	Note *note = new Note();
 	note->scale = 0.2f;
 
+	note->nColor = color;
+	note->note_tex = note_tex;
+	note->position = initial_pos;
+
 	switch (color) {
 
 	case NOTE_COLOR::NOTE_VIOLET:
 
-		note->note_tex = note_tex;
-		note->position = initial_pos;
-		note->nColor = color;
 		note->note_rect = { 0, 0, 107, 64 };
 		note->Acceleration = fPoint(0.0060f, 0.017f);
 		note->maxVelocity = fPoint{ -0.79f,5.00f };
@@ -91,10 +89,8 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 
 	case NOTE_COLOR::NOTE_BLUE:
 
-		note->note_tex = note_tex;
-		note->position = initial_pos + fPoint(30.0f , 0.0f);
+		note->position += fPoint(30.0f , 0.0f);
 		note->velocity = fPoint(0.0f, 0.2f);
-		note->nColor = color;
 		note->note_rect = { 107, 0, 107, 64 };
 		note->Acceleration = fPoint(0.0040f, 0.017f);
 		note->maxVelocity = fPoint(-0.15, 5.00f);
@@ -102,9 +98,7 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 
 	case NOTE_COLOR::NOTE_YELLOW:
 
-		note->note_tex = note_tex;
-		note->position = initial_pos + fPoint(60.0f, 0.0f);
-		note->nColor = color;
+		note->position += fPoint(60.0f, 0.0f);
 		note->velocity =  fPoint(0.0f, 0.2f);
 		note->note_rect = { 214, 0, 107, 64 };
 		note->Acceleration = fPoint(0.0060f,0.017f);
@@ -113,9 +107,7 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 
 	case NOTE_COLOR::NOTE_PINK:
 
-		note->note_tex = note_tex;
-		note->position = initial_pos + fPoint(90.0f, 0.0f);
-		note->nColor = color;
+		note->position += fPoint(90.0f, 0.0f);
 		note->velocity = fPoint(0.0f, 0.2f);
 		note->note_rect = { 321, 0, 107, 64 };
 		note->Acceleration = fPoint(0.0080f, 0.017f);
@@ -134,6 +126,7 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 	note->note_collider = App->collisions->AddCollider(collider_rect, COLLIDER_NOTE, this);
 
 	App->scene->notes.add(note);
+	total_song_notes++;
 	return note;
 }
 
@@ -189,6 +182,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						break;
 					}
 				}
+
+				total_smashed_notes++;
 		  }
 		}
 	}
@@ -209,6 +204,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						break;
 					}
 				}
+
+				total_smashed_notes++;
 			}
 		}
 	}
@@ -229,6 +226,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						break;
 					}
 				}
+
+				total_smashed_notes++;
 			}
 		}
 	}
@@ -249,6 +248,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 						break;
 					}
 				}
+
+				total_smashed_notes++;
 			}
 		}
 	}

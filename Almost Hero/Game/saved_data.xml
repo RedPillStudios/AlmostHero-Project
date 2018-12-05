@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<game_state>
+	<input />
+	<window />
+	<textures />
+	<audio />
+	<gui />
+	<video />
+	<scene>
+		<scene score="1250" total_smashed_notes="5" total_song_notes="11" />
+	</scene>
+	<Note />
+	<:anonymous />
+	<fonts />
+	<renderer />
+</game_state>
