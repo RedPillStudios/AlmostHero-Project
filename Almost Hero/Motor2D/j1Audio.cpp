@@ -84,12 +84,12 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
-	if(!active)
+	if (!active)
 		return false;
 
-	if(music != NULL)
+	if (music != NULL)
 	{
-		if(fade_time > 0.0f)
+		if (fade_time > 0.0f)
 		{
 			Mix_FadeOutMusic(int(fade_time * 1000.0f));
 		}
@@ -104,16 +104,16 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 
 	music = Mix_LoadMUS(path);
 
-	if(music == NULL)
+	if (music == NULL)
 	{
 		LOG("Cannot load music %s. Mix_GetError(): %s\n", path, Mix_GetError());
 		ret = false;
 	}
 	else
 	{
-		if(fade_time > 0.0f)
+		if (fade_time > 0.0f)
 		{
-			if(Mix_FadeInMusic(music, -1, (int) (fade_time * 1000.0f)) < 0)
+			if (Mix_FadeInMusic(music, -1, (int)(fade_time * 1000.0f)) < 0)
 			{
 				LOG("Cannot fade in music %s. Mix_GetError(): %s", path, Mix_GetError());
 				ret = false;
@@ -121,7 +121,7 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 		}
 		else
 		{
-			if(Mix_PlayMusic(music, -1) < 0)
+			if (Mix_PlayMusic(music, -1) < 0)
 			{
 				LOG("Cannot play in music %s. Mix_GetError(): %s", path, Mix_GetError());
 				ret = false;
@@ -136,12 +136,14 @@ bool j1Audio::PlayMusic(const char* path, float fade_time)
 // Load WAV
 unsigned int j1Audio::LoadFx(const char* path)
 {
+
+	Mix_Chunk* chunk = nullptr;
 	unsigned int ret = 0;
 
 	if(!active)
 		return 0;
 
-	Mix_Chunk* chunk = Mix_LoadWAV(path);
+	chunk = Mix_LoadWAV(path);
 
 	if(chunk == NULL)
 	{
@@ -167,7 +169,28 @@ bool j1Audio::PlayFx(unsigned int id, int repeat)
 	if(id > 0 && id <= fx.count())
 	{
 		Mix_PlayChannel(-1, fx[id - 1], repeat);
+		ret = true;
 	}
 
 	return ret;
+}
+
+
+void j1Audio::ControlVolume(int vol) {
+
+	Mix_Volume(-1, vol);
+
+}
+
+void j1Audio::ControlMUSVolume(int vol) {
+
+	Mix_VolumeMusic(vol);
+
+}
+
+void j1Audio::ControlSFXVolume(int vol) {
+
+	for (int i = 0; i < fx.count(); i++)
+		Mix_VolumeChunk(fx[i], vol);
+
 }

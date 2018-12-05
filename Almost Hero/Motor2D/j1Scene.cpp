@@ -175,8 +175,10 @@ bool j1Scene::Start()
 	LoadSongArray();
 	multiplier = 1;
 	score = 0;
-	App->video->PlayVideo("GodDamn_Audio.ogv", { 0,-50,1280,850 });
-  
+
+	//App->audio->ControlMUSVolume(3);
+	App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
+	//App->audio->PlayMusic("audio/music/GodDamn_Song2.ogg");
 
 	return true;
 }
