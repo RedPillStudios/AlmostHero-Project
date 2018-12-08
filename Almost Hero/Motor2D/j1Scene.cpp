@@ -39,6 +39,7 @@ bool j1Scene::CleanUp()
 	if (current_screen == GAME) {
 
 		p2List_item<Note*> *notes_item = notes.start;
+		for (; notes_item != nullptr; notes_item = notes_item->next)
 			notes_item->data->DestroyNote(notes_item->data);
 
 		if (notes.count() > 0)
