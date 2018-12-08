@@ -49,6 +49,12 @@ public:
 	void DestroyNote(Note* note);
 	void OnCollision(Collider* c1, Collider* c2);
 
+private:
+
+	void CollisionInput1(Collider* c2);
+	void CollisionInput2(Collider* c2);
+
+public:
 
 	j1Timer Violet_collided_timer;
 	j1Timer	Blue_collided_timer;
@@ -65,7 +71,6 @@ public:
 
 
 	//Notes attributes
-
 	//fPoint velocity = fPoint(-0.73f, 2.5f);
 	fPoint velocity = fPoint(0.0f, 0.2f);
 	fPoint initial_pos = fPoint(595.0f, 280.0f);

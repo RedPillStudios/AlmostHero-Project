@@ -17,7 +17,7 @@ enum SCREEN_TYPE {
 		GAME_OVER,
 		NON
 
-	};
+};
 
 
 struct SDL_Texture;
@@ -67,20 +67,23 @@ public:
 private:
 	
 	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
-
 	SDL_Rect LoadButtons(pugi::xml_node &node, const char* color);
-
 	SDL_Rect SetNotesPushbacks(pugi::xml_node &node, const char* color, const char* anim_name);
 
+
 	void UpdateMultiplier();
-
 	void ReadArray(iPoint4d vec);
-
-	void HandleInput();
+	void LoadSongArray();
 
 	bool Save(pugi::xml_node& data_) const;
-
 	void ChangeScreen(int screen);
+
+	void HandleInput();
+	void HandleInput2();
+	void HandleGeneralInput();
+	void HandleGameScreen(float dt);
+
+	void LoadPushbacks();
 
 private:
 
@@ -119,8 +122,6 @@ private:
 
 private:
 
-	void LoadSongArray();
-
 	p2DynArray<iPoint4d> notes_positions;
 
 	j1Timer read_next_array_pos;
@@ -138,6 +139,7 @@ private:
 public:
 
 	p2List<Note*> notes;
+	bool change_input = false;
 
 private:
 

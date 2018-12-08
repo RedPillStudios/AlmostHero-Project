@@ -166,10 +166,22 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 		}
 	}
 
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_VIOLET)) {
+	if (c1->type == COLLIDER_NOTE) {
+
+		if (App->scene->change_input)
+			CollisionInput2(c2);
+		else
+			CollisionInput1(c2);
+	}
+}
+
+
+void Note::CollisionInput1(Collider* c2) {
+
+	if (c2->type == COLLIDER_SMASHER_VIOLET) {
 
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
-			if (Violet_collided_timer.Read() >= 100){
+			if (Violet_collided_timer.Read() >= 100) {
 
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
@@ -184,11 +196,12 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 				}
 
 				total_smashed_notes++;
-		  }
+			}
 		}
 	}
 
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_BLUE)) {
+	if (c2->type == COLLIDER_SMASHER_BLUE) {
+
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
 
 			if (Blue_collided_timer.Read() >= 100) {
@@ -210,7 +223,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 		}
 	}
 
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_YELLOW)) {
+	if (c2->type == COLLIDER_SMASHER_YELLOW) {
+
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
 
 			if (Yellow_collided_timer.Read() >= 100) {
@@ -232,7 +246,8 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 		}
 	}
 
-	if ((c1->type == COLLIDER_NOTE && c2->type == COLLIDER_SMASHER_PINK)) {
+	if (c2->type == COLLIDER_SMASHER_PINK) {
+
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
 
 			if (Pink_collided_timer.Read() >= 100) {
@@ -251,6 +266,90 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 
 				total_smashed_notes++;
 			}
+		}
+	}
+}
+
+
+void Note::CollisionInput2(Collider* c2) {
+
+	if (c2->type == COLLIDER_SMASHER_VIOLET && App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+
+		if (Violet_collided_timer.Read() >= 100) {
+
+			p2List_item<Note*> *item = App->scene->notes.start;
+			for (; item; item = item->next) {
+				if (item->data->nColor == NOTE_VIOLET) {
+
+					DestroyNote(item->data);
+					PERF_START(Violet_collided_timer);
+					numNotes++;
+					App->scene->score += 250 * App->scene->multiplier;
+					break;
+				}
+			}
+
+			total_smashed_notes++;
+		}
+	}
+
+	if (c2->type == COLLIDER_SMASHER_BLUE && App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+
+		if (Blue_collided_timer.Read() >= 100) {
+
+			p2List_item<Note*> *item = App->scene->notes.start;
+			for (; item; item = item->next) {
+				if (item->data->nColor == NOTE_BLUE) {
+
+					DestroyNote(item->data);
+					PERF_START(Blue_collided_timer);
+					numNotes++;
+					App->scene->score += 250 * App->scene->multiplier;
+					break;
+				}
+			}
+
+			total_smashed_notes++;
+		}
+	}
+
+	if (c2->type == COLLIDER_SMASHER_YELLOW && App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+
+		if (Yellow_collided_timer.Read() >= 100) {
+
+			p2List_item<Note*> *item = App->scene->notes.start;
+			for (; item; item = item->next) {
+				if (item->data->nColor == NOTE_YELLOW) {
+
+					DestroyNote(item->data);
+					PERF_START(Yellow_collided_timer);
+					numNotes++;
+					App->scene->score += 250 * App->scene->multiplier;
+					break;
+				}
+			}
+
+			total_smashed_notes++;
+		}
+	}
+
+	if (c2->type == COLLIDER_SMASHER_PINK && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+
+		if (Pink_collided_timer.Read() >= 100) {
+
+			p2List_item<Note*> *item = App->scene->notes.start;
+			for (; item; item = item->next) {
+				if (item->data->nColor == NOTE_PINK) {
+
+					DestroyNote(item->data);
+					PERF_START(Pink_collided_timer);
+					numNotes++;
+					App->scene->score += 250 * App->scene->multiplier;
+					break;
+				}
+			}
+
+			total_smashed_notes++;
 		}
 	}
 }
