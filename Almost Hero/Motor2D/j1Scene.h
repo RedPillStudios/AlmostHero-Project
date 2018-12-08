@@ -10,6 +10,16 @@
 #include "Vector4D.h"
 
 
+enum SCREEN_TYPE {
+
+		MAIN_MENU = 0,
+		GAME,
+		GAME_OVER,
+		NON
+
+	};
+
+
 struct SDL_Texture;
 
 struct Smasher {
@@ -70,6 +80,8 @@ private:
 
 	bool Save(pugi::xml_node& data_) const;
 
+	void ChangeScreen(int screen);
+
 private:
 
 	//Buttons & guitar texture
@@ -116,6 +128,12 @@ private:
 
 	SDL_Rect scoreRect = { 0, 0, 20, 20 };
 	char score_text[100];
+
+
+	SCREEN_TYPE current_screen;
+
+	SDL_Texture* Main_Menu_txtr = nullptr;
+	SDL_Texture* Game_Over_txtr = nullptr;
 
 public:
 

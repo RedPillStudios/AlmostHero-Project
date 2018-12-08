@@ -192,7 +192,6 @@ void Video::LoadVideo(const char *fname)
 void Video::PlayVideo(const char *fname, SDL_Rect r)
 {
 	// Loading video ---------------------
-
 	ResetValues();
 	rendering_rect = r;
 	LoadVideo(fname);
@@ -201,6 +200,11 @@ void Video::PlayVideo(const char *fname, SDL_Rect r)
 
 	baseticks = SDL_GetTicks();
 	want_to_play = true;
+}
+
+void Video::StopVideo(){
+
+	ResetValues();
 }
 
 bool Video::IsPlaying() const
@@ -291,4 +295,3 @@ void Video::ResetValues()
 	audio_queue = NULL;
 	audio_queue_tail = NULL;
 }
-

@@ -39,17 +39,22 @@ public:
 	void PlayVideo(const char *fname, SDL_Rect r);
 	bool IsPlaying()const;
 
+	//Stop Video file
+	void StopVideo();
+
 	// Audio methods
 	static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len);
 	static void queue_audio(const THEORAPLAY_AudioPacket *audio);
 
 private:
+
 	void ResetValues();
 
 	// Load video file
 	void LoadVideo(const char *fname);
 
 private:
+
 	THEORAPLAY_Decoder* decoder = nullptr;
 	const THEORAPLAY_VideoFrame* video;
 	const THEORAPLAY_AudioPacket* audio;

@@ -36,13 +36,18 @@ bool j1Scene::Awake()
 bool j1Scene::CleanUp()
 {
 	LOG("Freeing scene");
+	if (current_screen == GAME) {
 
-	p2List_item<Note*> *notes_item = notes.start;
-	for (; notes_item != nullptr; notes_item = notes_item->next)
-		notes_item->data->DestroyNote(notes_item->data);
+		p2List_item<Note*> *notes_item = notes.start;
+			notes_item->data->DestroyNote(notes_item->data);
 
-	notes.clear();
-	notes_positions.Clear();
+		if (notes.count() > 0)
+			notes.clear();
+
+		if (notes_positions.Count() > 0)
+			notes_positions.Clear();
+
+	}
 
 	return true;
 }
@@ -51,18 +56,7 @@ bool j1Scene::CleanUp()
 bool j1Scene::Start()
 {
 
-	pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
-	if (result == NULL)
-		LOG("pugi error : %s", result.description());
-
-	Buttons_node = Buttons_Document.child("config");
-	App->font->Load("fonts/ShonenPunk custom.ttf", 60);
-
-	//Notes Smashers
-	smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
-	smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
-	smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
-	smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
+	current_screen = MAIN_MENU;
 
 	smViolet.Current_anim = &smViolet.Standard_anim;
 	smBlue.Current_anim = &smBlue.Standard_anim;
@@ -74,6 +68,10 @@ bool j1Scene::Start()
 	PowerUp_Light_tex = App->tex->Load("textures/Power_Up_Effects.png");
 	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
 	Buttons_Texture = App->tex->Load("textures/Buttons_and_Notes.png");
+
+	//Main Menu & Game Over Screen
+	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
+	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
 
 	//Guitar animation Pushbacks
 	for (int i = 0; i < 43; ++i) {
@@ -161,25 +159,6 @@ bool j1Scene::Start()
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
 
-	Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
-
-	PERF_START(read_next_array_pos);
-
-	PERF_START(App->note->Violet_collided_timer);
-	PERF_START(App->note->Blue_collided_timer);
-	PERF_START(App->note->Yellow_collided_timer);
-	PERF_START(App->note->Pink_collided_timer);
-
-	PERF_START(App->note->General_collided_timer);
-
-	LoadSongArray();
-	multiplier = 1;
-	score = 0;
-
-	//App->audio->ControlMUSVolume(3);
-	App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
-	//App->audio->PlayMusic("audio/music/GodDamn_Song2.ogg");
-
 	return true;
 }
 
@@ -194,75 +173,104 @@ bool j1Scene::PreUpdate()
 bool j1Scene::Update(float dt)
 {
 
-	//Notes deleter blit & colider
-	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
-	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
+	if (current_screen == GAME) {
 
-	HandleInput();
+		//Notes deleter blit & colider
+		App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
+		Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
-	 int y = 650;
-	 int x = 400;
+		HandleInput();
 
-	//Blitting Guitar texture
-	App->render->Blit(guitar_tex, x , 720 - 425, &Guitar.GetCurrentFrame());
+		int y = 650;
+		int x = 400;
 
-
-	//Blitting Buttons textures
-	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
-	App->render->Blit(Buttons_Texture, x + 135, y, &smBlue.Current_anim->GetCurrentFrame());
-	App->render->Blit(Buttons_Texture, x + 245, y, &smYellow.Current_anim->GetCurrentFrame());
-	App->render->Blit(Buttons_Texture, x + 350, y, &smPink.Current_anim->GetCurrentFrame());
+		//Blitting Guitar texture
+		App->render->Blit(guitar_tex, x, 720 - 425, &Guitar.GetCurrentFrame());
 
 
-	//Smashers colliders
-	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f);
-	smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f);
+		//Blitting Buttons textures
+		App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
+		App->render->Blit(Buttons_Texture, x + 135, y, &smBlue.Current_anim->GetCurrentFrame());
+		App->render->Blit(Buttons_Texture, x + 245, y, &smYellow.Current_anim->GetCurrentFrame());
+		App->render->Blit(Buttons_Texture, x + 350, y, &smPink.Current_anim->GetCurrentFrame());
 
-	smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f);
-	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
+
+		//Smashers colliders
+		smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f);
+		smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f);
+
+		smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f);
+		smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
 
 
-	if (read_next_array_pos.Read() >= 350) {
+		if (read_next_array_pos.Read() >= 350) {
 
-		ReadArray(notes_positions[counter]);
-		read_next_array_pos.Start();
-		counter++;
+			ReadArray(notes_positions[counter]);
+			read_next_array_pos.Start();
+			counter++;
 
-		if (counter == notes_positions.Count())
-			counter = 0;
+			if (counter == notes_positions.Count())
+				counter = 0;
+		}
+
+		//Blitting Light PowerUps
+		App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
+		App->render->Blit(PowerUp_Light_tex, x + 225, 720 - 370, &Right_Light.GetCurrentFrame(), 1, 1, -19, 0, 0);
+
+		if (App->note->numNotes > 10 && App->note->numNotes <= 20) {
+			Multipliers_current_anim = &x2;
+			multiplier = 2;
+		}
+		else if (App->note->numNotes > 20 && App->note->numNotes <= 30) {
+			Multipliers_current_anim = &x3;
+			multiplier = 3;
+		}
+		else if (App->note->numNotes > 30) {
+			Multipliers_current_anim = &x4;
+			multiplier = 4;
+		}
+		else {
+			Multipliers_current_anim = &x1;
+			multiplier = 1;
+		}
+
+		//Blitting Multiplier
+		App->render->Blit(Multiplier_tex, -25, 300, &Multipliers_current_anim->GetCurrentFrame());
+		sprintf(score_text, "%d", score);
+		App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(score_text, { 30,119,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
+
+		p2List_item<Note*> *notes_item = notes.start;
+		for (; notes_item != nullptr; notes_item = notes_item->next)
+			notes_item->data->Update(dt);
+
+		if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
+			ChangeScreen(GAME_OVER);
+
 	}
 
-	//Blitting Light PowerUps
-	App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
-	App->render->Blit(PowerUp_Light_tex, x + 225, 720 - 370, &Right_Light.GetCurrentFrame(), 1, 1, -19, 0, 0);
+	else if (current_screen == MAIN_MENU) {
 
-	if (App->note->numNotes > 10 && App->note->numNotes <= 20) {
-		Multipliers_current_anim = &x2;
-		multiplier = 2;
-	}
-	else if (App->note->numNotes > 20 && App->note->numNotes <= 30) {
-		Multipliers_current_anim = &x3;
-		multiplier = 3;
-	}
-	else if (App->note->numNotes > 30) {
-		Multipliers_current_anim = &x4;
-		multiplier = 4;
-	}
-	else {
-		Multipliers_current_anim = &x1;
-		multiplier = 1;
+		SDL_Rect img_rect = { 0, 0, 1920, 1080 };
+		App->render->Blit(Main_Menu_txtr, 0, 0, &img_rect);
+
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN)
+			ChangeScreen(GAME);
+
+		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN)
+			ChangeScreen(GAME);
+
 	}
 
-	//Blitting Multiplier
-	App->render->Blit(Multiplier_tex, -25, 300, &Multipliers_current_anim->GetCurrentFrame());
-	sprintf(score_text, "%d", score);
-	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 },App->font->fonts.end->data), 900, 400,&scoreRect,1,false);
+	else if (current_screen == GAME_OVER) {
 
-	p2List_item<Note*> *notes_item = notes.start;
-	for (; notes_item != nullptr; notes_item = notes_item->next)
-		notes_item->data->Update(dt);
+		SDL_Rect img_rect = { 0, 0, 1920, 1080 };
+		App->render->Blit(Game_Over_txtr, 0, 0, &img_rect);
 
+		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			ChangeScreen(MAIN_MENU);
+
+	}
 	return true;
 }
 
@@ -437,7 +445,6 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 void j1Scene::LoadSongArray() {
 
-
 	pugi::xml_parse_result result = Notes_Array_Document.load_file("Notes_Settings.xml");
 	if (result == NULL)
 		LOG("pugi error : %s", result.description());
@@ -456,4 +463,70 @@ void j1Scene::LoadSongArray() {
 		notes_positions.PushBack(pos);
 
 	}
+}
+
+
+void j1Scene::ChangeScreen(int screen) {
+
+	if (current_screen == GAME) {
+
+		App->collisions->CleanUp();
+
+		p2List_item<Note*> *notes_item = notes.start;
+		for (; notes_item != nullptr; notes_item = notes_item->next)
+			notes_item->data->DestroyNote(notes_item->data);
+
+		if (notes.count() > 0)
+			notes.clear();
+
+		if (notes_positions.Count() > 0)
+			notes_positions.Clear();
+
+		if (App->video->IsPlaying())
+			App->video->StopVideo();
+
+	}
+
+	if (screen == GAME) {
+
+		current_screen = GAME;
+
+		pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
+		if (result == NULL)
+			LOG("pugi error : %s", result.description());
+
+		Buttons_node = Buttons_Document.child("config");
+		App->font->Load("fonts/ShonenPunk custom.ttf", 60);
+
+		//Notes Smashers
+		smViolet = CreateSmasher(COLLIDER_SMASHER_VIOLET, Buttons_node, "Violet");
+		smBlue = CreateSmasher(COLLIDER_SMASHER_BLUE, Buttons_node, "Blue");
+		smYellow = CreateSmasher(COLLIDER_SMASHER_YELLOW, Buttons_node, "Yellow");
+		smPink = CreateSmasher(COLLIDER_SMASHER_PINK, Buttons_node, "Pink");
+
+		Bottom_coll = App->collisions->AddCollider(Bottom_Limit, COLLIDER_STATIC, this);
+
+		PERF_START(read_next_array_pos);
+
+		PERF_START(App->note->Violet_collided_timer);
+		PERF_START(App->note->Blue_collided_timer);
+		PERF_START(App->note->Yellow_collided_timer);
+		PERF_START(App->note->Pink_collided_timer);
+
+		PERF_START(App->note->General_collided_timer);
+
+		LoadSongArray();
+		multiplier = 1;
+		score = 0;
+		
+		App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
+
+	}
+	else if (screen == MAIN_MENU)
+		current_screen = MAIN_MENU;
+
+	else if (screen == GAME_OVER)
+		current_screen = GAME_OVER;
+	
+
 }
