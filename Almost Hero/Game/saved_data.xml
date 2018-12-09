@@ -7,7 +7,7 @@
 	<gui />
 	<video />
 	<scene>
-		<scene score="24750" total_smashed_notes="70" total_song_notes_before_quiting_or_ending="105" />
+		<scene score="1250" total_smashed_notes="5" total_song_notes_before_quiting_or_ending="17" />
 	</scene>
 	<Note />
 	<:anonymous />

@@ -258,7 +258,6 @@ void j1Scene::HandleInput() {
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
 
 		smViolet.Current_anim = &smViolet.Enter_anim;
-
 		if (App->note->colliding == false) {
 
 			if (App->render->DoCameraShake == false) {
@@ -277,8 +276,20 @@ void j1Scene::HandleInput() {
 	else
 		smBlue.Current_anim = &smBlue.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+
 		smBlue.Current_anim = &smBlue.Enter_anim;
+		if (App->note->colliding == false) {
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+
+	}
 
 
 	//3 (Yellow)
@@ -287,8 +298,19 @@ void j1Scene::HandleInput() {
 	else
 		smYellow.Current_anim = &smYellow.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+		
 		smYellow.Current_anim = &smYellow.Enter_anim;
+		if (App->note->colliding == false) {
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+	}
 
 
 	//4 (Pink)
@@ -297,8 +319,19 @@ void j1Scene::HandleInput() {
 	else
 		smPink.Current_anim = &smPink.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
+	
 		smPink.Current_anim = &smPink.Enter_anim;
+		if (App->note->colliding == false) {
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+	}
 
 }
 
@@ -310,7 +343,6 @@ void j1Scene::HandleInput2() {
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
 
 		smViolet.Current_anim = &smViolet.Enter_anim;
-
 		if (App->note->colliding == false) {
 
 			if (App->render->DoCameraShake == false) {
@@ -326,22 +358,55 @@ void j1Scene::HandleInput2() {
 
 
 	//2 (Blue)
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
+
 		smBlue.Current_anim = &smBlue.Enter_anim;
+		if (App->note->colliding == false) {
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+	}
 	else
 		smBlue.Current_anim = &smBlue.Standard_anim;
 
 
 	//3 (Yellow)
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
+	
 		smYellow.Current_anim = &smYellow.Enter_anim;
+		if (App->note->colliding == false) {
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+	}
 	else
 		smYellow.Current_anim = &smYellow.Standard_anim;
 
 
 	//4 (Pink)
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
+	
 		smPink.Current_anim = &smPink.Enter_anim;
+		if (App->note->colliding == false) {
+
+			if (App->render->DoCameraShake == false) {
+				App->render->DoCameraShake = true;
+				App->render->power = 2.0f;
+				App->render->Time_Doing_Shake = 0.2f;
+				PERF_START(App->render->CameraShake_Time);
+			}
+		}
+	}
 	else
 		smPink.Current_anim = &smPink.Standard_anim;
 
