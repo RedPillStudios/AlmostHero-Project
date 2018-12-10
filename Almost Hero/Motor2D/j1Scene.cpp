@@ -111,7 +111,7 @@ bool j1Scene::Update(float dt)
 
 	else if (current_screen == MAIN_MENU) {
 
-		SDL_Rect img_rect = { 0, 0, 1920, 1080 };
+		SDL_Rect img_rect = { 0, 0, 1280, 720};
 		App->render->Blit(Main_Menu_txtr, 0, 0, &img_rect);
 
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
@@ -130,7 +130,7 @@ bool j1Scene::Update(float dt)
 
 	else if (current_screen == GAME_OVER) {
 
-		SDL_Rect img_rect = { 0, 0, 1920, 1080 };
+		SDL_Rect img_rect = { 0, 0, 1280, 720 };
 		App->render->Blit(Game_Over_txtr, 0, 0, &img_rect);
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
