@@ -116,12 +116,14 @@ bool j1Scene::Update(float dt)
 
 		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 
+			PERF_START(match_time);
 			change_input = false;
 			ChangeScreen(GAME);
 		}
 
 		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 
+			PERF_START(match_time);
 			change_input = true;
 			ChangeScreen(GAME);
 		}
@@ -130,8 +132,37 @@ bool j1Scene::Update(float dt)
 
 	else if (current_screen == GAME_OVER) {
 
+		SDL_Color white_col = { 255, 255, 255, 255 };
+
 		SDL_Rect img_rect = { 0, 0, 1280, 720 };
 		App->render->Blit(Game_Over_txtr, 0, 0, &img_rect);
+		App->render->Blit(App->font->Print(score_text, white_col, App->font->fonts.end->data), 900, 368, &scoreRect, 1, false);
+
+		sprintf(total_smashed_notes_text, "%d", App->note->total_smashed_notes);
+		App->font->CalcSize(total_smashed_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(total_smashed_notes_text, white_col, App->font->fonts.end->data), 900, 462, &scoreRect, 1, false);
+
+		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
+		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 524, &scoreRect, 1, false);
+
+		//NEXT IS FOR TIME
+		/*int sec = (int)match_time.ReadSec() % 60;
+		int min = match_time.ReadSec() / 60;
+		
+		sprintf(match_time_min_text, "%d", min);
+		int min_size = App->font->CalcSize(match_time_min_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(match_time_min_text, white_col, App->font->fonts.end->data), 900, 288, &scoreRect, 1, false);
+
+		char *p = ":";
+		int t_size = App->font->CalcSize(p, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(p, white_col, App->font->fonts.end->data), 900 + min_size, 288, &scoreRect, 1, false);
+
+		sprintf(match_time_sec_text, "%d", min);
+		App->font->CalcSize(match_time_sec_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(match_time_sec_text, white_col, App->font->fonts.end->data), 900 + min_size + t_size, 288, &scoreRect, 1, false);*/
+
+
 
 		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 			ChangeScreen(MAIN_MENU);
@@ -156,7 +187,7 @@ bool j1Scene::PostUpdate()
 //SCENE METHODS
 void j1Scene::HandleGeneralInput() {
 
-	if (App->input->GetKey(SDL_SCANCODE_S) || App->input->GetKey(SDL_SCANCODE_ESCAPE))
+	if (App->input->GetKey(SDL_SCANCODE_T) || App->input->GetKey(SDL_SCANCODE_ESCAPE))
 		App->SaveGame("saved_data.xml");
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -416,10 +447,24 @@ void j1Scene::HandleInput2() {
 bool j1Scene::Save(pugi::xml_node& data) const
 {
 	pugi::xml_node scen = data.append_child("scene");
+	scen.append_child("END_DATA");
+	scen.append_child("TIMER");
 
-	scen.append_attribute("score") = score;
-	scen.append_attribute("total_smashed_notes") = App->note->total_smashed_notes;
-	scen.append_attribute("total_song_notes_before_quiting_or_ending") = App->note->total_song_notes;
+	int lost_notes = App->note->total_song_notes - App->note->total_smashed_notes;
+	float hit_percentage = (float)(App->note->total_smashed_notes / App->note->total_song_notes) * 100.0f;
+
+	scen.child("END_DATA").append_attribute("score:") = score;
+	scen.child("END_DATA").append_attribute("total_smashed_notes:") = App->note->total_smashed_notes;
+	scen.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending:") = App->note->total_song_notes;
+
+	scen.child("END_DATA").append_attribute("lost_notes:") = lost_notes;
+	scen.child("END_DATA").append_attribute("hit_percentage:") = hit_percentage;
+
+	int sec =  (int)match_time.ReadSec() % 60;
+	int min = match_time.ReadSec() /60;
+	scen.child("TIMER").append_attribute("time(min):") = min;
+	scen.child("TIMER").append_attribute("time(s):") = sec;
+	
 
 	return true;
 }

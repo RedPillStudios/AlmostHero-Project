@@ -7,7 +7,10 @@
 	<gui />
 	<video />
 	<scene>
-		<scene score="0" total_smashed_notes="0" total_song_notes_before_quiting_or_ending="11" />
+		<scene>
+			<END_DATA score:="0" total_smashed_notes:="0" total_song_notes_before_quiting_or_ending:="6" lost_notes:="6" hit_percentage:="0" />
+			<TIMER time(min):="0" time(s):="2" />
+		</scene>
 	</scene>
 	<Note />
 	<:anonymous />

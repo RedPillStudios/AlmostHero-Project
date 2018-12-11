@@ -136,6 +136,13 @@ private:
 	SDL_Texture* Main_Menu_txtr = nullptr;
 	SDL_Texture* Game_Over_txtr = nullptr;
 
+	j1Timer match_time;
+	char match_time_min_text[2];
+	char match_time_sec_text[2];
+
+	char total_smashed_notes_text[4];
+	char total_created_notes_text[4];
+
 public:
 
 	p2List<Note*> notes;
