@@ -111,6 +111,8 @@ bool j1Scene::Update(float dt)
 
 	else if (current_screen == MAIN_MENU) {
 
+		PERF_START(videostart);
+
 		SDL_Rect img_rect = { 0, 0, 1280, 720};
 		App->render->Blit(Main_Menu_txtr, 0, 0, &img_rect);
 
@@ -199,6 +201,12 @@ void j1Scene::HandleGeneralInput() {
 
 void j1Scene::HandleGameScreen(float dt) {
 
+	if (videostart.ReadMs() >= 3600 && play_video) {
+
+		play_video = false;
+		App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
+	}
+
 	//Notes deleter blit & colider
 	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
@@ -231,7 +239,7 @@ void j1Scene::HandleGameScreen(float dt) {
 	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
 
 
-	if (read_next_array_pos.Read() >= 350) {
+	if (read_next_array_pos.Read() >= 100) {
 
 		ReadArray(notes_positions[counter]);
 		read_next_array_pos.Start();
@@ -489,6 +497,9 @@ void j1Scene::ChangeScreen(int screen) {
 		if (App->video->IsPlaying())
 			App->video->StopVideo();
 
+		play_video = false;
+		counter = 0;
+
 	}
 
 	if (screen == GAME) {
@@ -523,7 +534,8 @@ void j1Scene::ChangeScreen(int screen) {
 		multiplier = 1;
 		score = 0;
 
-		App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
+		play_video = true;
+		//App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
 
 	}
 	else if (screen == MAIN_MENU)
@@ -623,15 +635,15 @@ void j1Scene::LoadSongArray() {
 	if (result == NULL)
 		LOG("pugi error : %s", result.description());
 
-	Notes_Position_node = Notes_Array_Document.child("array");
+	Notes_Position_node = Notes_Array_Document.child("notes");
 
 	pugi::xml_node node = Notes_Position_node;
-	for (node = node.child("pos"); node; node = node.next_sibling("pos")) {
+	for (node = node.child("PushBack"); node; node = node.next_sibling("PushBack")) {
 
-		int x = node.attribute("x").as_int();
-		int y = node.attribute("y").as_int();
-		int z = node.attribute("z").as_int();
-		int k = node.attribute("k").as_int();
+		int x = node.attribute("q").as_int();
+		int y = node.attribute("w").as_int();
+		int z = node.attribute("e").as_int();
+		int k = node.attribute("r").as_int();
 
 		iPoint4d pos = iPoint4d(x, y, z, k);
 		notes_positions.PushBack(pos);

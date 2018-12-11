@@ -124,6 +124,8 @@ private:
 
 	p2DynArray<iPoint4d> notes_positions;
 
+	j1PerfTimer videostart;
+
 	j1Timer read_next_array_pos;
 	int counter = 0;
 
@@ -142,6 +144,8 @@ private:
 
 	char total_smashed_notes_text[4];
 	char total_created_notes_text[4];
+
+	bool play_video = false;
 
 public:
 
