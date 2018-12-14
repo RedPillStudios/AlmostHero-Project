@@ -459,7 +459,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	scen.append_child("TIMER");
 
 	int lost_notes = App->note->total_song_notes - App->note->total_smashed_notes;
-	float hit_percentage = (float)(App->note->total_smashed_notes / App->note->total_song_notes) * 100.0f;
+	float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->total_song_notes) * 100.0f;
 
 	scen.child("END_DATA").append_attribute("score:") = score;
 	scen.child("END_DATA").append_attribute("total_smashed_notes:") = App->note->total_smashed_notes;
