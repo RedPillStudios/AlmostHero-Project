@@ -10,6 +10,7 @@
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
+#include "j1Particles.h"
 #include "j1Collisions.h"
 #include "Note.h"
 #include "j1Fonts.h"
@@ -30,6 +31,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	collisions = new j1Collisions();
 	note = new Note();
+	particles = new j1Particles();
 	font = new j1Fonts();
 	gui = new j1Gui();
 	video = new Video();
@@ -44,6 +46,7 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	AddModule(video);
 	AddModule(scene);
 	AddModule(note);
+	AddModule(particles);
 	AddModule(collisions);
 	AddModule(font);
 

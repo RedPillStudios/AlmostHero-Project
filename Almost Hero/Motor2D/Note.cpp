@@ -5,6 +5,7 @@
 #include "j1Input.h"
 #include "j1Scene.h"
 #include "j1Fonts.h"
+#include "j1Particles.h"
 
 Note::Note()
 {
@@ -186,7 +187,7 @@ void Note::CollisionInput1(Collider* c2) {
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_VIOLET) {
-
+						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x+15, c2->rect.y-80 , COLLIDER_NONE,fPoint(0,0),0.7f);
 						DestroyNote(item->data);
 						PERF_START(Violet_collided_timer);
 						numNotes++;
@@ -209,6 +210,7 @@ void Note::CollisionInput1(Collider* c2) {
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_BLUE) {
+						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
 
 						DestroyNote(item->data);
 						PERF_START(Blue_collided_timer);
@@ -232,6 +234,7 @@ void Note::CollisionInput1(Collider* c2) {
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_YELLOW) {
+						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
 
 						DestroyNote(item->data);
 						PERF_START(Yellow_collided_timer);
@@ -255,6 +258,7 @@ void Note::CollisionInput1(Collider* c2) {
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_PINK) {
+						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
 
 						DestroyNote(item->data);
 						PERF_START(Pink_collided_timer);

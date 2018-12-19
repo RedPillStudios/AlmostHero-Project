@@ -18,6 +18,7 @@ class j1Audio;
 class j1Scene;
 class j1Collisions;
 class Note;
+class j1Particles;
 class j1Fonts;
 class j1Gui;
 class Video;
@@ -92,6 +93,7 @@ public:
 	j1Scene*			scene = NULL;
 	j1Collisions*		collisions = NULL;
 	Note*				note = NULL;
+	j1Particles*		particles = NULL;
 	j1Fonts*			font = NULL;
 	j1Gui*				gui = NULL;
 	Video*				video = NULL;

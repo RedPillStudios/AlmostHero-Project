@@ -1,0 +1,28 @@
+<!-- Config file for Particles-->
+
+<config>
+
+    <image source="Particles.png" width="1024" height="1024"/>
+
+<!--ANIMATIONS-->
+  <Particle_Pushbacks>
+
+    <Note_Press_Succes loop="false" speed="0.7">
+      <Pushback x="0" y="0" w="157" h="272"/>
+      <Pushback x="175" y="0" w="157" h="272"/>
+      <Pushback x="351" y="0" w="157" h="272"/>
+      <Pushback x="527" y="0" w="157" h="272"/>
+      <Pushback x="703" y="0" w="157" h="272"/>
+      <Pushback x="0" y="272" w="157" h="272"/>
+      <Pushback x="175" y="272" w="157" h="272"/>
+      <Pushback x="351" y="272" w="157" h="272"/>
+      <Pushback x="527" y="272" w="157" h="272"/>
+      <Pushback x="703" y="272" w="157" h="272"/>
+      <Pushback x="0" y="542" w="157" h="272"/>
+      <Pushback x="175" y="542" w="157" h="272"/>
+    </Note_Press_Succes>
+
+
+	
+  </Particle_Pushbacks>
+</config>

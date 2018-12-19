@@ -55,6 +55,9 @@
     <ClCompile Include="j1Timer.cpp">
       <Filter>Core\Tools\Time</Filter>
     </ClCompile>
+    <ClCompile Include="j1Particles.cpp">
+      <Filter>Modules\Physics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="j1App.h">
@@ -134,6 +137,9 @@
     </ClInclude>
     <ClInclude Include="j1PerfTimer.h">
       <Filter>Core\Tools\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Particles.h">
+      <Filter>Modules\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
