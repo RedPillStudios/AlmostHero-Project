@@ -65,8 +65,72 @@ bool j1Scene::CleanUp()
 // Called before the first frame
 bool j1Scene::Start()
 {
+	float scale = 1.0f;
+
+
+	Main_MenuScene = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(0, 0), { 0,0,1280,720 }, BLITTING, { 0,0,1280,720 });
+	Main_MenuScene->texture = App->tex->Load("gui/Main_Menu_LIGHT_ON.png");
+	Main_MenuScene->texture_Off = App->tex->Load("gui/Main_Menu_LIGHT_OFF.png");
+	Main_MenuScene->Current_Texture = Main_MenuScene->texture;
+
+	GameOverScene = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(0, 0), { 0,0,1280,720 }, BLITTING, { 0,0,1280,720 });
+	GameOverScene->isActive = false;
+	GameOverScene->texture = App->tex->Load("gui/GAME_OVER_ON.png");
+	GameOverScene->texture_Off = App->tex->Load("gui/GAME_OVER_OFF.png");
+	GameOverScene->Current_Texture = GameOverScene->texture;
+
+	Play = App->gui->Add_UIElement(BUTTON, iPoint(514, 380), { 252, 5, 252, 143 }, ACTIVEWIN, { 0, 5, 252, 143 });
+	Settings = App->gui->Add_UIElement(BUTTON, iPoint(475, 500), { 330, 148, 330, 131 }, ACTIVEWIN, { 0, 148, 330, 131 });
+	Mode1 = App->gui->Add_UIElement(BUTTON, iPoint(280, 360), { 689, 283, 252, 124 }, PLAY, { 437, 283, 252, 124 });
+	Mode1->isActive = false;
+	Mode2 = App->gui->Add_UIElement(BUTTON, iPoint(750, 360), { 269, 414, 264, 132 }, PLAY, { 5, 414, 264, 132 });
+	Mode2->isActive = false;
+
+	Volumen = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(200, 450), { 507, 5, 303, 130 }, NONE_LOGIC, { 507, 5, 303, 130 });
+	Volumen->isActive = false;
+
+	Volume_Background = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(558, 455), { 579, 579,409, 57 }, BACKVOLUME, { 579, 579,409, 57 });
+	Volume_Background->isActive = false;
+
+	Volume_Bar = App->gui->Add_UIElement(BAR, iPoint(540, 420), { 561, 417, 250, 127 }, DRAGVOLUME, { 561, 417, 461, 127 });
+	Volume_Bar->isActive = false;
+	Quit = App->gui->Add_UIElement(BUTTON, iPoint(550, 620), { 188, 304, 188, 77 }, QUIT, { 0, 304, 188, 77 });
+
+	Tip1 = App->gui->Add_UIElement(LABEL, iPoint(640, 660), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Really guys, don't forget the fu*!/ README!!!");
+	Tip1->isActive = false;
+	Tip2 = App->gui->Add_UIElement(LABEL, iPoint(130, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Pay attention to the icon and aproach the keyboard ¡use it as a Guitar!");
+	Tip2->isActive = false;
+	Tip3 = App->gui->Add_UIElement(LABEL, iPoint(110, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: If your experience with mode 1 was very disgusting, try the mode2 LOSER");
+	Tip3->isActive = false;							   
+	Tip4 = App->gui->Add_UIElement(LABEL, iPoint(40, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Remember to do the Questionaire and send us the Data, unless you want us to FAIL... ");
+	Tip4->isActive = false;							   
+	Tip5 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: We supose that work on this until 6 am everyday will make us work with rockstar, NO?");
+	Tip5->isActive = false;
+	TipPause = App->gui->Add_UIElement(LABEL, iPoint(700, 500), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.3f, SDL_Color{ 255,255,255,255 }, nullptr, "PRess Esc to resume the game");
+	TipPause->isActive = false;
+	Pause = App->gui->Add_UIElement(BAR, iPoint(400, 180), { 5, 548, 553, 224 }, BLITTING, { 5, 772, 553, 224 });
+	Pause->isActive = false;
+	Pause->CurrentRect = &Pause->UI_Rect_Active;
+	Pause->Current_Texture = Pause->texture;
+
+	Feedback = App->gui->Add_UIElement(BAR, iPoint(15, 550), { 579, 820, 384, 162 }, BLITTING, { 579, 658, 384, 162 });
+	Feedback->CurrentRect = &Feedback->UI_Rect_Active;
+	Feedback->Current_Texture = Feedback->texture;
 
 	current_screen = MAIN_MENU;
+
+
+	UI_Elements_List.add(Main_MenuScene);
+	UI_Elements_List.add(Play);
+	UI_Elements_List.add(Settings);
+	UI_Elements_List.add(Mode1);
+	UI_Elements_List.add(Mode2);
+	UI_Elements_List.add(Quit);
+	UI_Elements_List.add(Volumen);
+	UI_Elements_List.add(Volume_Background);
+	UI_Elements_List.add(Volume_Bar);
+	UI_Elements_List.add(Feedback);
+	UI_Elements_List.add(Pause);
 
 	smViolet.Current_anim = &smViolet.Standard_anim;
 	smBlue.Current_anim = &smBlue.Standard_anim;
@@ -78,6 +142,8 @@ bool j1Scene::Start()
 	PowerUp_Light_tex = App->tex->Load("textures/Power_Up_Effects.png");
 	guitar_tex = App->tex->Load("textures/Guitar_Sequence.png");
 	Buttons_Texture = App->tex->Load("textures/Buttons_and_Notes.png");
+	KeyboardAnimation_Text = App->tex->Load("textures/Keyboard_Rotate.png");
+	keyboardText = App->tex->Load("textures/Keyboard_Alone.png");
 
 	//Main Menu & Game Over Screen
 	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
@@ -92,12 +158,142 @@ bool j1Scene::Start()
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
 
+	PauseGame = false;
+
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	if (current_screen == GAME&&App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+		Pause->isActive = !Pause->isActive;
+		TipPause->isActive = !TipPause->isActive;
+		Quit->isActive =!Quit->isActive;
+		PauseGame = !PauseGame;
+	}
+	lastMousePos = newMousePos;
+	App->input->GetMousePosition(newMousePos.x, newMousePos.y);
+	p2List_item<UI_Element*>*UI_Item = UI_Elements_List.end;
+	for (; UI_Item != nullptr; UI_Item = UI_Item->prev) {
+		if (UI_Item->data->isActive) {
+			if (UI_Item->data->Logic == BLITTING) {
+				UI_Item->data->Blitter();
+				if (UI_Item->data == Feedback) {
+					if (UI_Item->data->onTop()) {
+						UI_Item->data->CurrentRect = &UI_Item->data->UI_Rect_Active;
+						if (UI_Item->data->Clicked()) {
+							UI_Item->data->goWeb("https://docs.google.com/forms/d/e/1FAIpQLSct2409cHzdKPBmRW8pXSJ8cxh3uVCViAKXwFkYCZn7wYRe0w/viewform");
+						}
+					}
+				}
+			}
+		
+			if (UI_Item->data->Logic == ACTIVEWIN) {
+				if (UI_Item->data->Clicked()) {
+					if (UI_Item->data == Play) {
+						UI_Item->data->Deactive(Settings);
+						UI_Item->data->Deactive(Play);
+						UI_Item->data->Active(Mode1);
+						UI_Item->data->Active(Mode2);
+					}
+					else if (UI_Item->data == Settings) {
+						UI_Item->data->Deactive(Play);
+						UI_Item->data->Deactive(Settings);
+						UI_Item->data->Active(Volumen);
+						UI_Item->data->Active(Volume_Background);
+						UI_Item->data->Active(Volume_Bar);
+
+					}
+				}
+			}
+			if (UI_Item->data->Logic == DRAGVOLUME) {
+				if (Volume_Background->Clicked()) {
+					int volume;
+					UI_Item->data->VolumeControl(newMousePos, lastMousePos,volume);
+					App->audio->ControlMUSVolume(volume);
+
+				}
+			}
+			if (UI_Item->data->Logic == PLAY) {
+				if (UI_Item->data->Clicked()) {
+					if (UI_Item->data == Mode1) {
+						current_screen=TIP;
+						change_input = false;
+						PERF_START(TipScreen);
+						for (p2List_item<UI_Element*>*UI_Item2 = UI_Elements_List.start; UI_Item2 != nullptr; UI_Item2 = UI_Item2->next) {
+							if (UI_Item2->data != Main_MenuScene)
+								UI_Item2->data->isActive = false;
+						}
+						
+						}
+					else if (UI_Item->data == Mode2) {
+						current_screen = TIP;
+						change_input = true;
+						PERF_START(TipScreen);
+						for (p2List_item<UI_Element*>*UI_Item2 = UI_Elements_List.start; UI_Item2 != nullptr; UI_Item2 = UI_Item2->next) {
+							if (UI_Item2->data != Main_MenuScene)
+								UI_Item2->data->isActive = false;
+						}
+					}
+					int a = rand() % 5;
+					switch (a)
+					{
+					case 0:
+						Tip1->isActive = true;
+						break;
+					case 1:
+						Tip2->isActive = true;
+						break;
+					case 2:
+						Tip3->isActive = true;
+						break;
+					case 3:
+						Tip4->isActive = true;
+						break;
+					case 4:
+						Tip5->isActive = true;
+						break;
+					}
+
+				}
+			}
+			if ((UI_Item->data->Logic == QUIT)) {
+				if (UI_Item->data->Clicked()) {
+					if (Play->isActive == false&&current_screen==MAIN_MENU) {
+						for (p2List_item<UI_Element*>*UI_Item2 = UI_Elements_List.start; UI_Item2 != nullptr; UI_Item2 = UI_Item2->next) {
+							if( UI_Item2->data != Main_MenuScene)
+								UI_Item2->data->isActive = false;
+						}
+						Quit->isActive = true;
+						Play->isActive = true;
+						Settings->isActive = true;
+						Feedback->isActive = true;
+					}
+					else if (Play->isActive == true && current_screen == MAIN_MENU) {
+						return false;
+					}
+					else if (current_screen == GAME) {
+						Pause->isActive = false;
+						TipPause->isActive = false;
+						GameOverScene->isActive=true;
+						
+						ChangeScreen(GAME_OVER);
+					}
+					else if (current_screen == GAME_OVER) {
+						GameOverScene->isActive = false;;
+						ChangeScreen(MAIN_MENU);
+						PauseGame = false;
+						UI_Item->data->Active(Main_MenuScene);
+						UI_Item->data->Active(Settings);
+						UI_Item->data->Active(Play); 
+						UI_Item->data->Active(Feedback);
+
+					}
+				}
+			}
+		}
+	}
 
 	return true;
 }
@@ -105,36 +301,30 @@ bool j1Scene::PreUpdate()
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
+	
 
 	if (current_screen == GAME) 
 		HandleGameScreen(dt);
 
 	else if (current_screen == MAIN_MENU) {
-
 		PERF_START(videostart);
-
-		SDL_Rect img_rect = { 0, 0, 1280, 720};
-		App->render->Blit(Main_Menu_txtr, 0, 0, &img_rect);
-
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
-
-			PERF_START(match_time);
-			change_input = false;
-			ChangeScreen(GAME);
-		}
-
-		if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
-
-			PERF_START(match_time);
-			change_input = true;
-			ChangeScreen(GAME);
-		}
-
 	}
-
+	else if (current_screen == TIP) {
+		if (TipScreen.ReadSec() >= 7) {
+			Main_MenuScene->Deactive(Main_MenuScene);
+			Tip1->isActive = false;
+			Tip2->isActive = false;
+			Tip3->isActive = false;
+			Tip4->isActive = false;
+			Tip5->isActive = false;
+			PERF_START(match_time);
+			ChangeScreen(GAME);
+		}
+		PERF_START(videostart);
+	}
 	else if (current_screen == GAME_OVER) {
 
-		SDL_Color white_col = { 255, 255, 255, 255 };
+	/*	SDL_Color white_col = { 255, 255, 255, 255 };
 
 		SDL_Rect img_rect = { 0, 0, 1280, 720 };
 		App->render->Blit(Game_Over_txtr, 0, 0, &img_rect);
@@ -147,7 +337,7 @@ bool j1Scene::Update(float dt)
 		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
 		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 524, &scoreRect, 1, false);
-
+*/
 		//NEXT IS FOR TIME
 		/*int sec = (int)match_time.ReadSec() % 60;
 		int min = match_time.ReadSec() / 60;
@@ -166,8 +356,8 @@ bool j1Scene::Update(float dt)
 
 
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			ChangeScreen(MAIN_MENU);
+	/*	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
+			ChangeScreen(MAIN_MENU);*/
 
 	}
 	return true;
@@ -177,8 +367,35 @@ bool j1Scene::Update(float dt)
 bool j1Scene::PostUpdate()
 {
 	bool ret = true;
+	if (current_screen == GAME_OVER) {
+		SDL_Color white_col = { 255, 255, 255, 255 };
+		App->render->Blit(App->font->Print(score_text, white_col, App->font->fonts.end->data), 900, 368, &scoreRect, 1, false);
 
-	if(App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+		sprintf(total_smashed_notes_text, "%d", App->note->total_smashed_notes);
+		App->font->CalcSize(total_smashed_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(total_smashed_notes_text, white_col, App->font->fonts.end->data), 900, 462, &scoreRect, 1, false);
+
+		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
+		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 524, &scoreRect, 1, false);
+	}
+	if(current_screen==TIP)
+		App->render->Blit(KeyboardAnimation_Text, 490, 350, &KeyboardAnimation.GetCurrentFrame());
+
+	if (Mode1->isActive&&Mode1->onTop()) {
+		App->render->Blit(keyboardText, 510, 530, &Enter.GetCurrentFrame(), 0.7f);
+		App->render->Blit(keyboardText, 300, 530, &Numbers.GetCurrentFrame(), 0.7f);
+	}
+	else if( Mode1->isActive){
+		App->render->Blit(keyboardText, 510, 530, &Enter.frames[0], 0.7f);
+		App->render->Blit(keyboardText, 300, 530, &Numbers.frames[5], 0.7f);
+	}
+	if (Mode2->isActive&&Mode2->onTop()) 
+		App->render->Blit(keyboardText, 900, 530, &Numbers.GetCurrentFrame(), 0.7f);
+	else if(Mode2->isActive)
+		App->render->Blit(keyboardText, 900, 530, &Numbers.frames[5], 0.7f);
+
+	if(current_screen==MAIN_MENU&& App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
 
 	return ret;
@@ -205,24 +422,49 @@ void j1Scene::HandleGameScreen(float dt) {
 
 		play_video = false;
 		App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
+		//App->video->StopVideo();
 	}
 
 	//Notes deleter blit & colider
 	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
+	if (PauseGame == true){
+
+		App->video->StopVideo();
+	}
 	HandleGeneralInput();
 
-	if (!change_input)
-		HandleInput();
-	else
-		HandleInput2();
 
 	int y = 650;
 	int x = 400;
 
-	//Blitting Guitar texture
-	App->render->Blit(guitar_tex, x, 720 - 425, &Guitar.GetCurrentFrame());
+	
+
+	
+	
+
+	if (PauseGame == false) {
+		if (read_next_array_pos.Read() >= 100) {
+
+			ReadArray(notes_positions[counter]);
+			read_next_array_pos.Start();
+			counter++;
+
+			if (counter == notes_positions.Count())
+				counter = 0;
+		}
+		if (!change_input)
+			HandleInput();
+		else
+			HandleInput2();
+
+		//Blitting Guitar texture
+		App->render->Blit(guitar_tex, x, 720 - 425, &Guitar.GetCurrentFrame());
+		lastframe = Guitar.getCurrentFrame();
+	}else
+		App->render->Blit(guitar_tex, x, 720 - 425, &Guitar.frames[lastframe]);
+
 
 	//Blitting Buttons textures
 	App->render->Blit(Buttons_Texture, x + 25, y, &smViolet.Current_anim->GetCurrentFrame());
@@ -238,16 +480,6 @@ void j1Scene::HandleGameScreen(float dt) {
 	smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f);
 	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
 
-
-	if (read_next_array_pos.Read() >= 100) {
-
-		ReadArray(notes_positions[counter]);
-		read_next_array_pos.Start();
-		counter++;
-
-		if (counter == notes_positions.Count())
-			counter = 0;
-	}
 
 	//Blitting Light PowerUps
 	App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
@@ -277,6 +509,7 @@ void j1Scene::HandleGameScreen(float dt) {
 	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
 
 	p2List_item<Note*> *notes_item = notes.start;
+
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
 
@@ -734,4 +967,41 @@ void j1Scene::LoadPushbacks() {
 	x1.speed = x2.speed = x3.speed = x4.speed = 0.25f;
 	Multipliers_current_anim = &x1;
 
+	countGuitar.x = 1;
+	countGuitar.y = 1;
+	for (int i = 0; i < 29; ++i) {
+		KeyboardAnimation.PushBack({ countGuitar.x,countGuitar.y,269,269 });
+		countGuitar.x += 270;
+		if (countGuitar.x >= 1620) {
+			countGuitar.y += 270;
+			countGuitar.x = 1;
+		}
+	}
+	KeyboardAnimation.PushBack({ countGuitar.x,countGuitar.y,269,269 });
+	KeyboardAnimation.PushBack({ countGuitar.x,countGuitar.y,269,269 });
+	KeyboardAnimation.PushBack({ countGuitar.x,countGuitar.y,269,269 });
+
+	KeyboardAnimation.speed = 0.3f;
+	
+	Enter.PushBack({ 0,0,179,179 });
+	Enter.PushBack({ 179,0,179,179 });
+	Enter.PushBack({ 358,0,179,179 });
+	Enter.PushBack({ 537,0,179,179 });
+	Enter.PushBack({ 716,0,179,179 });
+	Enter.PushBack({ 0,179,179,179 });
+	Enter.PushBack({ 179,179,179,179 });
+	Enter.PushBack({ 358,179,179,179 });
+	Enter.PushBack({ 537,179,179,179 });
+
+	Enter.speed = 0.3f;
+
+	Numbers.PushBack({0,358,294,200});
+	Numbers.PushBack({ 294,358,294,200 });
+	Numbers.PushBack({ 588,358,294,200 });
+	Numbers.PushBack({ 0,558,294,200 });
+	Numbers.PushBack({ 294,558,294,200 });
+	Numbers.PushBack({ 294,558,294,200 });
+
+
+	Numbers.speed = 0.1f;
 }

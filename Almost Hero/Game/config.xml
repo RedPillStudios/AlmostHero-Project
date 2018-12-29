@@ -26,4 +26,8 @@
     <folder>maps/</folder>
   </map>
 
+  <gui>
+    <atlas file="gui/Almost_Hero_GUI.png"/>
+  </gui>
+
 </config>

@@ -205,6 +205,7 @@ void Video::PlayVideo(const char *fname, SDL_Rect r)
 void Video::StopVideo(){
 
 	ResetValues();
+	//want_to_play = false;
 }
 
 bool Video::IsPlaying() const

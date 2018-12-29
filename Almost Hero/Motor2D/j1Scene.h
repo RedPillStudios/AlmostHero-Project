@@ -13,6 +13,7 @@
 enum SCREEN_TYPE {
 
 		MAIN_MENU = 0,
+		TIP,
 		GAME,
 		GAME_OVER,
 		NON
@@ -92,6 +93,9 @@ private:
 	SDL_Texture* Buttons_Texture;
 	SDL_Texture* guitar_tex;
 	SDL_Texture* PowerUp_Light_tex;
+	SDL_Texture* keyboardText;
+	SDL_Texture* KeyboardAnimation_Text;
+
 
 	iPoint countGuitar;
 
@@ -107,6 +111,10 @@ private:
 
 	//Guitar animation
 	Animation Guitar;
+	Animation KeyboardAnimation;
+	Animation Numbers;
+	Animation Enter;
+
 
 	//Lights PowerUp animation
 	Animation Left_Light;
@@ -120,6 +128,36 @@ private:
 	Animation x4;
 
 
+	UI_Element* Main_MenuScene;
+
+	UI_Element* GameOverScene;
+
+	UI_Element* Play;
+	UI_Element* Settings;
+	UI_Element* Pause;
+	UI_Element* Mode1;
+	UI_Element* Mode2;
+	UI_Element* Volumen;
+	UI_Element* Volume_Bar;
+	UI_Element* Volume_Background;
+	
+	UI_Element* Tip1;
+	UI_Element* Tip2;
+	UI_Element* Tip3;
+	UI_Element* Tip4;
+	UI_Element* Tip5;
+	UI_Element* TipPause;
+	UI_Element* Feedback;
+
+	UI_Element* Quit;
+
+	iPoint lastMousePos = { 0,0 };
+	iPoint newMousePos = { 0,0 };
+
+	p2List<UI_Element*> UI_Elements_List;
+	p2List<UI_Element*> UI_Elements_List_Playing;
+	
+
 private:
 
 	p2DynArray<iPoint4d> notes_positions;
@@ -127,13 +165,16 @@ private:
 	j1PerfTimer videostart;
 
 	j1Timer read_next_array_pos;
+	
 	int counter = 0;
+	int lastframe = 0;
 
 	SDL_Rect scoreRect = { 0, 0, 20, 20 };
 	char score_text[100];
 
 
 	SCREEN_TYPE current_screen;
+	SCREEN_TYPE Aux_Screen;
 
 	SDL_Texture* Main_Menu_txtr = nullptr;
 	SDL_Texture* Game_Over_txtr = nullptr;
@@ -147,10 +188,14 @@ private:
 
 	bool play_video = false;
 
+	j1Timer TipScreen;
+
 public:
 
 	p2List<Note*> notes;
 	bool change_input = false;
+
+	bool PauseGame;
 
 private:
 

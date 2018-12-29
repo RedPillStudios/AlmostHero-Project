@@ -25,7 +25,7 @@ bool Note::Start() {
 
 	int w, h;
 	App->font->CalcSize("SCORE", w, h);
-	App->gui->CreateUIElement({ 0, 0, w, h }, iPoint(0, 20), App->font->Print("SCORE", { 255, 0, 0, 255 }));
+	//App->gui->CreateUIElement({ 0, 0, w, h }, iPoint(0, 20), App->font->Print("SCORE", { 255, 0, 0, 255 }));
 
 
 	return true;
@@ -40,7 +40,7 @@ bool Note::CleanUp() {
 
 // Called each loop iteration
 bool Note::Update(float dt) {
-
+	if (App->scene->PauseGame == false) {
 		if (scale <= 0.65f)
 			scale += 0.0020f;
 
@@ -54,12 +54,12 @@ bool Note::Update(float dt) {
 				velocity.x -= Acceleration.x;
 			}
 		}
-		else if (maxVelocity.x >=0) {
+		else if (maxVelocity.x >= 0) {
 			if (velocity.x <= maxVelocity.x) {
 				velocity.x += Acceleration.x;
 			}
 		}
-
+	}
 		if (note_collider != nullptr) {
 
 			note_collider->SetPos(position.x - note_rect.w * 0.25f, position.y - note_rect.h * 0.25f);

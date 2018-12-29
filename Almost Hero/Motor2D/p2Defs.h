@@ -9,6 +9,7 @@
 #undef NULL
 #endif
 #define NULL  0
+#define NULL_RECT {0,0,0,0}
 
 // Deletes a buffer
 #define RELEASE( x ) \
