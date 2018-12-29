@@ -357,6 +357,6 @@ void UI_Element::VolumeControl(iPoint newMousePos, iPoint lastMousePos,int &volu
 	else if ( barPosition>=UI_Rect_Active.w)
 		barPosition = UI_Rect_Active.w - 1;
 
-	volume = (barPosition*128)/UI_Rect_Active.w;
+	volume = (barPosition*200)/UI_Rect_Active.w;
 
 }

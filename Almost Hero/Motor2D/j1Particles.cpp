@@ -103,7 +103,7 @@ bool j1Particles::Update(float dt) {
 
 		else if (SDL_GetTicks() >= p->Born) {
 
-			App->render->Blit(p->Sprites, p->Position.x, p->Position.y, &(p->Anim.GetCurrentFrame()), p->scale, 1, 0, 0, 0,p->Flip);
+			App->render->Blit(p->Sprites, p->Position.x, p->Position.y, &(p->Anim.GetCurrentFrame()), p->scale, 1, 0, 0, 0,p->Flip,true);
 
 			if (!p->fx_played)
 				p->fx_played = true;

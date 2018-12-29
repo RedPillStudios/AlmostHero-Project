@@ -66,7 +66,7 @@ bool Video::CleanUp()
 		THEORAPLAY_stopDecode(decoder);
 
 	SDL_CloseAudio();
-	SDL_Quit();
+	//SDL_Quit();
 
 	return true;
 }

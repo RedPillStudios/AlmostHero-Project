@@ -63,7 +63,7 @@ bool Note::Update(float dt) {
 		if (note_collider != nullptr) {
 
 			note_collider->SetPos(position.x - note_rect.w * 0.25f, position.y - note_rect.h * 0.25f);
-			App->render->Blit(note_tex, position.x, position.y, &note_rect, scale, 1.0f, 0.0f, 53, 32);
+			App->render->Blit(note_tex, position.x, position.y, &note_rect, scale, 1.0f, 0.0f, 53, 32,SDL_FLIP_NONE,true);
 		}
 
 	return true;
@@ -141,7 +141,6 @@ void Note::DestroyNote(Note* note) {
 				item->data->note_collider->to_delete = true;
 			App->scene->notes.del(item);
 			break;
-
 		}
 	}
 }
@@ -151,19 +150,21 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 	colliding = true;
 
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
-		if (General_collided_timer.Read() >= 100) {
+		if (App->scene->PowerUpActivated==false) {
+			if (General_collided_timer.Read() >= 100) {
 
-			DestroyNote(App->scene->notes.start->data);
-			PERF_START(General_collided_timer);
-			numNotes = 0;
+				DestroyNote(App->scene->notes.start->data);
+				PERF_START(General_collided_timer);
+				numNotes = 0;
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
+				if (App->render->DoCameraShake == false) {
+					App->render->DoCameraShake = true;
+					App->render->power = 2.0f;
+					App->render->Time_Doing_Shake = 0.2f;
+					PERF_START(App->render->CameraShake_Time);
+				}
+				colliding = false;
 			}
-			colliding = false;
 		}
 	}
 
@@ -192,6 +193,7 @@ void Note::CollisionInput1(Collider* c2) {
 						PERF_START(Violet_collided_timer);
 						numNotes++;
 						App->scene->score += 250 * App->scene->multiplier;
+						App->scene->PowerUp_notes_counter++;
 						break;
 					}
 				}
@@ -216,6 +218,7 @@ void Note::CollisionInput1(Collider* c2) {
 						PERF_START(Blue_collided_timer);
 						numNotes++;
 						App->scene->score += 250 * App->scene->multiplier;
+						App->scene->PowerUp_notes_counter++;
 						break;
 					}
 				}
@@ -240,6 +243,7 @@ void Note::CollisionInput1(Collider* c2) {
 						PERF_START(Yellow_collided_timer);
 						numNotes++;
 						App->scene->score += 250 * App->scene->multiplier;
+						App->scene->PowerUp_notes_counter++;
 						break;
 					}
 				}
@@ -264,6 +268,7 @@ void Note::CollisionInput1(Collider* c2) {
 						PERF_START(Pink_collided_timer);
 						numNotes++;
 						App->scene->score += 250 * App->scene->multiplier;
+						App->scene->PowerUp_notes_counter++;
 						break;
 					}
 				}
@@ -289,6 +294,7 @@ void Note::CollisionInput2(Collider* c2) {
 					PERF_START(Violet_collided_timer);
 					numNotes++;
 					App->scene->score += 250 * App->scene->multiplier;
+					App->scene->PowerUp_notes_counter++;
 					break;
 				}
 			}
@@ -309,6 +315,7 @@ void Note::CollisionInput2(Collider* c2) {
 					PERF_START(Blue_collided_timer);
 					numNotes++;
 					App->scene->score += 250 * App->scene->multiplier;
+					App->scene->PowerUp_notes_counter++;
 					break;
 				}
 			}
@@ -329,6 +336,7 @@ void Note::CollisionInput2(Collider* c2) {
 					PERF_START(Yellow_collided_timer);
 					numNotes++;
 					App->scene->score += 250 * App->scene->multiplier;
+					App->scene->PowerUp_notes_counter++;
 					break;
 				}
 			}
@@ -349,6 +357,7 @@ void Note::CollisionInput2(Collider* c2) {
 					PERF_START(Pink_collided_timer);
 					numNotes++;
 					App->scene->score += 250 * App->scene->multiplier;
+					App->scene->PowerUp_notes_counter++;
 					break;
 				}
 			}

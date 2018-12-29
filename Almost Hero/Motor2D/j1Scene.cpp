@@ -85,6 +85,10 @@ bool j1Scene::Start()
 	Mode1->isActive = false;
 	Mode2 = App->gui->Add_UIElement(BUTTON, iPoint(750, 360), { 269, 414, 264, 132 }, PLAY, { 5, 414, 264, 132 });
 	Mode2->isActive = false;
+	LogoCitm= App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(10, 10), { 0, 0, 462, 141 }, NONE_LOGIC, { 0, 0, 462, 141 },NULL_RECT,0.55);
+	LogoCitm->texture = App->tex->Load("gui/logocitm.png");
+	
+	versionLabel= App->gui->Add_UIElement(LABEL, iPoint(850, 690), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 0.8f, SDL_Color{ 255,255,255,255 }, nullptr, "Version 0.5 Prototype under License MD");
 
 	Volumen = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(200, 450), { 507, 5, 303, 130 }, NONE_LOGIC, { 507, 5, 303, 130 });
 	Volumen->isActive = false;
@@ -96,7 +100,7 @@ bool j1Scene::Start()
 	Volume_Bar->isActive = false;
 	Quit = App->gui->Add_UIElement(BUTTON, iPoint(550, 620), { 188, 304, 188, 77 }, QUIT, { 0, 304, 188, 77 });
 
-	Tip1 = App->gui->Add_UIElement(LABEL, iPoint(640, 660), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Really guys, don't forget the fu*!/ README!!!");
+	Tip1 = App->gui->Add_UIElement(LABEL, iPoint(220, 660), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Really guys, don't forget the fu*!/ README!!!");
 	Tip1->isActive = false;
 	Tip2 = App->gui->Add_UIElement(LABEL, iPoint(130, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Pay attention to the icon and aproach the keyboard ¡use it as a Guitar!");
 	Tip2->isActive = false;
@@ -106,7 +110,7 @@ bool j1Scene::Start()
 	Tip4->isActive = false;							   
 	Tip5 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: We supose that work on this until 6 am everyday will make us work with rockstar, NO?");
 	Tip5->isActive = false;
-	TipPause = App->gui->Add_UIElement(LABEL, iPoint(700, 500), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.3f, SDL_Color{ 255,255,255,255 }, nullptr, "PRess Esc to resume the game");
+	TipPause = App->gui->Add_UIElement(LABEL, iPoint(340, 500), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.3f, SDL_Color{ 255,255,255,255 }, nullptr, "PRess Esc to resume the game");
 	TipPause->isActive = false;
 	Pause = App->gui->Add_UIElement(BAR, iPoint(400, 180), { 5, 548, 553, 224 }, BLITTING, { 5, 772, 553, 224 });
 	Pause->isActive = false;
@@ -118,9 +122,10 @@ bool j1Scene::Start()
 	Feedback->Current_Texture = Feedback->texture;
 
 	current_screen = MAIN_MENU;
-
+	App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 
 	UI_Elements_List.add(Main_MenuScene);
+	UI_Elements_List.add(LogoCitm);
 	UI_Elements_List.add(Play);
 	UI_Elements_List.add(Settings);
 	UI_Elements_List.add(Mode1);
@@ -144,7 +149,9 @@ bool j1Scene::Start()
 	Buttons_Texture = App->tex->Load("textures/Buttons_and_Notes.png");
 	KeyboardAnimation_Text = App->tex->Load("textures/Keyboard_Rotate.png");
 	keyboardText = App->tex->Load("textures/Keyboard_Alone.png");
-
+	multiplier_Head_tex = App->tex->Load("textures/Multiplier_Head.png");
+	PowerUP_counter_tex = App->tex->Load("textures/PowerUP_Counter.png");
+	Boosters_tex = App->tex->Load("textures/Boosters_In_Screen.png");
 	//Main Menu & Game Over Screen
 	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
 	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
@@ -152,11 +159,14 @@ bool j1Scene::Start()
 	//Pushbacks
 	LoadPushbacks();
 
+	PowerUP_counter = {0, 0, 160, 292 };
 	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
 	Bottom_Limit.x = 401;
 	Bottom_Limit.y = 719;
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
+
+
 
 	PauseGame = false;
 
@@ -200,10 +210,10 @@ bool j1Scene::PreUpdate()
 					else if (UI_Item->data == Settings) {
 						UI_Item->data->Deactive(Play);
 						UI_Item->data->Deactive(Settings);
+						UI_Item->data->Deactive(LogoCitm);
 						UI_Item->data->Active(Volumen);
 						UI_Item->data->Active(Volume_Background);
 						UI_Item->data->Active(Volume_Bar);
-
 					}
 				}
 			}
@@ -267,6 +277,7 @@ bool j1Scene::PreUpdate()
 						}
 						Quit->isActive = true;
 						Play->isActive = true;
+						LogoCitm->isActive = true;
 						Settings->isActive = true;
 						Feedback->isActive = true;
 					}
@@ -288,6 +299,7 @@ bool j1Scene::PreUpdate()
 						UI_Item->data->Active(Settings);
 						UI_Item->data->Active(Play); 
 						UI_Item->data->Active(Feedback);
+						UI_Item->data->Active(LogoCitm);
 
 					}
 				}
@@ -297,17 +309,30 @@ bool j1Scene::PreUpdate()
 
 	return true;
 }
-
+void j1Scene::BoosterAnim(Animation Booster) {
+	if (ScaleBooster <= 0.7) {
+		ScaleBooster += 0.04;
+		PERF_START(BoosterStatic);
+	}
+	else {
+		boosterSizeReached = true;
+	}
+	if (boosterSizeReached&&BoosterStatic.ReadSec()>=1.5) {
+			boosterSizeReached = false;
+			boosterActivated = false;
+			ScaleBooster = 0;
+	}
+};
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
-	
 
 	if (current_screen == GAME) 
 		HandleGameScreen(dt);
 
 	else if (current_screen == MAIN_MENU) {
-		PERF_START(videostart);
+		//PERF_START(videostart);
+	
 	}
 	else if (current_screen == TIP) {
 		if (TipScreen.ReadSec() >= 7) {
@@ -378,22 +403,42 @@ bool j1Scene::PostUpdate()
 		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
 		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 524, &scoreRect, 1, false);
+		SDL_Rect img_rect = { 0, 0, 1280, 720 };
+		App->render->Blit(Game_Over_txtr, 0, 70, &img_rect);
 	}
 	if(current_screen==TIP)
 		App->render->Blit(KeyboardAnimation_Text, 490, 350, &KeyboardAnimation.GetCurrentFrame());
+	if (current_screen == MAIN_MENU) {
+		if (Mode1->isActive&&Mode1->onTop()) {
+			App->render->Blit(keyboardText, 510, 530, &Enter.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
+			App->render->Blit(keyboardText, 300, 530, &Numbers.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
+		}
+		else if (Mode1->isActive) {
+			App->render->Blit(keyboardText, 510, 530, &Enter.frames[0], 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
+			App->render->Blit(keyboardText, 300, 530, &Numbers.frames[5], 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
+		}
+		if (Mode2->isActive&&Mode2->onTop())
+			App->render->Blit(keyboardText, 900, 530, &Numbers.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
+		else if (Mode2->isActive)
+			App->render->Blit(keyboardText, 900, 530, &Numbers.frames[5], 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
+	}
+	if (current_screen == GAME) {
+		if (boosterActivated == true) {
+			if (multiplier == 2) {
+				BoosterAnim(boosterx2);
+				App->render->Blit(Boosters_tex, 600, 300, &boosterx2.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
+			}
+			else if (multiplier == 3) {
+				BoosterAnim(boosterx3);
+				App->render->Blit(Boosters_tex, 600, 300, &boosterx3.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
 
-	if (Mode1->isActive&&Mode1->onTop()) {
-		App->render->Blit(keyboardText, 510, 530, &Enter.GetCurrentFrame(), 0.7f);
-		App->render->Blit(keyboardText, 300, 530, &Numbers.GetCurrentFrame(), 0.7f);
+			}
+			else if (multiplier == 4) {
+				BoosterAnim(boosterx4);
+				App->render->Blit(Boosters_tex, 600, 300, &boosterx4.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
+			}
+		}
 	}
-	else if( Mode1->isActive){
-		App->render->Blit(keyboardText, 510, 530, &Enter.frames[0], 0.7f);
-		App->render->Blit(keyboardText, 300, 530, &Numbers.frames[5], 0.7f);
-	}
-	if (Mode2->isActive&&Mode2->onTop()) 
-		App->render->Blit(keyboardText, 900, 530, &Numbers.GetCurrentFrame(), 0.7f);
-	else if(Mode2->isActive)
-		App->render->Blit(keyboardText, 900, 530, &Numbers.frames[5], 0.7f);
 
 	if(current_screen==MAIN_MENU&& App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
@@ -429,7 +474,7 @@ void j1Scene::HandleGameScreen(float dt) {
 	App->render->DrawQuad(Bottom_Limit, 255, 255, 255, 255);
 	Bottom_coll->SetPos(Bottom_Limit.x, Bottom_Limit.y);
 
-	if (PauseGame == true){
+	if (PauseGame == true) {
 
 		App->video->StopVideo();
 	}
@@ -439,10 +484,6 @@ void j1Scene::HandleGameScreen(float dt) {
 	int y = 650;
 	int x = 400;
 
-	
-
-	
-	
 
 	if (PauseGame == false) {
 		if (read_next_array_pos.Read() >= 100) {
@@ -462,7 +503,8 @@ void j1Scene::HandleGameScreen(float dt) {
 		//Blitting Guitar texture
 		App->render->Blit(guitar_tex, x, 720 - 425, &Guitar.GetCurrentFrame());
 		lastframe = Guitar.getCurrentFrame();
-	}else
+	}
+	else
 		App->render->Blit(guitar_tex, x, 720 - 425, &Guitar.frames[lastframe]);
 
 
@@ -482,28 +524,70 @@ void j1Scene::HandleGameScreen(float dt) {
 
 
 	//Blitting Light PowerUps
-	App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
-	App->render->Blit(PowerUp_Light_tex, x + 225, 720 - 370, &Right_Light.GetCurrentFrame(), 1, 1, -19, 0, 0);
+	if (PowerUpActivated) {
+		App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
+		App->render->Blit(PowerUp_Light_tex, x + 225, 720 - 370, &Right_Light.GetCurrentFrame(), 1, 1, -19, 0, 0);
+	}
+	//counter to Activate PowerUps
+	SDL_Rect PowerUp_counterback = { 160, 0, 160, 290 };
 
-	if (App->note->numNotes > 10 && App->note->numNotes <= 20) {
+	if (PowerUp_notes_counter > 40) {
+		PowerUp_notes_counter = 40;
+	}
+	else if (PowerUp_notes_counter >= 40) {
+		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT&&App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT
+			&&App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT&&App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+			PowerUpActivated = true;
+	}
+	if (PowerUpActivated) {
+		if(match_time.Read()%4==0)
+			PowerUp_notes_counter--;
+		if (PowerUp_notes_counter <= 0) {
+			PowerUpActivated = false;
+		}
+	}
+	//x+40,530
+	PowerUP_counter.h= (PowerUp_notes_counter*292)/40;
+	App->render->Blit(PowerUP_counter_tex,x-50, 430, &PowerUp_counterback, 1,1,180);
+	App->render->Blit(PowerUP_counter_tex,x-50, 430+292-PowerUP_counter.h, &PowerUP_counter, 1,1,180);
+
+
+	//MUltipliers Logic
+	if (App->note->numNotes > 15 && App->note->numNotes <= 30) {
+		if (multiplier != 2) {
+			boosterActivated = true;
+		}
 		Multipliers_current_anim = &x2;
 		multiplier = 2;
 	}
-	else if (App->note->numNotes > 20 && App->note->numNotes <= 30) {
+	else if (App->note->numNotes > 30 && App->note->numNotes <= 45) {
+		if (multiplier != 3) {
+			boosterActivated = true;
+		}
+
 		Multipliers_current_anim = &x3;
 		multiplier = 3;
 	}
-	else if (App->note->numNotes > 30) {
+	else if (App->note->numNotes > 45) {
+		if (multiplier != 4) {
+			boosterActivated = true;
+		}
 		Multipliers_current_anim = &x4;
 		multiplier = 4;
 	}
 	else {
 		Multipliers_current_anim = &x1;
 		multiplier = 1;
+		LastMultiplier = 1;
 	}
 
 	//Blitting Multiplier
 	App->render->Blit(Multiplier_tex, -25, 300, &Multipliers_current_anim->GetCurrentFrame());
+
+	if (Multipliers_current_anim != &x1) {
+		SDL_Rect aux = { 0, 0, 235, 248 };
+		App->render->Blit(multiplier_Head_tex, 185,497 , &aux,1.12f,1.0f,0,0,0,SDL_FLIP_NONE,true);
+	}
 	sprintf(score_text, "%d", score);
 	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
@@ -738,6 +822,7 @@ void j1Scene::ChangeScreen(int screen) {
 	if (screen == GAME) {
 
 		current_screen = GAME;
+		App->audio->CleanUp();
 
 		pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
 		if (result == NULL)
@@ -765,18 +850,26 @@ void j1Scene::ChangeScreen(int screen) {
 
 		LoadSongArray();
 		multiplier = 1;
+		PowerUp_notes_counter = 0;
+		PowerUpActivated = false;
 		score = 0;
 
 		play_video = true;
 		//App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
 
 	}
-	else if (screen == MAIN_MENU)
+	else if (screen == MAIN_MENU) {
+		App->audio->Init();
+		App->audio->Start();
+		App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 		current_screen = MAIN_MENU;
+	
+	}
 
-	else if (screen == GAME_OVER)
+	else if (screen == GAME_OVER) {
+		App->video->CleanUp();
 		current_screen = GAME_OVER;
-
+	}
 }
 
 
@@ -966,10 +1059,42 @@ void j1Scene::LoadPushbacks() {
 
 	x1.speed = x2.speed = x3.speed = x4.speed = 0.25f;
 	Multipliers_current_anim = &x1;
+	//setting animation for boosters;
+	countGuitar.x = 0;
+	countGuitar.y = 0;
+	for (int i = 0; i < 8; ++i) {
+		boosterx2.PushBack({ countGuitar.x,countGuitar.y,669,483 });
+		countGuitar.x += 669;
+		if (countGuitar.x >= 669*4) {
+			countGuitar.y += 483;
+			countGuitar.x = 0;
+		}
+	}
+	boosterx2.speed = 0.4f;
+	boosterx2.loop = true;
+	for (int i = 8; i < 16; ++i) {
+		boosterx3.PushBack({ countGuitar.x,countGuitar.y,669,483 });
+		countGuitar.x += 669;
+		if (countGuitar.x >= 669 * 4) {
+			countGuitar.y += 483;
+			countGuitar.x = 0;
+		}
+	}
+	boosterx3.speed = 0.3f;
 
+	for (int i = 16; i < 24; ++i) {
+		boosterx4.PushBack({ countGuitar.x,countGuitar.y,669,483 });
+		countGuitar.x += 669;
+		if (countGuitar.x >= 669 * 4) {
+			countGuitar.y += 483;
+			countGuitar.x = 0;
+		}
+	}
+	boosterx4.speed = 0.3f;
+	//settting animation for keyboard icon
 	countGuitar.x = 1;
 	countGuitar.y = 1;
-	for (int i = 0; i < 29; ++i) {
+	for (int i = 0; i < 28; ++i) {
 		KeyboardAnimation.PushBack({ countGuitar.x,countGuitar.y,269,269 });
 		countGuitar.x += 270;
 		if (countGuitar.x >= 1620) {
@@ -983,6 +1108,7 @@ void j1Scene::LoadPushbacks() {
 
 	KeyboardAnimation.speed = 0.3f;
 	
+	//setting animation for Enter icon
 	Enter.PushBack({ 0,0,179,179 });
 	Enter.PushBack({ 179,0,179,179 });
 	Enter.PushBack({ 358,0,179,179 });
@@ -994,6 +1120,7 @@ void j1Scene::LoadPushbacks() {
 	Enter.PushBack({ 537,179,179,179 });
 
 	Enter.speed = 0.3f;
+	//setting animation for numpad icons
 
 	Numbers.PushBack({0,358,294,200});
 	Numbers.PushBack({ 294,358,294,200 });

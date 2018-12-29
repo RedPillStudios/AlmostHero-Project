@@ -63,7 +63,10 @@ public:
 	bool CleanUp();
 
 	int multiplier = 1;
+	int LastMultiplier = 0;
 	int score = 0;
+	int PowerUp_notes_counter=0;
+	bool PowerUpActivated = false;
 
 private:
 	
@@ -78,6 +81,8 @@ private:
 
 	bool Save(pugi::xml_node& data_) const;
 	void ChangeScreen(int screen);
+
+	void BoosterAnim(Animation Booster);
 
 	void HandleInput();
 	void HandleInput2();
@@ -95,6 +100,11 @@ private:
 	SDL_Texture* PowerUp_Light_tex;
 	SDL_Texture* keyboardText;
 	SDL_Texture* KeyboardAnimation_Text;
+	SDL_Texture* multiplier_Head_tex;
+	SDL_Texture* PowerUP_counter_tex;
+	SDL_Texture* Boosters_tex;
+
+	SDL_Rect PowerUP_counter;
 
 
 	iPoint countGuitar;
@@ -109,6 +119,8 @@ private:
 	Smasher smViolet;
 	Smasher smYellow;
 
+
+	
 	//Guitar animation
 	Animation Guitar;
 	Animation KeyboardAnimation;
@@ -127,6 +139,9 @@ private:
 	Animation x3;
 	Animation x4;
 
+	Animation boosterx4;
+	Animation boosterx3;
+	Animation boosterx2;
 
 	UI_Element* Main_MenuScene;
 
@@ -140,6 +155,9 @@ private:
 	UI_Element* Volumen;
 	UI_Element* Volume_Bar;
 	UI_Element* Volume_Background;
+	UI_Element* LogoCitm;
+
+	UI_Element* versionLabel;
 	
 	UI_Element* Tip1;
 	UI_Element* Tip2;
@@ -157,7 +175,6 @@ private:
 	p2List<UI_Element*> UI_Elements_List;
 	p2List<UI_Element*> UI_Elements_List_Playing;
 	
-
 private:
 
 	p2DynArray<iPoint4d> notes_positions;
@@ -189,6 +206,16 @@ private:
 	bool play_video = false;
 
 	j1Timer TipScreen;
+
+	int Time_During_TipScreen = 14;
+
+	
+
+	bool boosterActivated = false;
+	bool boosterSizeReached = false;
+	float ScaleBooster = 0;
+	j1Timer BoosterStatic;
+
 
 public:
 
