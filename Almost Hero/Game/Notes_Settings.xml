@@ -171,7 +171,7 @@
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
@@ -255,7 +255,7 @@
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="1"/>
 
-  <PushBack q="0" w="0" e="0" r="1"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="0" w="0" e="1" r="0"/>
@@ -266,7 +266,7 @@
   <PushBack q="0" w="0" e="0" r="0"/>
   <PushBack q="1" w="0" e="0" r="0"/>24 --->BETWEEN BUCLES
   
-  <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="1" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
@@ -343,7 +343,7 @@
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="1"/>
 
-<PushBack q="0" w="0" e="0" r="1"/>
+<PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="1" r="0"/>
@@ -453,7 +453,7 @@
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="1"/>
 
-<PushBack q="0" w="0" e="0" r="1"/>
+<PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="1" r="0"/>
@@ -541,7 +541,7 @@
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="1"/>
 
-<PushBack q="0" w="0" e="0" r="1"/>
+<PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="1" r="0"/>
@@ -550,22 +550,792 @@
 <PushBack q="0" w="1" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
-<PushBack q="1" w="0" e="0" r="0"/>42 BETWEEN BUCLES
+<PushBack q="1" w="0" e="0" r="0"/>50 BETWEEN BUCLES
 
 END OF FIRST PART compás 26 del programa
 
 -----------------------------------
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>52  1
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>54  2
+
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>56  3
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>58  4
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>60  stp
+  
+<PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>62
+  
+ <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>64
+  
+<PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>66  compás 33 programa
+  
+   parte epica stop
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
 <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
-  <PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="1" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="1"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="1" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>68 
   
+ 
+  restart song?
   
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>70
+
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="1" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="1"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+
+  <PushBack q="0" w="0" e="1" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>72  prog 36
   
+  nope, not a restar5t
+
+ <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>74
+
+ <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>76
+
+ <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>78
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="1" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="1"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="1" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>80
+
+ <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>82
+
+ <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>84
+
+ <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>86
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="1" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="1"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="1" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>88
+
+
+
+madremia willi copmpaniero la rep de la parte epica es igual
+
+
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>90  1
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>92  2
+
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>94  3
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>96 4
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>98  stp
+  
+<PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>100
+  
+ <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>102
+  
+<PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="1" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="1" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>
+  <PushBack q="0" w="0" e="0" r="0"/>104
+  
+  <PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>106  1
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>108  2
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>110  3
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>112 4
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>114  stp
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>116
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>118
+
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="1" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="1" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>
+<PushBack q="0" w="0" e="0" r="0"/>120  
+
+ara toca 61
 </notes>

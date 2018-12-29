@@ -176,6 +176,18 @@ bool j1Scene::Start()
 // Called each loop iteration
 bool j1Scene::PreUpdate()
 {
+	if (current_screen == GAME) {
+		if (read_next_array_pos.ReadMs() >= 97) {
+
+			ReadArray(notes_positions[counter]);
+			read_next_array_pos.Start();
+			counter++;
+
+			if (counter == notes_positions.Count())
+				counter = 0;
+		}
+	}
+
 	if (current_screen == GAME&&App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 		Pause->isActive = !Pause->isActive;
 		TipPause->isActive = !TipPause->isActive;
@@ -288,19 +300,34 @@ bool j1Scene::PreUpdate()
 						Pause->isActive = false;
 						TipPause->isActive = false;
 						GameOverScene->isActive=true;
-						
 						ChangeScreen(GAME_OVER);
 					}
 					else if (current_screen == GAME_OVER) {
-						GameOverScene->isActive = false;;
-						ChangeScreen(MAIN_MENU);
+						Quit->isActive = false;
+						GameOverScene->isActive = false;
+						Main_MenuScene->isActive = true;
+						current_screen = TIP;		
+						PERF_START(TipScreen);
 						PauseGame = false;
-						UI_Item->data->Active(Main_MenuScene);
-						UI_Item->data->Active(Settings);
-						UI_Item->data->Active(Play); 
-						UI_Item->data->Active(Feedback);
-						UI_Item->data->Active(LogoCitm);
-
+						int a = rand() % 5;
+						switch (a)
+						{
+						case 0:
+							Tip1->isActive = true;
+							break;
+						case 1:
+							Tip2->isActive = true;
+							break;
+						case 2:
+							Tip3->isActive = true;
+							break;
+						case 3:
+							Tip4->isActive = true;
+							break;
+						case 4:
+							Tip5->isActive = true;
+							break;
+						}
 					}
 				}
 			}
@@ -335,7 +362,8 @@ bool j1Scene::Update(float dt)
 	
 	}
 	else if (current_screen == TIP) {
-		if (TipScreen.ReadSec() >= 7) {
+		if (Aux_Screen == MAIN_MENU&&TipScreen.ReadSec() >= 7) {
+
 			Main_MenuScene->Deactive(Main_MenuScene);
 			Tip1->isActive = false;
 			Tip2->isActive = false;
@@ -345,6 +373,18 @@ bool j1Scene::Update(float dt)
 			PERF_START(match_time);
 			ChangeScreen(GAME);
 		}
+		else if(Aux_Screen == GAME_OVER&&TipScreen.ReadSec() >= 4) {
+			Tip1->isActive = false;
+			Tip2->isActive = false;
+			Tip3->isActive = false;
+			Tip4->isActive = false;
+			Tip5->isActive = false;
+			Settings->isActive = true;
+			Play->isActive = true;
+			Feedback->isActive = true;
+			LogoCitm->isActive = true;
+			ChangeScreen(MAIN_MENU);
+			}
 		PERF_START(videostart);
 	}
 	else if (current_screen == GAME_OVER) {
@@ -409,6 +449,7 @@ bool j1Scene::PostUpdate()
 	if(current_screen==TIP)
 		App->render->Blit(KeyboardAnimation_Text, 490, 350, &KeyboardAnimation.GetCurrentFrame());
 	if (current_screen == MAIN_MENU) {
+		
 		if (Mode1->isActive&&Mode1->onTop()) {
 			App->render->Blit(keyboardText, 510, 530, &Enter.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
 			App->render->Blit(keyboardText, 300, 530, &Numbers.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
@@ -466,6 +507,7 @@ void j1Scene::HandleGameScreen(float dt) {
 	if (videostart.ReadMs() >= 3600 && play_video) {
 
 		play_video = false;
+		App->audio->PlayMusic("audio/music/GodDamn_Song3.ogg",0);
 		App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
 		//App->video->StopVideo();
 	}
@@ -486,15 +528,11 @@ void j1Scene::HandleGameScreen(float dt) {
 
 
 	if (PauseGame == false) {
-		if (read_next_array_pos.Read() >= 100) {
+		//if (read_next_array_pos.ReadMs() > 101) {
+		//		int a = read_next_array_pos.ReadMs();
+		//		bool a2 = true;
+		//}
 
-			ReadArray(notes_positions[counter]);
-			read_next_array_pos.Start();
-			counter++;
-
-			if (counter == notes_positions.Count())
-				counter = 0;
-		}
 		if (!change_input)
 			HandleInput();
 		else
@@ -798,7 +836,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::ChangeScreen(int screen) {
 
 	if (current_screen == GAME) {
-
+		Aux_Screen = GAME;
 		App->collisions->CleanUp();
 
 		p2List_item<Note*> *notes_item = notes.start;
@@ -822,8 +860,8 @@ void j1Scene::ChangeScreen(int screen) {
 	if (screen == GAME) {
 
 		current_screen = GAME;
-		App->audio->CleanUp();
-
+		//App->audio->CleanUp();
+		App->audio->PlayMusic("audio/music/Initial_Effect_Sound.ogg");
 		pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
 		if (result == NULL)
 			LOG("pugi error : %s", result.description());
@@ -859,15 +897,18 @@ void j1Scene::ChangeScreen(int screen) {
 
 	}
 	else if (screen == MAIN_MENU) {
-		App->audio->Init();
-		App->audio->Start();
+		Aux_Screen = MAIN_MENU;
 		App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
+		//App->audio->Init();
+		//App->audio->Start();
 		current_screen = MAIN_MENU;
 	
 	}
 
 	else if (screen == GAME_OVER) {
-		App->video->CleanUp();
+		//App->video->CleanUp();
+		App->audio->PlayMusic("",1);
+		Aux_Screen = GAME_OVER;
 		current_screen = GAME_OVER;
 	}
 }

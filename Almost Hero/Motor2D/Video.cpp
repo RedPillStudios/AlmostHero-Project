@@ -74,83 +74,83 @@ bool Video::CleanUp()
 
 // Audio =============================================================================================
 
-AudioQueue* Video::audio_queue = NULL;
-AudioQueue* Video::audio_queue_tail = NULL;
+//AudioQueue* Video::audio_queue = NULL;
+//AudioQueue* Video::audio_queue_tail = NULL;
+//
+//void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len) 
+//{
+//	Sint16 *dst = (Sint16 *)stream;
+//
+//	while (audio_queue && (len > 0)) 
+//	{
+//		volatile AudioQueue *item = audio_queue;
+//
+//		if (item->next == nullptr)
+//			return;
+//
+//		AudioQueue *next = item->next;
+//
+//		const int channels = item->audio->channels;
+//
+//		const float *src = item->audio->samples + (item->offset * channels);
+//		int cpy = (item->audio->frames - item->offset) * channels;
+//		int i;
+//
+//		if (cpy > (len / sizeof(Sint16)))
+//			cpy = len / sizeof(Sint16);
+//
+//		for (i = 0; i < cpy; i++) 
+//		{
+//			const float val = *(src++);
+//			if (val < -1.0f)
+//				*(dst++) = -32768;
+//			else if (val > 1.0f)
+//				*(dst++) = 32767;
+//			else
+//				*(dst++) = (Sint16)(val * 32767.0f);
+//		}
+//
+//		item->offset += (cpy / channels);
+//		len -= cpy * sizeof(Sint16);
+//
+//		if (item->offset >= item->audio->frames) 
+//		{
+//			THEORAPLAY_freeAudio(item->audio);
+//			delete item;
+//			audio_queue = next;
+//		}
+//	}
+//
+//	if (!audio_queue)
+//		audio_queue_tail = NULL;
+//
+//	if (len > 0)
+//		memset(dst, '\0', len);
+//}
 
-void SDLCALL Video::audio_callback(void *userdata, Uint8 *stream, int len) 
-{
-	Sint16 *dst = (Sint16 *)stream;
 
-	while (audio_queue && (len > 0)) 
-	{
-		volatile AudioQueue *item = audio_queue;
-
-		if (item->next == nullptr)
-			return;
-
-		AudioQueue *next = item->next;
-
-		const int channels = item->audio->channels;
-
-		const float *src = item->audio->samples + (item->offset * channels);
-		int cpy = (item->audio->frames - item->offset) * channels;
-		int i;
-
-		if (cpy > (len / sizeof(Sint16)))
-			cpy = len / sizeof(Sint16);
-
-		for (i = 0; i < cpy; i++) 
-		{
-			const float val = *(src++);
-			if (val < -1.0f)
-				*(dst++) = -32768;
-			else if (val > 1.0f)
-				*(dst++) = 32767;
-			else
-				*(dst++) = (Sint16)(val * 32767.0f);
-		}
-
-		item->offset += (cpy / channels);
-		len -= cpy * sizeof(Sint16);
-
-		if (item->offset >= item->audio->frames) 
-		{
-			THEORAPLAY_freeAudio(item->audio);
-			delete item;
-			audio_queue = next;
-		}
-	}
-
-	if (!audio_queue)
-		audio_queue_tail = NULL;
-
-	if (len > 0)
-		memset(dst, '\0', len);
-}
-
-
-void Video::queue_audio(const THEORAPLAY_AudioPacket *audio) 
-{
-	AudioQueue *item = new AudioQueue;
-
-	if (!item) 
-	{
-		THEORAPLAY_freeAudio(audio);
-		return;
-	}
-
-	item->audio = audio;
-	item->offset = 0;
-	item->next = NULL;
-
-	SDL_LockAudio();
-	if (audio_queue_tail)
-		audio_queue_tail->next = item;
-	else
-		audio_queue = item;
-	audio_queue_tail = item;
-	SDL_UnlockAudio();
-}
+//void Video::queue_audio(const THEORAPLAY_AudioPacket *audio) 
+//{
+//	AudioQueue *item = new AudioQueue;
+//
+//	if (!item) 
+//	{
+//		THEORAPLAY_freeAudio(audio);
+//		return;
+//	}
+//
+//	item->audio = audio;
+//	item->offset = 0;
+//	item->next = NULL;
+//
+//	//SDL_LockAudio();
+//	if (audio_queue_tail)
+//		audio_queue_tail->next = item;
+//	else
+//		audio_queue = item;
+//	audio_queue_tail = item;
+//	SDL_UnlockAudio();
+//}
 
 // Video ===========================================================================================
 
@@ -174,19 +174,19 @@ void Video::LoadVideo(const char *fname)
 
 	init_failed = quit = (!screen || !texture);
 
-	memset(&spec, '\0', sizeof(SDL_AudioSpec));
-	spec.freq = audio->freq;
-	spec.format = AUDIO_S16SYS;
-	spec.channels = audio->channels;
-	spec.samples = 2048;
-	spec.callback = audio_callback;
+	//memset(&spec, '\0', sizeof(SDL_AudioSpec));
+	//spec.freq = audio->freq;
+	//spec.format = AUDIO_S16SYS;
+	//spec.channels = audio->channels;
+	//spec.samples = 2048;
+	//spec.callback = audio_callback;
 
 	// Tip! Module Video needs "the control" of the sound. If not SDL_OpenAudio will not initialize.
 	// Right now module Audio has init the audio previously.
-	SDL_QuitSubSystem(SDL_INIT_AUDIO);
-	init_failed = quit = (init_failed || (SDL_OpenAudio(&spec, NULL) != 0));
+	//SDL_QuitSubSystem(SDL_INIT_AUDIO);
+	//init_failed = quit = (init_failed || (SDL_OpenAudio(&spec, NULL) != 0));
 
-	SDL_PauseAudio(0);
+	//SDL_PauseAudio(0);
 }
 
 void Video::PlayVideo(const char *fname, SDL_Rect r)
@@ -224,8 +224,8 @@ bool Video::Update(float dt)
 		if (!video)
 			video = THEORAPLAY_getVideo(decoder);
 
-		if ((audio = THEORAPLAY_getAudio(decoder)) != NULL)
-			queue_audio(audio);
+		//if ((audio = THEORAPLAY_getAudio(decoder)) != NULL)
+		//	queue_audio(audio);
 
 		// Setting the texture --------------------------------------------
 
@@ -273,15 +273,15 @@ void Video::ResetValues()
 	if (video) 
 		THEORAPLAY_freeVideo(video);
 
-	if (audio) 
-		THEORAPLAY_freeAudio(audio);
+	//if (audio) 
+	//	THEORAPLAY_freeAudio(audio);
 
 	if (decoder) 
 		THEORAPLAY_stopDecode(decoder);
 
 	decoder = NULL;
 	video = NULL;
-	audio = NULL;
+	//audio = NULL;
 	screen = NULL;
 	texture = NULL;
 	pixels = NULL;
@@ -293,6 +293,6 @@ void Video::ResetValues()
 	pitch = 0;
 	want_to_play = false;
 
-	audio_queue = NULL;
-	audio_queue_tail = NULL;
+	//audio_queue = NULL;
+	//audio_queue_tail = NULL;
 }

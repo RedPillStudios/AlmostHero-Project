@@ -43,9 +43,9 @@ public:
 	void StopVideo();
 
 	// Audio methods
-	static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len);
+	/*static void SDLCALL audio_callback(void *userdata, Uint8 *stream, int len);
 	static void queue_audio(const THEORAPLAY_AudioPacket *audio);
-
+*/
 private:
 
 	void ResetValues();
@@ -60,7 +60,7 @@ private:
 	const THEORAPLAY_AudioPacket* audio;
 	SDL_Window*   screen = nullptr;
 	SDL_Texture*  texture = nullptr;
-	SDL_AudioSpec spec;
+	/*SDL_AudioSpec spec;*/
 	SDL_Event     event;
 
 	Uint32        baseticks;
@@ -72,8 +72,8 @@ private:
 	int           pitch = 0;
 	bool          want_to_play = false;
 
-	static AudioQueue* audio_queue;
-	static AudioQueue* audio_queue_tail;
+	//static AudioQueue* audio_queue;
+	//static AudioQueue* audio_queue_tail;
 
 	SDL_Rect      rendering_rect = NULLRECT;
 };

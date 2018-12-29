@@ -181,14 +181,13 @@ private:
 
 	j1PerfTimer videostart;
 
-	j1Timer read_next_array_pos;
+	j1PerfTimer read_next_array_pos;
 	
 	int counter = 0;
 	int lastframe = 0;
 
 	SDL_Rect scoreRect = { 0, 0, 20, 20 };
 	char score_text[100];
-
 
 	SCREEN_TYPE current_screen;
 	SCREEN_TYPE Aux_Screen;
@@ -208,8 +207,6 @@ private:
 	j1Timer TipScreen;
 
 	int Time_During_TipScreen = 14;
-
-	
 
 	bool boosterActivated = false;
 	bool boosterSizeReached = false;
