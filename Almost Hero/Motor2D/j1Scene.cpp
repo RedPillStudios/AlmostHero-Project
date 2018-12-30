@@ -89,7 +89,7 @@ bool j1Scene::Start()
 	LogoCitm= App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(10, 10), { 0, 0, 462, 141 }, NONE_LOGIC, { 0, 0, 462, 141 },NULL_RECT,0.55);
 	LogoCitm->texture = App->tex->Load("gui/logocitm.png");
 	
-	versionLabel= App->gui->Add_UIElement(LABEL, iPoint(850, 690), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 0.8f, SDL_Color{ 255,255,255,255 }, nullptr, "Version 0.5 Prototype under License MD");
+	versionLabel= App->gui->Add_UIElement(LABEL, iPoint(850, 690), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 0.8f, SDL_Color{ 255,255,255,255 }, nullptr, "Version 0.5 Prototype. Licensed under MIT");
 
 	Volumen = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(200, 450), { 507, 5, 303, 130 }, NONE_LOGIC, { 507, 5, 303, 130 });
 	Volumen->isActive = false;
@@ -122,10 +122,6 @@ bool j1Scene::Start()
 	Feedback->CurrentRect = &Feedback->UI_Rect_Active;
 	Feedback->Current_Texture = Feedback->texture;
 
-	current_screen = MAIN_MENU;
-	App->audio->ControlMUSVolume(volume);
-	App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
-
 	UI_Elements_List.add(Main_MenuScene);
 	UI_Elements_List.add(LogoCitm);
 	UI_Elements_List.add(Play);
@@ -154,6 +150,11 @@ bool j1Scene::Start()
 	multiplier_Head_tex = App->tex->Load("textures/Multiplier_Head.png");
 	PowerUP_counter_tex = App->tex->Load("textures/PowerUP_Counter.png");
 	Boosters_tex = App->tex->Load("textures/Boosters_In_Screen.png");
+
+	current_screen = MAIN_MENU;
+	App->audio->ControlMUSVolume(volume);
+	App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
+
 	//Main Menu & Game Over Screen
 	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
 	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
@@ -164,6 +165,7 @@ bool j1Scene::Start()
 	LoadPushbacks();
 
 	PowerUP_counter = {0, 0, 160, 292 };
+
 	//Notes deleter (at bottom of buttons, when notes cannot longer be pressed)
 	Bottom_Limit.x = 401;
 	Bottom_Limit.y = 719;
@@ -171,7 +173,7 @@ bool j1Scene::Start()
 	Bottom_Limit.h = 50;
 
 
-	App->audio->ControlSFXVolume(20);
+	App->audio->ControlSFXVolume(90);
 
 	PauseGame = false;
 
@@ -182,23 +184,26 @@ bool j1Scene::Start()
 bool j1Scene::PreUpdate()
 {
 	if (current_screen == GAME) {
-		if (read_next_array_pos.ReadMs() >= 97) {
+
+		if (read_next_array_pos.ReadMs() >= 97 && keep_reading == true) {
 
 			ReadArray(notes_positions[counter]);
 			read_next_array_pos.Start();
 			counter++;
 
 			if (counter == notes_positions.Count())
-				counter = 0;
+				keep_reading = false;
 		}
 	}
 
-	if (current_screen == GAME&&App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+	if (current_screen == GAME && App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+
 		Pause->isActive = !Pause->isActive;
 		TipPause->isActive = !TipPause->isActive;
 		Quit->isActive =!Quit->isActive;
 		PauseGame = !PauseGame;
 	}
+
 	lastMousePos = newMousePos;
 	App->input->GetMousePosition(newMousePos.x, newMousePos.y);
 	p2List_item<UI_Element*>*UI_Item = UI_Elements_List.end;
@@ -285,28 +290,36 @@ bool j1Scene::PreUpdate()
 				}
 			}
 			if ((UI_Item->data->Logic == QUIT)) {
+
 				if (UI_Item->data->Clicked()) {
+
 					if (Play->isActive == false&&current_screen==MAIN_MENU) {
 						for (p2List_item<UI_Element*>*UI_Item2 = UI_Elements_List.start; UI_Item2 != nullptr; UI_Item2 = UI_Item2->next) {
+
 							if( UI_Item2->data != Main_MenuScene)
 								UI_Item2->data->isActive = false;
 						}
+
 						Quit->isActive = true;
 						Play->isActive = true;
 						LogoCitm->isActive = true;
 						Settings->isActive = true;
 						Feedback->isActive = true;
 					}
-					else if (Play->isActive == true && current_screen == MAIN_MENU) {
+					else if (Play->isActive == true && current_screen == MAIN_MENU) 
 						return false;
-					}
+					
 					else if (current_screen == GAME) {
+
+						App->audio->ResumeMusic();
 						Pause->isActive = false;
 						TipPause->isActive = false;
 						GameOverScene->isActive=true;
 						ChangeScreen(GAME_OVER);
 					}
+
 					else if (current_screen == GAME_OVER) {
+
 						Quit->isActive = false;
 						GameOverScene->isActive = false;
 						Main_MenuScene->isActive = true;
@@ -340,20 +353,27 @@ bool j1Scene::PreUpdate()
 
 	return true;
 }
+
+
 void j1Scene::BoosterAnim(Animation Booster) {
+
 	if (ScaleBooster <= 0.7) {
+
 		ScaleBooster += 0.04;
 		PERF_START(BoosterStatic);
 	}
-	else {
+	else 
 		boosterSizeReached = true;
-	}
+	
 	if (boosterSizeReached&&BoosterStatic.ReadSec()>=1.5) {
+
 			boosterSizeReached = false;
 			boosterActivated = false;
 			ScaleBooster = 0;
 	}
-};
+}
+
+
 // Called each loop iteration
 bool j1Scene::Update(float dt)
 {
@@ -361,12 +381,9 @@ bool j1Scene::Update(float dt)
 	if (current_screen == GAME) 
 		HandleGameScreen(dt);
 
-	else if (current_screen == MAIN_MENU) {
-		//PERF_START(videostart);
-	
-	}
 	else if (current_screen == TIP) {
-		if (Aux_Screen == MAIN_MENU&&TipScreen.ReadSec() >= 7) {
+
+		if (Aux_Screen == MAIN_MENU && TipScreen.ReadSec() >= 7) {
 
 			Main_MenuScene->Deactive(Main_MenuScene);
 			Tip1->isActive = false;
@@ -377,7 +394,9 @@ bool j1Scene::Update(float dt)
 			PERF_START(match_time);
 			ChangeScreen(GAME);
 		}
-		else if(Aux_Screen == GAME_OVER&&TipScreen.ReadSec() >= 4) {
+
+		else if(Aux_Screen == GAME_OVER && TipScreen.ReadSec() >= 4) {
+
 			Tip1->isActive = false;
 			Tip2->isActive = false;
 			Tip3->isActive = false;
@@ -389,54 +408,20 @@ bool j1Scene::Update(float dt)
 			LogoCitm->isActive = true;
 			ChangeScreen(MAIN_MENU);
 			}
+
 		PERF_START(videostart);
 	}
-	else if (current_screen == GAME_OVER) {
 
-	/*	SDL_Color white_col = { 255, 255, 255, 255 };
-
-		SDL_Rect img_rect = { 0, 0, 1280, 720 };
-		App->render->Blit(Game_Over_txtr, 0, 0, &img_rect);
-		App->render->Blit(App->font->Print(score_text, white_col, App->font->fonts.end->data), 900, 368, &scoreRect, 1, false);
-
-		sprintf(total_smashed_notes_text, "%d", App->note->total_smashed_notes);
-		App->font->CalcSize(total_smashed_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(total_smashed_notes_text, white_col, App->font->fonts.end->data), 900, 462, &scoreRect, 1, false);
-
-		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
-		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 524, &scoreRect, 1, false);
-*/
-		//NEXT IS FOR TIME
-		/*int sec = (int)match_time.ReadSec() % 60;
-		int min = match_time.ReadSec() / 60;
-		
-		sprintf(match_time_min_text, "%d", min);
-		int min_size = App->font->CalcSize(match_time_min_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(match_time_min_text, white_col, App->font->fonts.end->data), 900, 288, &scoreRect, 1, false);
-
-		char *p = ":";
-		int t_size = App->font->CalcSize(p, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(p, white_col, App->font->fonts.end->data), 900 + min_size, 288, &scoreRect, 1, false);
-
-		sprintf(match_time_sec_text, "%d", min);
-		App->font->CalcSize(match_time_sec_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(match_time_sec_text, white_col, App->font->fonts.end->data), 900 + min_size + t_size, 288, &scoreRect, 1, false);*/
-
-
-
-	/*	if (App->input->GetKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-			ChangeScreen(MAIN_MENU);*/
-
-	}
 	return true;
 }
 
 // Called each loop iteration
 bool j1Scene::PostUpdate()
 {
+
 	bool ret = true;
 	if (current_screen == GAME_OVER) {
+
 		SDL_Color white_col = { 255, 255, 255, 255 };
 		App->render->Blit(App->font->Print(score_text, white_col, App->font->fonts.end->data), 900, 368, &scoreRect, 1, false);
 
@@ -450,8 +435,11 @@ bool j1Scene::PostUpdate()
 		SDL_Rect img_rect = { 0, 0, 1280, 720 };
 		App->render->Blit(Game_Over_txtr, 0, 70, &img_rect);
 	}
+
 	if(current_screen==TIP)
 		App->render->Blit(KeyboardAnimation_Text, 490, 350, &KeyboardAnimation.GetCurrentFrame());
+
+
 	if (current_screen == MAIN_MENU) {
 		
 		if (Mode1->isActive&&Mode1->onTop()) {
@@ -470,15 +458,18 @@ bool j1Scene::PostUpdate()
 	if (current_screen == GAME) {
 		
 		if (boosterActivated == true) {
+
 			if (multiplier == 2) {
 				BoosterAnim(boosterx2);
 				App->render->Blit(Boosters_tex, 600, 300, &boosterx2.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
 			}
+
 			else if (multiplier == 3) {
 				BoosterAnim(boosterx3);
 				App->render->Blit(Boosters_tex, 600, 300, &boosterx3.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
 
 			}
+
 			else if (multiplier == 4) {
 				BoosterAnim(boosterx4);
 				App->render->Blit(Boosters_tex, 600, 300, &boosterx4.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
@@ -486,8 +477,11 @@ bool j1Scene::PostUpdate()
 		}
 	}
 
-	if(current_screen==MAIN_MENU&& App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (current_screen == MAIN_MENU && App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
+
+		App->SaveGame("saved_data.xml");
 		ret = false;
+	}
 
 	return ret;
 }
@@ -497,7 +491,7 @@ bool j1Scene::PostUpdate()
 //SCENE METHODS
 void j1Scene::HandleGeneralInput() {
 
-	if (App->input->GetKey(SDL_SCANCODE_T) || App->input->GetKey(SDL_SCANCODE_ESCAPE))
+	if (App->input->GetKey(SDL_SCANCODE_S) || App->input->GetKey(SDL_SCANCODE_ESCAPE))
 		App->SaveGame("saved_data.xml");
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
@@ -514,7 +508,6 @@ void j1Scene::HandleGameScreen(float dt) {
 		play_video = false;
 		App->audio->PlayMusic("audio/music/GodDamn_Song3.ogg",0);
 		App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
-		//App->video->StopVideo();
 	}
 
 	//Notes deleter blit & colider
@@ -524,6 +517,7 @@ void j1Scene::HandleGameScreen(float dt) {
 	if (PauseGame == true) {
 
 		App->video->StopVideo();
+		App->audio->PauseMusic();
 	}
 	HandleGeneralInput();
 
@@ -533,10 +527,9 @@ void j1Scene::HandleGameScreen(float dt) {
 
 
 	if (PauseGame == false) {
-		//if (read_next_array_pos.ReadMs() > 101) {
-		//		int a = read_next_array_pos.ReadMs();
-		//		bool a2 = true;
-		//}
+
+		if (App->audio->MusicPaused() == true)
+			App->audio->ResumeMusic();
 
 		if (!change_input)
 			HandleInput();
@@ -559,36 +552,43 @@ void j1Scene::HandleGameScreen(float dt) {
 
 
 	//Smashers colliders
-	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f);
-	smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f);
+	int y_corr = 5;
+	smViolet.smasher_collider->SetPos(x + smViolet.smasher_rect.w * 0.33f + 25, y + smViolet.smasher_rect.h * 0.48f - y_corr);
+	smBlue.smasher_collider->SetPos(x + smBlue.smasher_rect.w * 0.33f + 135, y + smBlue.smasher_rect.h * 0.48f - y_corr);
 
-	smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f);
-	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f);
+	smYellow.smasher_collider->SetPos(x + smYellow.smasher_rect.w * 0.33f + 245, y + smYellow.smasher_rect.h * 0.48f - y_corr);
+	smPink.smasher_collider->SetPos(x + smPink.smasher_rect.w * 0.33f + 350, y + smPink.smasher_rect.h * 0.48f - y_corr);
 
 
 	//Blitting Light PowerUps
 	if (PowerUpActivated) {
+
 		App->render->Blit(PowerUp_Light_tex, x + 60, 720 - 430, &Left_Light.GetCurrentFrame(), 1, 1, 22, 60, 0);
 		App->render->Blit(PowerUp_Light_tex, x + 225, 720 - 370, &Right_Light.GetCurrentFrame(), 1, 1, -19, 0, 0);
 	}
+
+
 	//counter to Activate PowerUps
 	SDL_Rect PowerUp_counterback = { 160, 0, 160, 290 };
+	
+	if (PowerUp_notes_counter >= 40) {
 
-	if (PowerUp_notes_counter > 40) {
 		PowerUp_notes_counter = 40;
-	}
-	else if (PowerUp_notes_counter >= 40) {
-		if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT&&App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT
-			&&App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT&&App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+
+		if (App->input->GetKey(SDL_SCANCODE_SPACE))
 			PowerUpActivated = true;
 	}
+
 	if (PowerUpActivated) {
+
 		if(match_time.Read()%4==0)
 			PowerUp_notes_counter--;
-		if (PowerUp_notes_counter <= 0) {
+
+		if (PowerUp_notes_counter <= 0) 
 			PowerUpActivated = false;
-		}
+		
 	}
+
 	//x+40,530
 	PowerUP_counter.h= (PowerUp_notes_counter*292)/40;
 	App->render->Blit(PowerUP_counter_tex,x-50, 430, &PowerUp_counterback, 1,1,180);
@@ -631,6 +631,7 @@ void j1Scene::HandleGameScreen(float dt) {
 		SDL_Rect aux = { 0, 0, 235, 248 };
 		App->render->Blit(multiplier_Head_tex, 185,497 , &aux,1.12f,1.0f,0,0,0,SDL_FLIP_NONE,true);
 	}
+
 	sprintf(score_text, "%d", score);
 	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
@@ -639,99 +640,215 @@ void j1Scene::HandleGameScreen(float dt) {
 
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
-
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-		ChangeScreen(GAME_OVER);
 }
 
 
 void j1Scene::HandleInput() {
 
 	//INPUTS
+
+	//Anims
 	//1 (Violet)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT)
 		smViolet.Current_anim = &smViolet.Pushed_anim;
 	else
 		smViolet.Current_anim = &smViolet.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
-
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smViolet.Current_anim = &smViolet.Enter_anim;
-		if (App->note->colliding == false) {
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
-			}
-		}
-	}
-
-
-	//2 (Blue)
+	//2
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT)
 		smBlue.Current_anim = &smBlue.Pushed_anim;
 	else
 		smBlue.Current_anim = &smBlue.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
-
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smBlue.Current_anim = &smBlue.Enter_anim;
-		if (App->note->colliding == false) {
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
-			}
-		}
-
-	}
-
-
-	//3 (Yellow)
+	//3
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
 		smYellow.Current_anim = &smYellow.Pushed_anim;
 	else
 		smYellow.Current_anim = &smYellow.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
-		
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smYellow.Current_anim = &smYellow.Enter_anim;
-		if (App->note->colliding == false) {
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
-			}
-		}
-	}
-
-
-	//4 (Pink)
+	//4
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
 		smPink.Current_anim = &smPink.Pushed_anim;
 	else
 		smPink.Current_anim = &smPink.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT) {
-	
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_REPEAT)
 		smPink.Current_anim = &smPink.Enter_anim;
-		if (App->note->colliding == false) {
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
+
+	//Failing Notes
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+
+		smViolet.Current_anim = &smViolet.Enter_anim;
+
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET)
+				counter++;
+		
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET) {
+
+				if (nItem->data->vColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
 			}
 		}
 	}
 
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+
+		smBlue.Current_anim = &smBlue.Enter_anim;
+
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_BLUE)
+				counter++;
+
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_BLUE) {
+
+				if (nItem->data->bColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
+			}
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+
+		smYellow.Current_anim = &smYellow.Enter_anim;
+
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_YELLOW)
+				counter++;
+
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_YELLOW) {
+
+				if (nItem->data->yeColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
+			}
+		}
+	}
+
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+
+		smPink.Current_anim = &smPink.Enter_anim;
+
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_PINK)
+				counter++;
+
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_PINK) {
+
+				if (nItem->data->piColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
+			}
+		}
+	}
 }
 
 
@@ -739,76 +856,186 @@ void j1Scene::HandleInput2() {
 
 	//INPUTS
 	//1 (Violet)
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
-
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) 
 		smViolet.Current_anim = &smViolet.Enter_anim;
-		if (App->note->colliding == false) {
-
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
-			}
-		}
-	}
+	
 	else
 		smViolet.Current_anim = &smViolet.Standard_anim;
 
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 
-	//2 (Blue)
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET)
+				counter++;
 
-		smBlue.Current_anim = &smBlue.Enter_anim;
-		if (App->note->colliding == false) {
+		if (counter == 0) {
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET) {
+
+				if (nItem->data->vColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
 			}
 		}
 	}
+
+	//2 (Blue)
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) 
+		smBlue.Current_anim = &smBlue.Enter_anim;
+		
 	else
 		smBlue.Current_anim = &smBlue.Standard_anim;
 
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 
-	//3 (Yellow)
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
-	
-		smYellow.Current_anim = &smYellow.Enter_anim;
-		if (App->note->colliding == false) {
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_BLUE)
+				counter++;
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_BLUE) {
+
+				if (nItem->data->bColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
 			}
 		}
 	}
+
+	//3 (Yellow)
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		smYellow.Current_anim = &smYellow.Enter_anim;
 	else
 		smYellow.Current_anim = &smYellow.Standard_anim;
 
+	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
 
-	//4 (Pink)
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
-	
-		smPink.Current_anim = &smPink.Enter_anim;
-		if (App->note->colliding == false) {
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_YELLOW)
+				counter++;
 
-			if (App->render->DoCameraShake == false) {
-				App->render->DoCameraShake = true;
-				App->render->power = 2.0f;
-				App->render->Time_Doing_Shake = 0.2f;
-				PERF_START(App->render->CameraShake_Time);
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_YELLOW) {
+
+				if (nItem->data->yeColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
 			}
 		}
 	}
+
+	//4 (Pink)
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		smPink.Current_anim = &smPink.Enter_anim;
 	else
 		smPink.Current_anim = &smPink.Standard_anim;
 
+	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+
+		p2List_item<Note*>* nItem = notes.start;
+		int counter = 0;
+		for (; nItem; nItem = nItem->next)
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_PINK)
+				counter++;
+
+		if (counter == 0) {
+
+			App->audio->PlayFx(Failnote_SFX);
+			App->note->numNotes = 0;
+			PowerUp_notes_counter--;
+		}
+
+		nItem = notes.start;
+		for (; nItem; nItem = nItem->next) {
+
+			if (nItem->data->nColor == NOTE_COLOR::NOTE_PINK) {
+
+				if (nItem->data->piColliding == false) {
+
+					App->audio->PlayFx(Failnote_SFX);
+					App->note->numNotes = 0;
+					PowerUp_notes_counter--;
+
+					if (App->render->DoCameraShake == false) {
+						App->render->DoCameraShake = true;
+						App->render->power = 2.0f;
+						App->render->Time_Doing_Shake = 0.2f;
+						PERF_START(App->render->CameraShake_Time);
+					}
+				}
+
+				break;
+			}
+		}
+	}
 }
 
 
@@ -841,6 +1068,7 @@ bool j1Scene::Save(pugi::xml_node& data) const
 void j1Scene::ChangeScreen(int screen) {
 
 	if (current_screen == GAME) {
+
 		Aux_Screen = GAME;
 		App->collisions->CleanUp();
 
@@ -859,13 +1087,13 @@ void j1Scene::ChangeScreen(int screen) {
 
 		play_video = false;
 		counter = 0;
+		keep_reading = true;
 
 	}
 
 	if (screen == GAME) {
 
 		current_screen = GAME;
-		//App->audio->CleanUp();
 		App->audio->PlayMusic("audio/music/Initial_Effect_Sound.ogg");
 		pugi::xml_parse_result result = Buttons_Document.load_file("Butons_Settings.xml");
 		if (result == NULL)
@@ -898,21 +1126,18 @@ void j1Scene::ChangeScreen(int screen) {
 		score = 0;
 
 		play_video = true;
-		//App->video->PlayVideo("video/GodDamn_NoAudio2.ogv", { 0,-50,1280,850 });
 
 	}
 	else if (screen == MAIN_MENU) {
+
 		Aux_Screen = MAIN_MENU;
-		App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
-		//App->audio->Init();
-		//App->audio->Start();
 		current_screen = MAIN_MENU;
 	
 	}
 
 	else if (screen == GAME_OVER) {
-		//App->video->CleanUp();
-		App->audio->PlayMusic("",1);
+
+		App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 		Aux_Screen = GAME_OVER;
 		current_screen = GAME_OVER;
 	}

@@ -115,14 +115,6 @@ private:
 	//Notes deleter
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
-
-	//Note Smashers
-	Smasher smBlue;
-	Smasher smPink;
-	Smasher smViolet;
-	Smasher smYellow;
-
-
 	
 	//Guitar animation
 	Animation Guitar;
@@ -183,11 +175,11 @@ private:
 	p2DynArray<iPoint4d> notes_positions;
 
 	j1PerfTimer videostart;
-
 	j1PerfTimer read_next_array_pos;
 	
 	int counter = 0;
 	int lastframe = 0;
+	bool keep_reading = true;
 
 	SDL_Rect scoreRect = { 0, 0, 20, 20 };
 	char score_text[100];
@@ -223,6 +215,13 @@ public:
 	bool change_input = false;
 
 	bool PauseGame;
+
+	//Note Smashers
+	Smasher smBlue;
+	Smasher smPink;
+	Smasher smViolet;
+	Smasher smYellow;
+
 
 private:
 
