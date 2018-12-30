@@ -152,7 +152,11 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 		if (App->scene->PowerUpActivated==false) {
 			if (General_collided_timer.Read() >= 100) {
-
+				if (App->scene->failnote == false) {
+					App->audio->PlayFx(App->scene->Failnote_SFX);
+					App->audio->ControlMUSVolume(3);
+					App->scene->failnote = true;
+				}
 				DestroyNote(App->scene->notes.start->data);
 				PERF_START(General_collided_timer);
 				numNotes = 0;
@@ -190,6 +194,8 @@ void Note::CollisionInput1(Collider* c2) {
 					if (item->data->nColor == NOTE_VIOLET) {
 						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x+15, c2->rect.y-80 , COLLIDER_NONE,fPoint(0,0),0.7f);
 						DestroyNote(item->data);
+						App->audio->ControlMUSVolume(App->scene->volume);
+						App->scene->failnote = false;
 						PERF_START(Violet_collided_timer);
 						numNotes++;
 						App->scene->score += 250 * App->scene->multiplier;
@@ -213,7 +219,8 @@ void Note::CollisionInput1(Collider* c2) {
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_BLUE) {
 						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
-
+						App->audio->ControlMUSVolume(App->scene->volume);
+						App->scene->failnote = false;
 						DestroyNote(item->data);
 						PERF_START(Blue_collided_timer);
 						numNotes++;
@@ -238,7 +245,8 @@ void Note::CollisionInput1(Collider* c2) {
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_YELLOW) {
 						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
-
+						App->audio->ControlMUSVolume(App->scene->volume);
+						App->scene->failnote = false;
 						DestroyNote(item->data);
 						PERF_START(Yellow_collided_timer);
 						numNotes++;
@@ -263,7 +271,8 @@ void Note::CollisionInput1(Collider* c2) {
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_PINK) {
 						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
-
+						App->audio->ControlMUSVolume(App->scene->volume);
+						App->scene->failnote = false;
 						DestroyNote(item->data);
 						PERF_START(Pink_collided_timer);
 						numNotes++;
@@ -289,7 +298,9 @@ void Note::CollisionInput2(Collider* c2) {
 			p2List_item<Note*> *item = App->scene->notes.start;
 			for (; item; item = item->next) {
 				if (item->data->nColor == NOTE_VIOLET) {
-
+					App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
+					App->audio->ControlMUSVolume(App->scene->volume);
+					App->scene->failnote = false;
 					DestroyNote(item->data);
 					PERF_START(Violet_collided_timer);
 					numNotes++;
@@ -310,7 +321,9 @@ void Note::CollisionInput2(Collider* c2) {
 			p2List_item<Note*> *item = App->scene->notes.start;
 			for (; item; item = item->next) {
 				if (item->data->nColor == NOTE_BLUE) {
-
+					App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
+					App->audio->ControlMUSVolume(App->scene->volume);
+					App->scene->failnote = false;
 					DestroyNote(item->data);
 					PERF_START(Blue_collided_timer);
 					numNotes++;
@@ -331,7 +344,9 @@ void Note::CollisionInput2(Collider* c2) {
 			p2List_item<Note*> *item = App->scene->notes.start;
 			for (; item; item = item->next) {
 				if (item->data->nColor == NOTE_YELLOW) {
-
+					App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
+					App->audio->ControlMUSVolume(App->scene->volume);
+					App->scene->failnote = false;
 					DestroyNote(item->data);
 					PERF_START(Yellow_collided_timer);
 					numNotes++;
@@ -352,7 +367,9 @@ void Note::CollisionInput2(Collider* c2) {
 			p2List_item<Note*> *item = App->scene->notes.start;
 			for (; item; item = item->next) {
 				if (item->data->nColor == NOTE_PINK) {
-
+					App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x + 15, c2->rect.y - 80, COLLIDER_NONE, fPoint(0, 0), 0.7f);
+					App->audio->ControlMUSVolume(App->scene->volume);
+					App->scene->failnote = false;
 					DestroyNote(item->data);
 					PERF_START(Pink_collided_timer);
 					numNotes++;

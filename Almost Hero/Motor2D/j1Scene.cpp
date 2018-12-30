@@ -67,6 +67,7 @@ bool j1Scene::Start()
 {
 	float scale = 1.0f;
 
+	volume = 90;
 
 	Main_MenuScene = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(0, 0), { 0,0,1280,720 }, BLITTING, { 0,0,1280,720 });
 	Main_MenuScene->texture = App->tex->Load("gui/Main_Menu_LIGHT_ON.png");
@@ -122,6 +123,7 @@ bool j1Scene::Start()
 	Feedback->Current_Texture = Feedback->texture;
 
 	current_screen = MAIN_MENU;
+	App->audio->ControlMUSVolume(volume);
 	App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 
 	UI_Elements_List.add(Main_MenuScene);
@@ -156,6 +158,8 @@ bool j1Scene::Start()
 	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
 	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
 
+	Failnote_SFX = App->audio->LoadFx("audio/fx/fail_notes_effects.wav");
+
 	//Pushbacks
 	LoadPushbacks();
 
@@ -167,6 +171,7 @@ bool j1Scene::Start()
 	Bottom_Limit.h = 50;
 
 
+	App->audio->ControlSFXVolume(20);
 
 	PauseGame = false;
 
@@ -231,7 +236,6 @@ bool j1Scene::PreUpdate()
 			}
 			if (UI_Item->data->Logic == DRAGVOLUME) {
 				if (Volume_Background->Clicked()) {
-					int volume;
 					UI_Item->data->VolumeControl(newMousePos, lastMousePos,volume);
 					App->audio->ControlMUSVolume(volume);
 
@@ -464,6 +468,7 @@ bool j1Scene::PostUpdate()
 			App->render->Blit(keyboardText, 900, 530, &Numbers.frames[5], 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
 	}
 	if (current_screen == GAME) {
+		
 		if (boosterActivated == true) {
 			if (multiplier == 2) {
 				BoosterAnim(boosterx2);

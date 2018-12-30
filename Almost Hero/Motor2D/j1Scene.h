@@ -67,6 +67,9 @@ public:
 	int score = 0;
 	int PowerUp_notes_counter=0;
 	bool PowerUpActivated = false;
+	int volume;
+	int Failnote_SFX;
+	bool failnote = false;
 
 private:
 	
@@ -88,7 +91,7 @@ private:
 	void HandleInput2();
 	void HandleGeneralInput();
 	void HandleGameScreen(float dt);
-
+	
 	void LoadPushbacks();
 
 private:
