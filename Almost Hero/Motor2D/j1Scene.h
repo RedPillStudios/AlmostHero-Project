@@ -176,7 +176,8 @@ private:
 
 	j1PerfTimer videostart;
 	j1PerfTimer read_next_array_pos;
-	
+	j1Timer end_timer;
+
 	int counter = 0;
 	int lastframe = 0;
 	bool keep_reading = true;

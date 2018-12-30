@@ -8,8 +8,8 @@
 	<video />
 	<scene>
 		<scene>
-			<END_DATA score:="46500" total_smashed_notes:="186" total_song_notes_before_quiting_or_ending:="313" lost_notes:="127" hit_percentage:="59.4249191" />
-			<TIMER time(min):="1" time(s):="20" />
+			<END_DATA score:="8500" total_smashed_notes:="34" total_song_notes_before_quiting_or_ending:="60" lost_notes:="26" hit_percentage:="56.6666679" />
+			<TIMER time(min):="0" time(s):="19" />
 		</scene>
 	</scene>
 	<Note />

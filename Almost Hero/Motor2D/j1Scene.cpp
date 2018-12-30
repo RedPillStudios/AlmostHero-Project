@@ -191,8 +191,18 @@ bool j1Scene::PreUpdate()
 			read_next_array_pos.Start();
 			counter++;
 
-			if (counter == notes_positions.Count())
+			if (counter == notes_positions.Count()) {
 				keep_reading = false;
+				App->audio->PauseMusic();
+				App->video->StopVideo();
+				end_timer.Start();
+			}
+		}
+
+		if (keep_reading == false && end_timer.ReadSec() > 5) {
+
+			App->audio->ResumeMusic();
+			ChangeScreen(GAME_OVER);
 		}
 	}
 
@@ -293,7 +303,7 @@ bool j1Scene::PreUpdate()
 
 				if (UI_Item->data->Clicked()) {
 
-					if (Play->isActive == false&&current_screen==MAIN_MENU) {
+					if (Play->isActive == false && current_screen==MAIN_MENU) {
 						for (p2List_item<UI_Element*>*UI_Item2 = UI_Elements_List.start; UI_Item2 != nullptr; UI_Item2 = UI_Item2->next) {
 
 							if( UI_Item2->data != Main_MenuScene)
@@ -315,6 +325,7 @@ bool j1Scene::PreUpdate()
 						Pause->isActive = false;
 						TipPause->isActive = false;
 						GameOverScene->isActive=true;
+						App->SaveGame("saved_data.xml");
 						ChangeScreen(GAME_OVER);
 					}
 
@@ -477,11 +488,8 @@ bool j1Scene::PostUpdate()
 		}
 	}
 
-	if (current_screen == MAIN_MENU && App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
-
-		App->SaveGame("saved_data.xml");
+	if (current_screen == MAIN_MENU && App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 		ret = false;
-	}
 
 	return ret;
 }
@@ -490,9 +498,6 @@ bool j1Scene::PostUpdate()
 
 //SCENE METHODS
 void j1Scene::HandleGeneralInput() {
-
-	if (App->input->GetKey(SDL_SCANCODE_S) || App->input->GetKey(SDL_SCANCODE_ESCAPE))
-		App->SaveGame("saved_data.xml");
 
 	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y++;
@@ -686,48 +691,48 @@ void j1Scene::HandleInput() {
 
 
 	//Failing Notes
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+	//if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 
-		smViolet.Current_anim = &smViolet.Enter_anim;
+	//	smViolet.Current_anim = &smViolet.Enter_anim;
 
-		p2List_item<Note*>* nItem = notes.start;
-		int counter = 0;
-		for (; nItem; nItem = nItem->next)
-			if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET)
-				counter++;
-		
-		if (counter == 0) {
+	//	p2List_item<Note*>* nItem = notes.start;
+	//	int counter = 0;
+	//	for (; nItem; nItem = nItem->next)
+	//		if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET)
+	//			counter++;
+	//	
+	//	if (counter == 0) {
 
-			App->audio->PlayFx(Failnote_SFX);
-			App->note->numNotes = 0;
-			PowerUp_notes_counter--;
-		}
+	//		App->audio->PlayFx(Failnote_SFX);
+	//		App->note->numNotes = 0;
+	//		PowerUp_notes_counter--;
+	//	}
 
-		nItem = notes.start;
-		for (; nItem; nItem = nItem->next) {
+	//	nItem = notes.start;
+	//	for (; nItem; nItem = nItem->next) {
 
-			if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET) {
+	//		if (nItem->data->nColor == NOTE_COLOR::NOTE_VIOLET) {
 
-				if (nItem->data->vColliding == false) {
+	//			if (nItem->data->vColliding == false) {
 
-					App->audio->PlayFx(Failnote_SFX);
-					App->note->numNotes = 0;
-					PowerUp_notes_counter--;
+	//				App->audio->PlayFx(Failnote_SFX);
+	//				App->note->numNotes = 0;
+	//				PowerUp_notes_counter--;
 
-					if (App->render->DoCameraShake == false) {
-						App->render->DoCameraShake = true;
-						App->render->power = 2.0f;
-						App->render->Time_Doing_Shake = 0.2f;
-						PERF_START(App->render->CameraShake_Time);
-					}
-				}
+	//				if (App->render->DoCameraShake == false) {
+	//					App->render->DoCameraShake = true;
+	//					App->render->power = 2.0f;
+	//					App->render->Time_Doing_Shake = 0.2f;
+	//					PERF_START(App->render->CameraShake_Time);
+	//				}
+	//			}
 
-				break;
-			}
-		}
-	}
+	//			break;
+	//		}
+	//	}
+	//}
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+	/*if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
 
 		smBlue.Current_anim = &smBlue.Enter_anim;
 
@@ -848,7 +853,7 @@ void j1Scene::HandleInput() {
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 
@@ -862,7 +867,7 @@ void j1Scene::HandleInput2() {
 	else
 		smViolet.Current_anim = &smViolet.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
+	/*if (App->input->GetKey(SDL_SCANCODE_1) == KEY_DOWN) {
 
 		p2List_item<Note*>* nItem = notes.start;
 		int counter = 0;
@@ -899,7 +904,7 @@ void j1Scene::HandleInput2() {
 				break;
 			}
 		}
-	}
+	}*/
 
 	//2 (Blue)
 	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) 
@@ -908,7 +913,7 @@ void j1Scene::HandleInput2() {
 	else
 		smBlue.Current_anim = &smBlue.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
+	/*if (App->input->GetKey(SDL_SCANCODE_2) == KEY_DOWN) {
 
 		p2List_item<Note*>* nItem = notes.start;
 		int counter = 0;
@@ -945,7 +950,7 @@ void j1Scene::HandleInput2() {
 				break;
 			}
 		}
-	}
+	}*/
 
 	//3 (Yellow)
 	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
@@ -953,7 +958,7 @@ void j1Scene::HandleInput2() {
 	else
 		smYellow.Current_anim = &smYellow.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
+	/*if (App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN) {
 
 		p2List_item<Note*>* nItem = notes.start;
 		int counter = 0;
@@ -990,7 +995,7 @@ void j1Scene::HandleInput2() {
 				break;
 			}
 		}
-	}
+	}*/
 
 	//4 (Pink)
 	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
@@ -998,7 +1003,7 @@ void j1Scene::HandleInput2() {
 	else
 		smPink.Current_anim = &smPink.Standard_anim;
 
-	if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
+	/*if (App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN) {
 
 		p2List_item<Note*>* nItem = notes.start;
 		int counter = 0;
@@ -1035,7 +1040,7 @@ void j1Scene::HandleInput2() {
 				break;
 			}
 		}
-	}
+	}*/
 }
 
 
@@ -1085,10 +1090,6 @@ void j1Scene::ChangeScreen(int screen) {
 		if (App->video->IsPlaying())
 			App->video->StopVideo();
 
-		play_video = false;
-		counter = 0;
-		keep_reading = true;
-
 	}
 
 	if (screen == GAME) {
@@ -1126,6 +1127,8 @@ void j1Scene::ChangeScreen(int screen) {
 		score = 0;
 
 		play_video = true;
+		keep_reading = true;
+		counter = 0;
 
 	}
 	else if (screen == MAIN_MENU) {
