@@ -71,6 +71,8 @@ public:
 	int Failnote_SFX;
 	bool failnote = false;
 
+	int times_PU_used = 0;
+
 private:
 	
 	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
@@ -82,7 +84,7 @@ private:
 	void ReadArray(iPoint4d vec);
 	void LoadSongArray();
 
-	bool Save(pugi::xml_node& data_) const;
+	bool Save(pugi::xml_node& data) const;
 	void ChangeScreen(int screen);
 
 	void BoosterAnim(Animation Booster);
@@ -93,6 +95,8 @@ private:
 	void HandleGameScreen(float dt);
 	
 	void LoadPushbacks();
+	bool PushFailure2();
+	bool PushFailure();
 
 private:
 
@@ -159,6 +163,9 @@ private:
 	UI_Element* Tip3;
 	UI_Element* Tip4;
 	UI_Element* Tip5;
+	UI_Element* Tip6;
+	UI_Element* Tip7;
+	UI_Element* Tip8;
 	UI_Element* TipPause;
 	UI_Element* Feedback;
 

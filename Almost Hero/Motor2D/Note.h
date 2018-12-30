@@ -76,7 +76,6 @@ public:
 
 public:
 
-
 	//Notes attributes
 	fPoint velocity = fPoint(0.0f, 0.2f);
 	fPoint initial_pos = fPoint(595.0f, 280.0f);

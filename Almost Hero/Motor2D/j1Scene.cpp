@@ -101,18 +101,27 @@ bool j1Scene::Start()
 	Volume_Bar->isActive = false;
 	Quit = App->gui->Add_UIElement(BUTTON, iPoint(550, 620), { 188, 304, 188, 77 }, QUIT, { 0, 304, 188, 77 });
 
-	Tip1 = App->gui->Add_UIElement(LABEL, iPoint(220, 660), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Really guys, don't forget the fu*!/ README!!!");
+
+	Tip1 = App->gui->Add_UIElement(LABEL, iPoint(220, 660), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Really guys, don't forget the README!!!");
 	Tip1->isActive = false;
-	Tip2 = App->gui->Add_UIElement(LABEL, iPoint(130, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Pay attention to the icon and aproach the keyboard ¡use it as a Guitar!");
+	Tip2 = App->gui->Add_UIElement(LABEL, iPoint(20, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Pay attention to the icon and approach the keyboard... Use it as a Guitar! FEEL THE POWER");
 	Tip2->isActive = false;
 	Tip3 = App->gui->Add_UIElement(LABEL, iPoint(110, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: If your experience with mode 1 was very disgusting, try the mode2 LOSER");
 	Tip3->isActive = false;							   
-	Tip4 = App->gui->Add_UIElement(LABEL, iPoint(40, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Remember to do the Questionaire and send us the Data, unless you want us to FAIL... ");
+	Tip4 = App->gui->Add_UIElement(LABEL, iPoint(40, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Remember to do the Questionaire and send us the Data, unless you want us to FAIL");
 	Tip4->isActive = false;							   
-	Tip5 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: We supose that work on this until 6 am everyday will make us work with rockstar, NO?");
+	Tip5 = App->gui->Add_UIElement(LABEL, iPoint(20, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: We supose that work on this until 6am everyday will make us work with rockstar... Don't?");
 	Tip5->isActive = false;
+	Tip6 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Hope that Rick is happy with this and put us on King or something... We are ready right?");
+	Tip6->isActive = false;
+	Tip7 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: This game is unbreakable... Just as Spain");
+	Tip7->isActive = false;
+	Tip8 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: If you don't fail any note you'll fly high like Carrero");
+	Tip8->isActive = false;
 	TipPause = App->gui->Add_UIElement(LABEL, iPoint(340, 500), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.3f, SDL_Color{ 255,255,255,255 }, nullptr, "PRess Esc to resume the game");
 	TipPause->isActive = false;
+
+	
 	Pause = App->gui->Add_UIElement(BAR, iPoint(400, 180), { 5, 548, 553, 224 }, BLITTING, { 5, 772, 553, 224 });
 	Pause->isActive = false;
 	Pause->CurrentRect = &Pause->UI_Rect_Active;
@@ -201,7 +210,12 @@ bool j1Scene::PreUpdate()
 
 		if (keep_reading == false && end_timer.ReadSec() > 5) {
 
-			App->audio->ResumeMusic();
+			if (App->audio->MusicPaused() == true)
+				App->audio->ResumeMusic();
+			Pause->isActive = false;
+			TipPause->isActive = false;
+			GameOverScene->isActive = true;
+			App->SaveGame("saved_data.xml");
 			ChangeScreen(GAME_OVER);
 		}
 	}
@@ -277,7 +291,7 @@ bool j1Scene::PreUpdate()
 								UI_Item2->data->isActive = false;
 						}
 					}
-					int a = rand() % 5;
+					int a = rand() % 8;
 					switch (a)
 					{
 					case 0:
@@ -295,8 +309,16 @@ bool j1Scene::PreUpdate()
 					case 4:
 						Tip5->isActive = true;
 						break;
+					case 5:
+						Tip6->isActive = true;
+						break;
+					case 6:
+						Tip7->isActive = true;
+						break;
+					case 7:
+						Tip8->isActive = true;
+						break;
 					}
-
 				}
 			}
 			if ((UI_Item->data->Logic == QUIT)) {
@@ -321,7 +343,8 @@ bool j1Scene::PreUpdate()
 					
 					else if (current_screen == GAME) {
 
-						App->audio->ResumeMusic();
+						if(App->audio->MusicPaused() == true)
+							App->audio->ResumeMusic();
 						Pause->isActive = false;
 						TipPause->isActive = false;
 						GameOverScene->isActive=true;
@@ -337,7 +360,7 @@ bool j1Scene::PreUpdate()
 						current_screen = TIP;		
 						PERF_START(TipScreen);
 						PauseGame = false;
-						int a = rand() % 5;
+						int a = rand() % 8;
 						switch (a)
 						{
 						case 0:
@@ -354,6 +377,15 @@ bool j1Scene::PreUpdate()
 							break;
 						case 4:
 							Tip5->isActive = true;
+							break;
+						case 5:
+							Tip6->isActive = true;
+							break;
+						case 6:
+							Tip7->isActive = true;
+							break;
+						case 7:
+							Tip8->isActive = true;
 							break;
 						}
 					}
@@ -402,6 +434,9 @@ bool j1Scene::Update(float dt)
 			Tip3->isActive = false;
 			Tip4->isActive = false;
 			Tip5->isActive = false;
+			Tip6->isActive = false;
+			Tip7->isActive = false;
+			Tip8->isActive = false;
 			PERF_START(match_time);
 			ChangeScreen(GAME);
 		}
@@ -413,6 +448,9 @@ bool j1Scene::Update(float dt)
 			Tip3->isActive = false;
 			Tip4->isActive = false;
 			Tip5->isActive = false;
+			Tip6->isActive = false;
+			Tip7->isActive = false;
+			Tip8->isActive = false;
 			Settings->isActive = true;
 			Play->isActive = true;
 			Feedback->isActive = true;
@@ -580,8 +618,10 @@ void j1Scene::HandleGameScreen(float dt) {
 
 		PowerUp_notes_counter = 40;
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE))
+		if (App->input->GetKey(SDL_SCANCODE_SPACE)) {
 			PowerUpActivated = true;
+			times_PU_used++;
+		}
 	}
 
 	if (PowerUpActivated) {
@@ -651,6 +691,20 @@ void j1Scene::HandleGameScreen(float dt) {
 void j1Scene::HandleInput() {
 
 	//INPUTS
+	if (PushFailure2() == true && App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN) {
+
+		App->audio->PlayFx(Failnote_SFX);
+		App->note->numNotes = 0;
+		PowerUp_notes_counter--;
+
+		if (App->render->DoCameraShake == false) {
+			App->render->DoCameraShake = true;
+			App->render->power = 2.0f;
+			App->render->Time_Doing_Shake = 0.2f;
+			PERF_START(App->render->CameraShake_Time);
+		}
+	}
+
 
 	//Anims
 	//1 (Violet)
@@ -859,6 +913,21 @@ void j1Scene::HandleInput() {
 
 void j1Scene::HandleInput2() {
 
+	if (PushFailure() == true) {
+
+		App->audio->PlayFx(Failnote_SFX);
+		App->note->numNotes = 0;
+		PowerUp_notes_counter--;
+
+		if (App->render->DoCameraShake == false) {
+			App->render->DoCameraShake = true;
+			App->render->power = 2.0f;
+			App->render->Time_Doing_Shake = 0.2f;
+			PERF_START(App->render->CameraShake_Time);
+		}
+	}
+
+
 	//INPUTS
 	//1 (Violet)
 	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) 
@@ -1044,27 +1113,78 @@ void j1Scene::HandleInput2() {
 }
 
 
+bool j1Scene::PushFailure() {
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+			return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+			return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_DOWN)
+			return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+			return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_DOWN)
+			return true;
+
+	return false;
+
+}
+
+
+bool j1Scene::PushFailure2() {
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT)
+		return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		return true;
+
+	if (App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT)
+		return true;
+
+	return false;
+}
+
+
 bool j1Scene::Save(pugi::xml_node& data) const
 {
-	pugi::xml_node scen = data.append_child("scene");
-	scen.append_child("END_DATA");
-	scen.append_child("TIMER");
+
+	data.append_child("END_DATA");
+	data.append_child("TIMER");
 
 	int lost_notes = App->note->total_song_notes - App->note->total_smashed_notes;
 	float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->total_song_notes) * 100.0f;
 
-	scen.child("END_DATA").append_attribute("score:") = score;
-	scen.child("END_DATA").append_attribute("total_smashed_notes:") = App->note->total_smashed_notes;
-	scen.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending:") = App->note->total_song_notes;
+	data.child("END_DATA").append_attribute("score") = score;
+	data.child("END_DATA").append_attribute("total_smashed_notes") = App->note->total_smashed_notes;
+	data.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending") = App->note->total_song_notes;
 
-	scen.child("END_DATA").append_attribute("lost_notes:") = lost_notes;
-	scen.child("END_DATA").append_attribute("hit_percentage:") = hit_percentage;
+	data.child("END_DATA").append_attribute("lost_notes") = lost_notes;
+	data.child("END_DATA").append_attribute("hit_percentage") = hit_percentage;
+	data.child("END_DATA").append_attribute("times_powerUP_used") = times_PU_used;
 
-	int sec =  (int)match_time.ReadSec() % 60;
-	int min = match_time.ReadSec() /60;
-	scen.child("TIMER").append_attribute("time(min):") = min;
-	scen.child("TIMER").append_attribute("time(s):") = sec;
-	
+	int game_mode = 0;
+	if (change_input == false)
+		game_mode = 1;
+	else
+		game_mode = 2;
+
+	data.child("END_DATA").append_attribute("game_mode") = game_mode;
+
+	int sec = (int)match_time.ReadSec() % 60;
+	int min = match_time.ReadSec() / 60;
+	data.child("TIMER").append_attribute("time_min") = min;
+	data.child("TIMER").append_attribute("time_s") = sec;
 
 	return true;
 }
@@ -1129,6 +1249,7 @@ void j1Scene::ChangeScreen(int screen) {
 		play_video = true;
 		keep_reading = true;
 		counter = 0;
+		times_PU_used = 0;
 
 	}
 	else if (screen == MAIN_MENU) {

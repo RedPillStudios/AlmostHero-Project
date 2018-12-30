@@ -56,7 +56,7 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	bool GetSaves(const char* path) const;
 
 private:
 
@@ -97,6 +97,9 @@ public:
 	j1Fonts*			font = NULL;
 	j1Gui*				gui = NULL;
 	Video*				video = NULL;
+
+
+	int					save_iteration = 0;
 
 private:
 
