@@ -191,10 +191,11 @@ bool UI_Element::Clicked() {
 
 	if (onTop()) {
 		if (App->input->GetMouseButtonDown(KEY_DOWN) && isClicked == false) {
-			if(isActive)
+			if (Logic != DRAGVOLUME && Logic != BACKVOLUME) {
 				App->audio->PlayFx(App->gui->clickSFX);
-			if (Logic != DRAGVOLUME&&Logic!=BACKVOLUME)
 				isClicked = true;
+			}
+				
 			return true;
 		}
 		else

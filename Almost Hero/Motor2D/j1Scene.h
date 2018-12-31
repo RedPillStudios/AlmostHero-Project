@@ -207,7 +207,6 @@ private:
 	SCREEN_TYPE current_screen;
 	SCREEN_TYPE Aux_Screen;
 
-	SDL_Texture* Main_Menu_txtr = nullptr;
 	SDL_Texture* Game_Over_txtr = nullptr;
 
 	j1Timer match_time;

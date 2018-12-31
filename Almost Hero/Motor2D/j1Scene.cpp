@@ -186,8 +186,7 @@ bool j1Scene::Start()
 	App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 	On_top_buttons_SFX = App->audio->LoadFx("audio/fx/On_Top_Buttons.wav");
 
-	//Main Menu & Game Over Screen
-	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
+	//Game Over Screen
 	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
 
 	Failnote_SFX = App->audio->LoadFx("audio/fx/fail_notes_effects.wav");
@@ -635,10 +634,10 @@ bool j1Scene::PostUpdate()
 //SCENE METHODS
 void j1Scene::HandleGeneralInput() {
 
-	if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
+	/*if (App->input->GetKey(SDL_SCANCODE_UP) == KEY_REPEAT)
 		App->render->camera.y++;
 	if (App->input->GetKey(SDL_SCANCODE_DOWN) == KEY_REPEAT)
-		App->render->camera.y--;
+		App->render->camera.y--;*/
 }
 
 
@@ -1362,7 +1361,6 @@ void j1Scene::ChangeScreen(int screen) {
 	else if (screen == MAIN_MENU) {
 
 		Aux_Screen = MAIN_MENU;
-		//App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 		App->note->deleted_notes = 0;
 		current_screen = MAIN_MENU;
 

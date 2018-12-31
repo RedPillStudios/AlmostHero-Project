@@ -232,8 +232,10 @@ void j1App::FinishUpdate()
 	iPoint map_coordinates(x - App->render->camera.x, y - App->render->camera.y);
 
 	static char title[256];
-	sprintf_s(title, 256, "Mouse: %d,%d Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i, dt: %f  Time since startup: %.3f Frame Count: %lu", map_coordinates.x, map_coordinates.y,
-		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	//sprintf_s(title, 256, "Mouse: %d,%d Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i, dt: %f  Time since startup: %.3f Frame Count: %lu", map_coordinates.x, map_coordinates.y,
+	//	avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+
+	sprintf_s(title, 256, "ALMOST HERO v0.5 - PROTOTYPE VERSION");
 	App->win->SetTitle(title);
 
 	double ptime = ptimer.ReadMs();
