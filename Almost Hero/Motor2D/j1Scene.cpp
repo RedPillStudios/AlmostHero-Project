@@ -557,6 +557,8 @@ bool j1Scene::PostUpdate()
 		float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->deleted_notes) * 100.0f;
 		if (App->note->deleted_notes == 0)
 			hit_percentage = 0;
+		if (hit_percentage > 100.0f)
+			hit_percentage = 100.0f;
 
 		sprintf(hit_percentage_text, "%.2f", hit_percentage);
 		App->font->CalcSize(hit_percentage_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
@@ -1281,7 +1283,11 @@ bool j1Scene::Save(pugi::xml_node& data) const
 
 	if (App->note->deleted_notes == 0)
 		hit_percentage = 0;
-	if (App->note->total_song_notes)
+
+	if (hit_percentage > 100.0f)
+		hit_percentage = 100.0f;
+
+	if (App->note->total_song_notes == 0)
 		hit_percentage_created = 0;
 
 	data.child("END_DATA").append_attribute("score") = score;

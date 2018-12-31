@@ -173,3 +173,9 @@
 		<TIMER time_min="0" time_s="31" />
 	</scene>
 </game_state>
+<game_state iteration="29">
+	<scene>
+		<END_DATA score="4000" total_smashed_notes="16" total_song_notes_before_quiting_or_ending="35" total_song_notes_deleted="18" total_song_notes_lost="19" lost_notes="2" hit_percentage="88.8888931" hit_percentage_referral_notes_created="45.7142868" times_powerUP_used="0" game_mode="2" boost_centered="true" powerUp_substract_notes="true" />
+		<TIMER time_min="0" time_s="12" />
+	</scene>
+</game_state>
