@@ -41,3 +41,39 @@
 		<TIMER time_min="3" time_s="47" />
 	</scene>
 </game_state>
+<game_state iteration="7">
+	<scene>
+		<END_DATA score="57500" total_smashed_notes="157" total_song_notes_before_quiting_or_ending="189" total_song_notes_deleted="168" total_song_notes_lost="32" lost_notes="11" hit_percentage="93.4523849" hit_percentage_referral_notes_created="83.068779" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="47" />
+	</scene>
+</game_state>
+<game_state iteration="8">
+	<scene>
+		<END_DATA score="95250" total_smashed_notes="364" total_song_notes_before_quiting_or_ending="441" total_song_notes_deleted="230" total_song_notes_lost="77" lost_notes="-134" hit_percentage="158.260864" hit_percentage_referral_notes_created="82.5396805" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="1" time_s="5" />
+	</scene>
+</game_state>
+<game_state iteration="9">
+	<scene>
+		<END_DATA score="23500" total_smashed_notes="458" total_song_notes_before_quiting_or_ending="616" total_song_notes_deleted="151" total_song_notes_lost="158" lost_notes="-307" hit_percentage="303.311249" hit_percentage_referral_notes_created="74.350647" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="44" />
+	</scene>
+</game_state>
+<game_state iteration="10">
+	<scene>
+		<END_DATA score="16500" total_smashed_notes="55" total_song_notes_before_quiting_or_ending="84" total_song_notes_deleted="59" total_song_notes_lost="29" lost_notes="4" hit_percentage="93.2203445" hit_percentage_referral_notes_created="65.4761887" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="24" />
+	</scene>
+</game_state>
+<game_state iteration="11">
+	<scene>
+		<END_DATA score="16500" total_smashed_notes="108" total_song_notes_before_quiting_or_ending="182" total_song_notes_deleted="59" total_song_notes_lost="74" lost_notes="-49" hit_percentage="183.050842" hit_percentage_referral_notes_created="59.3406601" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="27" />
+	</scene>
+</game_state>
+<game_state iteration="12">
+	<scene>
+		<END_DATA score="75750" total_smashed_notes="213" total_song_notes_before_quiting_or_ending="313" total_song_notes_deleted="106" total_song_notes_lost="100" lost_notes="-107" hit_percentage="200.943405" hit_percentage_referral_notes_created="68.0511169" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="34" />
+	</scene>
+</game_state>
