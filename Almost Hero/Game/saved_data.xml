@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<game_state iteration="0">
+	<scene>
+		<END_DATA score="273250" total_smashed_notes="647" total_song_notes_before_quiting_or_ending="730" total_song_notes_deleted="730" total_song_notes_lost="83" lost_notes="83" hit_percentage="88.6301422" hit_percentage_referral_notes_created="88.6301422" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="3" time_s="46" />
+	</scene>
+</game_state>
+<game_state iteration="1">
+	<scene>
+		<END_DATA score="0" total_smashed_notes="0" total_song_notes_before_quiting_or_ending="7" total_song_notes_deleted="0" total_song_notes_lost="7" lost_notes="0" hit_percentage="-nan(ind)" hit_percentage_referral_notes_created="0" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="3" />
+	</scene>
+</game_state>
+<game_state iteration="2">
+	<scene>
+		<END_DATA score="0" total_smashed_notes="0" total_song_notes_before_quiting_or_ending="15" total_song_notes_deleted="0" total_song_notes_lost="15" lost_notes="0" hit_percentage="-nan(ind)" hit_percentage_referral_notes_created="0" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="0" time_s="4" />
+	</scene>
+</game_state>
+<game_state iteration="3">
+	<scene>
+		<END_DATA score="6250" total_smashed_notes="25" total_song_notes_before_quiting_or_ending="426" total_song_notes_deleted="147" total_song_notes_lost="401" lost_notes="122" hit_percentage="17.0068016" hit_percentage_referral_notes_created="5.86854458" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="1" time_s="53" />
+	</scene>
+</game_state>
+<game_state iteration="4">
+	<scene>
+		<END_DATA score="322750" total_smashed_notes="710" total_song_notes_before_quiting_or_ending="1156" total_song_notes_deleted="730" total_song_notes_lost="446" lost_notes="20" hit_percentage="97.2602692" hit_percentage_referral_notes_created="61.4186821" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="3" time_s="46" />
+	</scene>
+</game_state>
+<game_state iteration="5">
+	<scene>
+		<END_DATA score="14500" total_smashed_notes="58" total_song_notes_before_quiting_or_ending="115" total_song_notes_deleted="93" total_song_notes_lost="57" lost_notes="35" hit_percentage="62.365593" hit_percentage_referral_notes_created="50.4347801" times_powerUP_used="0" game_mode="1" />
+		<TIMER time_min="0" time_s="31" />
+	</scene>
+</game_state>
+<game_state iteration="6">
+	<scene>
+		<END_DATA score="297500" total_smashed_notes="715" total_song_notes_before_quiting_or_ending="845" total_song_notes_deleted="730" total_song_notes_lost="130" lost_notes="15" hit_percentage="97.9452057" hit_percentage_referral_notes_created="84.615387" times_powerUP_used="0" game_mode="2" />
+		<TIMER time_min="3" time_s="47" />
+	</scene>
+</game_state>
