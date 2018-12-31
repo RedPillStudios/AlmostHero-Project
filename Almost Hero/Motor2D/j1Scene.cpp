@@ -99,7 +99,7 @@ bool j1Scene::Start()
 	LogoCitm= App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(10, 10), { 0, 0, 462, 141 }, NONE_LOGIC, { 0, 0, 462, 141 },NULL_RECT,0.55);
 	LogoCitm->texture = App->tex->Load("gui/logocitm.png");
 
-	versionLabel= App->gui->Add_UIElement(LABEL, iPoint(850, 690), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 0.8f, SDL_Color{ 255,255,255,255 }, nullptr, "Version 0.5 Prototype. Licensed under MIT");
+	versionLabel= App->gui->Add_UIElement(LABEL, iPoint(800, 690), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 0.8f, SDL_Color{ 255,255,255,255 }, nullptr, "Version 0.5 Prototype. Licensed under MIT");
 
 	Volumen = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(200, 380), { 507, 5, 303, 130 }, NONE_LOGIC, { 507, 5, 303, 130 });
 	Volumen->isActive = false;
@@ -803,7 +803,9 @@ void j1Scene::HandleInput() {
 
 		App->audio->PlayFx(Failnote_SFX);
 		App->note->numNotes = 0;
-		PowerUp_notes_counter--;
+		
+		if(ActivatePlaytestPowerUp == true)
+			PowerUp_notes_counter--;
 
 		if (App->render->DoCameraShake == false) {
 			App->render->DoCameraShake = true;
@@ -1025,7 +1027,9 @@ void j1Scene::HandleInput2() {
 
 		App->audio->PlayFx(Failnote_SFX);
 		App->note->numNotes = 0;
-		PowerUp_notes_counter--;
+
+		if(ActivatePlaytestPowerUp == true)
+			PowerUp_notes_counter--;
 
 		if (App->render->DoCameraShake == false) {
 			App->render->DoCameraShake = true;
@@ -1298,6 +1302,9 @@ bool j1Scene::Save(pugi::xml_node& data) const
 		game_mode = 2;
 
 	data.child("END_DATA").append_attribute("game_mode") = game_mode;
+	data.child("END_DATA").append_attribute("boost_centered") = ActivatePlaytestBoosterCentered;
+	data.child("END_DATA").append_attribute("powerUp_substract_notes") = ActivatePlaytestPowerUp;
+
 
 	int sec = (int)match_time.ReadSec() % 60;
 	int min = match_time.ReadSec() / 60;

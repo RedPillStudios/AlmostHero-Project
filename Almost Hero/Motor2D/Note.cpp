@@ -200,7 +200,9 @@ void Note::OnCollision(Collider *c1, Collider *c2) {
 				DestroyNote(App->scene->notes.start->data);
 				PERF_START(General_collided_timer);
 				numNotes = 0;
-				App->scene->PowerUp_notes_counter--;
+
+				if(App->scene->ActivatePlaytestPowerUp)
+					App->scene->PowerUp_notes_counter--;
 				
 
 				if (App->render->DoCameraShake == false) {
