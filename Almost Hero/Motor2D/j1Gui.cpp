@@ -6,6 +6,7 @@
 #include "j1Fonts.h"
 #include "j1Input.h"
 #include "j1Gui.h"
+#include "j1Scene.h"
 
 j1Gui::j1Gui() : j1Module()
 {
@@ -35,8 +36,8 @@ bool j1Gui::Awake(pugi::xml_node& conf)
 bool j1Gui::Start()
 {
 	
-	onTopSFX = App->audio->LoadFx("audio/fx/button_hover_sfx.wav");
-	clickSFX = App->audio->LoadFx("audio/fx/button_clicked_sfx.wav");
+	//onTopSFX = App->audio->LoadFx("audio/fx/button_hover_sfx.wav");
+	clickSFX = App->audio->LoadFx("audio/fx/Click_Buttons.wav");
 	atlas = App->tex->Load(atlas_file_name.GetString());
 
 	return true;
@@ -73,6 +74,7 @@ bool j1Gui::PostUpdate()
 
 			}
 			if (Item->data->onTop() == false) {
+				int a = 1;
 				Item->data->sound = true;
 				Item->data->isClicked = false;
 			}
@@ -171,8 +173,10 @@ bool UI_Element::onTop() {
 
 	if (x >= Position.x&&x < Position.x + UI_Rect.w*scale&&y >= Position.y&&y <= Position.y + UI_Rect.h*scale) {
 		if (sound) {
-			if (type == BUTTON)
-				App->audio->PlayFx(App->gui->onTopSFX);
+			if (type == BUTTON||type==BAR) {
+				if(isActive)
+					App->audio->PlayFx(App->scene->On_top_buttons_SFX,0);
+			}
 			sound = false;
 		}
 		return true;
@@ -187,7 +191,8 @@ bool UI_Element::Clicked() {
 
 	if (onTop()) {
 		if (App->input->GetMouseButtonDown(KEY_DOWN) && isClicked == false) {
-			App->audio->PlayFx(App->gui->clickSFX);
+			if(isActive)
+				App->audio->PlayFx(App->gui->clickSFX);
 			if (Logic != DRAGVOLUME&&Logic!=BACKVOLUME)
 				isClicked = true;
 			return true;

@@ -66,6 +66,7 @@ public:
 
 	int total_song_notes = 0;
 	int total_smashed_notes = 0;
+	int deleted_notes = 0;
 
 public:
 

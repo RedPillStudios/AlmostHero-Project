@@ -80,6 +80,16 @@ bool j1Scene::Start()
 	GameOverScene->texture_Off = App->tex->Load("gui/GAME_OVER_OFF.png");
 	GameOverScene->Current_Texture = GameOverScene->texture;
 
+	BoostersPosition = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(120, 480), { 838,6,425,123 }, NONE_LOGIC, {838,6,425,123 },NULL_RECT,0.9f);
+	BoostersPosition->isActive = false;
+	PowerUPActive = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(680, 480), { 697, 133, 411, 104 }, NONE_LOGIC, { 697, 133, 411, 104 },NULL_RECT,0.89f);;
+	PowerUPActive->isActive = false;
+	Boosters_Position_button = App->gui->Add_UIElement(BAR, iPoint(510, 500), { 1104, 436, 75, 75 }, PUSH, { 1029, 436, 75, 75 });
+	Boosters_Position_button->isActive = false;
+	PowerUpActive_button = App->gui->Add_UIElement(BAR, iPoint(1080, 500), { 1104, 436, 75, 75 }, PUSH, { 1029, 436, 75, 75 });
+	PowerUpActive_button->isActive = false;
+
+
 	Play = App->gui->Add_UIElement(BUTTON, iPoint(514, 380), { 252, 5, 252, 143 }, ACTIVEWIN, { 0, 5, 252, 143 });
 	Settings = App->gui->Add_UIElement(BUTTON, iPoint(475, 500), { 330, 148, 330, 131 }, ACTIVEWIN, { 0, 148, 330, 131 });
 	Mode1 = App->gui->Add_UIElement(BUTTON, iPoint(280, 360), { 689, 283, 252, 124 }, PLAY, { 437, 283, 252, 124 });
@@ -91,15 +101,19 @@ bool j1Scene::Start()
 	
 	versionLabel= App->gui->Add_UIElement(LABEL, iPoint(850, 690), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 0.8f, SDL_Color{ 255,255,255,255 }, nullptr, "Version 0.5 Prototype under License MD");
 
-	Volumen = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(200, 450), { 507, 5, 303, 130 }, NONE_LOGIC, { 507, 5, 303, 130 });
+	Volumen = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(200, 380), { 507, 5, 303, 130 }, NONE_LOGIC, { 507, 5, 303, 130 });
 	Volumen->isActive = false;
 
-	Volume_Background = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(558, 455), { 579, 579,409, 57 }, BACKVOLUME, { 579, 579,409, 57 });
+	Volume_Background = App->gui->Add_UIElement(NON_INTERACTIVE, iPoint(558, 395), { 579, 579,409, 57 }, BACKVOLUME, { 579, 579,409, 57 });
 	Volume_Background->isActive = false;
 
-	Volume_Bar = App->gui->Add_UIElement(BAR, iPoint(540, 420), { 561, 417, 250, 127 }, DRAGVOLUME, { 561, 417, 461, 127 });
+	Volume_Bar = App->gui->Add_UIElement(BAR, iPoint(540, 360), { 561, 417, 250, 127 }, DRAGVOLUME, { 561, 417, 461, 127 });
 	Volume_Bar->isActive = false;
 	Quit = App->gui->Add_UIElement(BUTTON, iPoint(550, 620), { 188, 304, 188, 77 }, QUIT, { 0, 304, 188, 77 });
+
+	Credits = App->gui->Add_UIElement(BAR, iPoint(920, 610), { 969, 336, 328, 96 }, BLITTING, { 969, 240, 328, 96 }, NULL_RECT, 0.9f);
+	Credits->CurrentRect = &Credits->UI_Rect_Active;
+	Credits->Current_Texture = Credits->texture;
 
 	Tip1 = App->gui->Add_UIElement(LABEL, iPoint(220, 660), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: Really guys, don't forget the fu*!/ README!!!");
 	Tip1->isActive = false;
@@ -125,17 +139,24 @@ bool j1Scene::Start()
 	current_screen = MAIN_MENU;
 	App->audio->ControlMUSVolume(volume);
 	App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
+	On_top_buttons_SFX = App->audio->LoadFx("audio/fx/On_Top_Buttons.wav");
 
 	UI_Elements_List.add(Main_MenuScene);
 	UI_Elements_List.add(LogoCitm);
 	UI_Elements_List.add(Play);
 	UI_Elements_List.add(Settings);
+	UI_Elements_List.add(Credits);
 	UI_Elements_List.add(Mode1);
 	UI_Elements_List.add(Mode2);
 	UI_Elements_List.add(Quit);
 	UI_Elements_List.add(Volumen);
 	UI_Elements_List.add(Volume_Background);
 	UI_Elements_List.add(Volume_Bar);
+	UI_Elements_List.add(BoostersPosition);
+	UI_Elements_List.add(Boosters_Position_button);
+	UI_Elements_List.add(PowerUPActive);
+	UI_Elements_List.add(PowerUpActive_button);
+	UI_Elements_List.add(versionLabel);
 	UI_Elements_List.add(Feedback);
 	UI_Elements_List.add(Pause);
 
@@ -154,6 +175,8 @@ bool j1Scene::Start()
 	multiplier_Head_tex = App->tex->Load("textures/Multiplier_Head.png");
 	PowerUP_counter_tex = App->tex->Load("textures/PowerUP_Counter.png");
 	Boosters_tex = App->tex->Load("textures/Boosters_In_Screen.png");
+	Credits_tex = App->tex->Load("textures/Credits.png");
+	Under_Notes_tex = App->tex->Load("textures/UnderNotes.png");
 	//Main Menu & Game Over Screen
 	Main_Menu_txtr = App->tex->Load("textures/Start_Image.png");
 	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
@@ -170,8 +193,9 @@ bool j1Scene::Start()
 	Bottom_Limit.w = 480;
 	Bottom_Limit.h = 50;
 
+	Credits_Rect = { 0,0,700,300};
 
-	App->audio->ControlSFXVolume(20);
+	App->audio->ControlSFXVolume(100);
 
 	PauseGame = false;
 
@@ -214,8 +238,40 @@ bool j1Scene::PreUpdate()
 						}
 					}
 				}
+				else if (UI_Item->data == Credits) {
+					if (UI_Item->data->onTop()) {
+						UI_Item->data->CurrentRect = &UI_Item->data->UI_Rect_Active;
+						if (UI_Item->data->Clicked()) {
+							for (p2List_item<UI_Element*>*UI_Item2 = UI_Elements_List.start; UI_Item2 != nullptr; UI_Item2 = UI_Item2->next) {
+								if (UI_Item2->data != Main_MenuScene&&UI_Item2->data != Quit)
+									UI_Item2->data->isActive = false;
+							}
+							creditsisActive = true;
+						}
+					}
+				}
 			}
-		
+			if (UI_Item->data->Logic == PUSH) {
+				if (UI_Item->data == Boosters_Position_button) {
+					if (ActivatePlaytestBoosterCentered==true) {
+						UI_Item->data->CurrentRect = &UI_Item->data->UI_Rect_Active;
+					}else
+						UI_Item->data->CurrentRect = &UI_Item->data->UI_Rect;
+					if (UI_Item->data->Clicked()) {
+						ActivatePlaytestBoosterCentered = !ActivatePlaytestBoosterCentered;
+					}
+				}
+				if (UI_Item->data == PowerUpActive_button) {
+					if (ActivatePlaytestPowerUp==true) {
+						UI_Item->data->CurrentRect = &UI_Item->data->UI_Rect_Active;
+					}
+					else
+						UI_Item->data->CurrentRect = &UI_Item->data->UI_Rect;
+					if (UI_Item->data->Clicked()) {
+						ActivatePlaytestPowerUp = !ActivatePlaytestPowerUp;
+					}
+				}
+			}
 			if (UI_Item->data->Logic == ACTIVEWIN) {
 				if (UI_Item->data->Clicked()) {
 					if (UI_Item->data == Play) {
@@ -228,9 +284,15 @@ bool j1Scene::PreUpdate()
 						UI_Item->data->Deactive(Play);
 						UI_Item->data->Deactive(Settings);
 						UI_Item->data->Deactive(LogoCitm);
+						UI_Item->data->Deactive(Feedback);
+						UI_Item->data->Deactive(Credits);
 						UI_Item->data->Active(Volumen);
 						UI_Item->data->Active(Volume_Background);
 						UI_Item->data->Active(Volume_Bar);
+						UI_Item->data->Active(BoostersPosition);
+						UI_Item->data->Active(PowerUPActive);
+						UI_Item->data->Active(PowerUpActive_button);
+						UI_Item->data->Active(Boosters_Position_button);
 					}
 				}
 			}
@@ -238,7 +300,6 @@ bool j1Scene::PreUpdate()
 				if (Volume_Background->Clicked()) {
 					UI_Item->data->VolumeControl(newMousePos, lastMousePos,volume);
 					App->audio->ControlMUSVolume(volume);
-
 				}
 			}
 			if (UI_Item->data->Logic == PLAY) {
@@ -296,6 +357,11 @@ bool j1Scene::PreUpdate()
 						LogoCitm->isActive = true;
 						Settings->isActive = true;
 						Feedback->isActive = true;
+						Credits->isActive = true;
+						versionLabel->isActive = true;
+						Credits->isActive = true;
+						creditsisActive = false;//this makes the credits appear or not
+						Credits_Rect.y = 0;
 					}
 					else if (Play->isActive == true && current_screen == MAIN_MENU) {
 						return false;
@@ -337,7 +403,6 @@ bool j1Scene::PreUpdate()
 			}
 		}
 	}
-
 	return true;
 }
 void j1Scene::BoosterAnim(Animation Booster) {
@@ -362,8 +427,7 @@ bool j1Scene::Update(float dt)
 		HandleGameScreen(dt);
 
 	else if (current_screen == MAIN_MENU) {
-		//PERF_START(videostart);
-	
+		//PERF_START(videostart);	
 	}
 	else if (current_screen == TIP) {
 		if (Aux_Screen == MAIN_MENU&&TipScreen.ReadSec() >= 7) {
@@ -385,8 +449,11 @@ bool j1Scene::Update(float dt)
 			Tip5->isActive = false;
 			Settings->isActive = true;
 			Play->isActive = true;
+			Quit->isActive = true;
+			Credits->isActive = true;
 			Feedback->isActive = true;
 			LogoCitm->isActive = true;
+			versionLabel->isActive = true;
 			ChangeScreen(MAIN_MENU);
 			}
 		PERF_START(videostart);
@@ -438,22 +505,35 @@ bool j1Scene::PostUpdate()
 	bool ret = true;
 	if (current_screen == GAME_OVER) {
 		SDL_Color white_col = { 255, 255, 255, 255 };
-		App->render->Blit(App->font->Print(score_text, white_col, App->font->fonts.end->data), 900, 368, &scoreRect, 1, false);
+	
+		float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->deleted_notes) * 100.0f;
+		sprintf(hit_percentage_text, "%.2f", hit_percentage);
+		App->font->CalcSize(hit_percentage_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(hit_percentage_text, white_col, App->font->fonts.end->data), 900, 365, &scoreRect, 0.7, false);
+
+		sprintf(score_text, "%d", score);
+		App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
+		App->render->Blit(App->font->Print(score_text, white_col, App->font->fonts.end->data), 900, 447, &scoreRect, 0.7, false);
 
 		sprintf(total_smashed_notes_text, "%d", App->note->total_smashed_notes);
 		App->font->CalcSize(total_smashed_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(total_smashed_notes_text, white_col, App->font->fonts.end->data), 900, 462, &scoreRect, 1, false);
+		App->render->Blit(App->font->Print(total_smashed_notes_text, white_col, App->font->fonts.end->data), 900, 534, &scoreRect, 0.7, false);
 
 		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
 		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 524, &scoreRect, 1, false);
+		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 589, &scoreRect, 0.7, false);
 		SDL_Rect img_rect = { 0, 0, 1280, 720 };
 		App->render->Blit(Game_Over_txtr, 0, 70, &img_rect);
 	}
 	if(current_screen==TIP)
 		App->render->Blit(KeyboardAnimation_Text, 490, 350, &KeyboardAnimation.GetCurrentFrame());
 	if (current_screen == MAIN_MENU) {
-		
+
+		if (creditsisActive) {
+			App->render->Blit(Credits_tex, 315, 345, &Credits_Rect,0.9);
+			Credits_Rect.y++;
+		}
+
 		if (Mode1->isActive&&Mode1->onTop()) {
 			App->render->Blit(keyboardText, 510, 530, &Enter.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
 			App->render->Blit(keyboardText, 300, 530, &Numbers.GetCurrentFrame(), 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
@@ -468,22 +548,34 @@ bool j1Scene::PostUpdate()
 			App->render->Blit(keyboardText, 900, 530, &Numbers.frames[5], 0.7f, 1.0f, 0, 0, 0, SDL_FLIP_NONE, true);
 	}
 	if (current_screen == GAME) {
-		
 		if (boosterActivated == true) {
+			int positionx = 0;
+			int positiony = 0;
+			if (ActivatePlaytestBoosterCentered) {
+				positionx = 600;
+				positiony = 300;
+			}
+			else {
+				positionx = 950;
+				positiony = 150;
+			}
+
 			if (multiplier == 2) {
 				BoosterAnim(boosterx2);
-				App->render->Blit(Boosters_tex, 600, 300, &boosterx2.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
+				App->render->Blit(Boosters_tex, positionx, positiony, &boosterx2.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
 			}
 			else if (multiplier == 3) {
 				BoosterAnim(boosterx3);
-				App->render->Blit(Boosters_tex, 600, 300, &boosterx3.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
+				App->render->Blit(Boosters_tex, positionx, positiony, &boosterx3.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
 
 			}
 			else if (multiplier == 4) {
 				BoosterAnim(boosterx4);
-				App->render->Blit(Boosters_tex, 600, 300, &boosterx4.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
+				App->render->Blit(Boosters_tex, positionx, positiony, &boosterx4.GetCurrentFrame(), ScaleBooster, 1.0, 0, 0, 0, SDL_FLIP_NONE, true);
 			}
 		}
+		SDL_Rect a = { 0,0,266,143 };
+		App->render->Blit(Under_Notes_tex, 880, 450, &a, 1.1f,false);
 	}
 
 	if(current_screen==MAIN_MENU&& App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
@@ -603,7 +695,7 @@ void j1Scene::HandleGameScreen(float dt) {
 		Multipliers_current_anim = &x2;
 		multiplier = 2;
 	}
-	else if (App->note->numNotes > 30 && App->note->numNotes <= 45) {
+	if (App->note->numNotes > 30 && App->note->numNotes <= 45) {
 		if (multiplier != 3) {
 			boosterActivated = true;
 		}
@@ -611,17 +703,16 @@ void j1Scene::HandleGameScreen(float dt) {
 		Multipliers_current_anim = &x3;
 		multiplier = 3;
 	}
-	else if (App->note->numNotes > 45) {
+	if (App->note->numNotes > 45) {
 		if (multiplier != 4) {
 			boosterActivated = true;
 		}
 		Multipliers_current_anim = &x4;
 		multiplier = 4;
 	}
-	else {
+	if(App->note->numNotes <= 15){
 		Multipliers_current_anim = &x1;
 		multiplier = 1;
-		LastMultiplier = 1;
 	}
 
 	//Blitting Multiplier
@@ -640,8 +731,6 @@ void j1Scene::HandleGameScreen(float dt) {
 	for (; notes_item != nullptr; notes_item = notes_item->next)
 		notes_item->data->Update(dt);
 
-	if (App->input->GetKey(SDL_SCANCODE_T) == KEY_DOWN)
-		ChangeScreen(GAME_OVER);
 }
 
 
@@ -819,14 +908,17 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	scen.append_child("TIMER");
 
 	int lost_notes = App->note->total_song_notes - App->note->total_smashed_notes;
-	float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->total_song_notes) * 100.0f;
+	float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->deleted_notes) * 100.0f;
+	float hit_percentage_created = ((float)App->note->total_smashed_notes / (float)App->note->total_song_notes) * 100.0f;
 
 	scen.child("END_DATA").append_attribute("score:") = score;
 	scen.child("END_DATA").append_attribute("total_smashed_notes:") = App->note->total_smashed_notes;
 	scen.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending:") = App->note->total_song_notes;
+	scen.child("END_DATA").append_attribute("total_song_notes_deleted:") = App->note->deleted_notes;
 
 	scen.child("END_DATA").append_attribute("lost_notes:") = lost_notes;
 	scen.child("END_DATA").append_attribute("hit_percentage:") = hit_percentage;
+	scen.child("END_DATA").append_attribute("hit_percentage_referral_notes_created:") = hit_percentage_created;
 
 	int sec =  (int)match_time.ReadSec() % 60;
 	int min = match_time.ReadSec() /60;
@@ -906,6 +998,7 @@ void j1Scene::ChangeScreen(int screen) {
 		App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 		//App->audio->Init();
 		//App->audio->Start();
+		App->note->deleted_notes = 0;
 		current_screen = MAIN_MENU;
 	
 	}

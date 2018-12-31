@@ -69,7 +69,6 @@ bool j1Audio::CleanUp()
 	p2List_item<Mix_Chunk*>* item;
 	for(item = fx.start; item != NULL; item = item->next)
 		Mix_FreeChunk(item->data);
-
 	fx.clear();
 
 	Mix_CloseAudio();
@@ -78,7 +77,9 @@ bool j1Audio::CleanUp()
 
 	return true;
 }
-
+//bool j1Audio::StopFx(unsigned int id) {
+//	Mix_FreeChunk(item->data);
+//}
 // Play a music file
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {

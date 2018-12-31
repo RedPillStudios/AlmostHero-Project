@@ -69,7 +69,10 @@ public:
 	bool PowerUpActivated = false;
 	int volume;
 	int Failnote_SFX;
+	int On_top_buttons_SFX;
 	bool failnote = false;
+	bool ActivatePlaytestPowerUp = true;
+	bool ActivatePlaytestBoosterCentered = true;
 
 private:
 	
@@ -106,6 +109,8 @@ private:
 	SDL_Texture* multiplier_Head_tex;
 	SDL_Texture* PowerUP_counter_tex;
 	SDL_Texture* Boosters_tex;
+	SDL_Texture* Credits_tex;
+	SDL_Texture* Under_Notes_tex;
 
 	SDL_Rect PowerUP_counter;
 
@@ -159,6 +164,11 @@ private:
 	UI_Element* Volume_Bar;
 	UI_Element* Volume_Background;
 	UI_Element* LogoCitm;
+	UI_Element* Credits;
+	UI_Element* BoostersPosition;
+	UI_Element* PowerUPActive;
+	UI_Element* Boosters_Position_button;
+	UI_Element* PowerUpActive_button;
 
 	UI_Element* versionLabel;
 	
@@ -191,6 +201,7 @@ private:
 
 	SDL_Rect scoreRect = { 0, 0, 20, 20 };
 	char score_text[100];
+	char hit_percentage_text[100];
 
 	SCREEN_TYPE current_screen;
 	SCREEN_TYPE Aux_Screen;
@@ -222,6 +233,8 @@ public:
 	p2List<Note*> notes;
 	bool change_input = false;
 
+	SDL_Rect Credits_Rect;
+	bool creditsisActive;
 	bool PauseGame;
 
 private:

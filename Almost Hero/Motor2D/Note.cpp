@@ -133,6 +133,7 @@ Note* Note::CreateNote(NOTE_COLOR color) {
 
 void Note::DestroyNote(Note* note) {
 
+	deleted_notes++;
 	p2List_item<Note*> *item = App->scene->notes.start;
 	for (; item; item = item->next) {
 

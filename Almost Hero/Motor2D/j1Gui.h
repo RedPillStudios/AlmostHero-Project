@@ -115,7 +115,6 @@ public:
 	bool toDesactive = false;
 	bool toActive = false;
 	bool sound = true;
-
 	int blitting_duration;
 	int blittingCounter;
 	int counter=0;
@@ -167,8 +166,8 @@ public:
 	p2List<UI_Element*> UI_Elements_List;
 	UI_Element*last;
 
-	uint32 onTopSFX;
-	uint32 clickSFX;
+	
+	int clickSFX;
 
 	bool Debug = false;
 private:
