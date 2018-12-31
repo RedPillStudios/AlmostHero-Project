@@ -1256,15 +1256,15 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->deleted_notes) * 100.0f;
 	float hit_percentage_created = ((float)App->note->total_smashed_notes / (float)App->note->total_song_notes) * 100.0f;
 
-	scen.child("END_DATA").append_attribute("score:") = score;
-	scen.child("END_DATA").append_attribute("total_smashed_notes:") = App->note->total_smashed_notes;
-	scen.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending:") = App->note->total_song_notes;
-	scen.child("END_DATA").append_attribute("total_song_notes_deleted:") = App->note->deleted_notes;
-	scen.child("END_DATA").append_attribute("total_song_notes_deleted:") = lost_notes_from_created;
+	data.child("END_DATA").append_attribute("score") = score;
+	data.child("END_DATA").append_attribute("total_smashed_notes") = App->note->total_smashed_notes;
+	data.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending") = App->note->total_song_notes;
+	data.child("END_DATA").append_attribute("total_song_notes_deleted") = App->note->deleted_notes;
+	data.child("END_DATA").append_attribute("total_song_notes_lost") = lost_notes_from_created;
 
-	scen.child("END_DATA").append_attribute("lost_notes:") = lost_notes;
-	scen.child("END_DATA").append_attribute("hit_percentage:") = hit_percentage;
-	scen.child("END_DATA").append_attribute("hit_percentage_referral_notes_created:") = hit_percentage_created;
+	data.child("END_DATA").append_attribute("lost_notes") = lost_notes;
+	data.child("END_DATA").append_attribute("hit_percentage") = hit_percentage;
+	data.child("END_DATA").append_attribute("hit_percentage_referral_notes_created") = hit_percentage_created;
 	data.child("END_DATA").append_attribute("times_powerUP_used") = times_PU_used;
 
 	int game_mode = 0;
