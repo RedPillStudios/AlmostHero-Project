@@ -32,6 +32,18 @@ public:
 	// Play a previously loaded WAV
 	bool PlayFx(unsigned int fx, int repeat = 0);
 
+	void ControlVolume(int vol);
+	void ControlMUSVolume(int vol);
+	void ControlSFXVolume(int vol);
+
+	void PauseChannel(int channel = -1);
+	void ResumeChannel(int channel = -1);
+	void PauseMusic();
+	void ResumeMusic();
+
+	bool ChannelPaused(int channel = -1);
+	bool MusicPaused();
+
 private:
 
 	_Mix_Music*			music = NULL;

@@ -1,31 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="p2Log.cpp">
-      <Filter>Core\Containers</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Scene.cpp">
-      <Filter>Modules\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="PugiXml\src\pugixml.cpp">
-      <Filter>Core\Tools\PuguiXML</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Timer.cpp">
-      <Filter>Core\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="j1PerfTimer.cpp">
-      <Filter>Core\Tools</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="j1App.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="j1Audio.cpp">
       <Filter>Modules\Controllers\Specific</Filter>
     </ClCompile>
+    <ClCompile Include="j1Collisions.cpp">
+      <Filter>Modules\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Fonts.cpp">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Gui.cpp">
+      <Filter>Modules\Controllers\General</Filter>
+    </ClCompile>
     <ClCompile Include="j1Input.cpp">
+      <Filter>Modules\Controllers\General</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Scene.cpp">
+      <Filter>Modules\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Textures.cpp">
       <Filter>Modules\Controllers\Specific</Filter>
     </ClCompile>
     <ClCompile Include="j1Render.cpp">
@@ -34,60 +34,60 @@
     <ClCompile Include="j1Window.cpp">
       <Filter>Modules\Controllers\General</Filter>
     </ClCompile>
-    <ClCompile Include="j1Textures.cpp">
-      <Filter>Modules\Controllers\Specific</Filter>
-    </ClCompile>
-    <ClCompile Include="j1Collisions.cpp">
-      <Filter>Modules\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="Note.cpp">
-      <Filter>Modules</Filter>
+      <Filter>Modules\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="p2Log.cpp">
+      <Filter>Containers</Filter>
+    </ClCompile>
+    <ClCompile Include="PugiXml\src\pugixml.cpp">
+      <Filter>Core\Tools\Pugi</Filter>
+    </ClCompile>
+    <ClCompile Include="theoraplay.c">
+      <Filter>Core\Tools\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="Video.cpp">
+      <Filter>Core\Tools\Video</Filter>
+    </ClCompile>
+    <ClCompile Include="j1PerfTimer.cpp">
+      <Filter>Core\Tools\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Timer.cpp">
+      <Filter>Core\Tools\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="j1Particles.cpp">
+      <Filter>Modules\Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="p2Defs.h">
-      <Filter>Core\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2List.h">
-      <Filter>Core\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Log.h">
-      <Filter>Core\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2SString.h">
-      <Filter>Core\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2Point.h">
-      <Filter>Core\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="p2DynArray.h">
-      <Filter>Core\Containers</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Scene.h">
-      <Filter>Modules\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
-      <Filter>Core\Tools\PuguiXML</Filter>
-    </ClInclude>
-    <ClInclude Include="PugiXml\src\pugixml.hpp">
-      <Filter>Core\Tools\PuguiXML</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Timer.h">
-      <Filter>Core\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="j1PerfTimer.h">
-      <Filter>Core\Tools</Filter>
-    </ClInclude>
-    <ClInclude Include="j1Module.h">
+    <ClInclude Include="j1App.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="j1App.h">
+    <ClInclude Include="Animation.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="j1Audio.h">
       <Filter>Modules\Controllers\Specific</Filter>
     </ClInclude>
+    <ClInclude Include="j1Collisions.h">
+      <Filter>Modules\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Fonts.h">
+      <Filter>Modules\Controllers\Specific</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Gui.h">
+      <Filter>Modules\Controllers\General</Filter>
+    </ClInclude>
     <ClInclude Include="j1Input.h">
+      <Filter>Modules\Controllers\General</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Module.h">
+      <Filter>Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Scene.h">
+      <Filter>Modules\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Textures.h">
       <Filter>Modules\Controllers\Specific</Filter>
     </ClInclude>
     <ClInclude Include="j1Render.h">
@@ -96,52 +96,88 @@
     <ClInclude Include="j1Window.h">
       <Filter>Modules\Controllers\General</Filter>
     </ClInclude>
-    <ClInclude Include="j1Textures.h">
-      <Filter>Modules\Controllers\Specific</Filter>
+    <ClInclude Include="Note.h">
+      <Filter>Modules\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Animation.h">
-      <Filter>Core</Filter>
+    <ClInclude Include="p2SString.h">
+      <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="j1Collisions.h">
-      <Filter>Modules\Physics</Filter>
+    <ClInclude Include="p2Defs.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2DynArray.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2List.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Log.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="p2Point.h">
+      <Filter>Containers</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugiconfig.hpp">
+      <Filter>Core\Tools\Pugi</Filter>
+    </ClInclude>
+    <ClInclude Include="PugiXml\src\pugixml.hpp">
+      <Filter>Core\Tools\Pugi</Filter>
     </ClInclude>
     <ClInclude Include="Vector4D.h">
-      <Filter>Core\Containers</Filter>
+      <Filter>Containers</Filter>
     </ClInclude>
-    <ClInclude Include="Note.h">
-      <Filter>Modules</Filter>
+    <ClInclude Include="Video.h">
+      <Filter>Core\Tools\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="theoraplay.h">
+      <Filter>Core\Tools\Video</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Timer.h">
+      <Filter>Core\Tools\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="j1PerfTimer.h">
+      <Filter>Core\Tools\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="j1Particles.h">
+      <Filter>Modules\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Core">
-      <UniqueIdentifier>{a60be8d8-e2a2-4685-85be-68853c93aa29}</UniqueIdentifier>
+      <UniqueIdentifier>{1a948a64-c4c1-47d4-a016-670b6e7aae16}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Core\Containers">
-      <UniqueIdentifier>{a8bfab6a-5472-4969-943e-861a8b493f08}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Tools">
-      <UniqueIdentifier>{42c748be-4a37-49de-970f-5be811d06b38}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Core\Tools\PuguiXML">
-      <UniqueIdentifier>{7cb78d67-17cc-45eb-af97-e2106becce7b}</UniqueIdentifier>
+    <Filter Include="Containers">
+      <UniqueIdentifier>{e04888e3-fc35-4064-b39f-9d34de94c3c6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules">
-      <UniqueIdentifier>{cb944693-b9d0-484c-bad2-02d5a7cdbec6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Modules\Scenes">
-      <UniqueIdentifier>{e07660eb-d36f-4cc9-af59-324d31c2f2f6}</UniqueIdentifier>
+      <UniqueIdentifier>{db8ae808-2a76-4b66-af6c-aed48379d60d}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules\Controllers">
-      <UniqueIdentifier>{244722d1-90ce-423d-8e7a-556211865a32}</UniqueIdentifier>
+      <UniqueIdentifier>{fe60f985-98f3-4cda-95e2-1fcd0784e275}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules\Controllers\General">
-      <UniqueIdentifier>{230f9e86-4f6c-44b5-9fff-68810215476e}</UniqueIdentifier>
+      <UniqueIdentifier>{9c3ae7cb-bd76-49c2-b885-c7b744d31cfd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules\Controllers\Specific">
-      <UniqueIdentifier>{b9ef5455-0e36-4e92-87ad-fb4bacb86e7d}</UniqueIdentifier>
+      <UniqueIdentifier>{45f153ac-f0d6-4ec0-87a8-be9a43ed0c71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Modules\Scene">
+      <UniqueIdentifier>{1a7614d2-fa89-44af-9097-a6da661ac559}</UniqueIdentifier>
     </Filter>
     <Filter Include="Modules\Physics">
-      <UniqueIdentifier>{29d2480e-83ca-49f6-87aa-5ff32e098cf3}</UniqueIdentifier>
+      <UniqueIdentifier>{923f794f-8a09-4825-896d-edf6d15f6890}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Tools">
+      <UniqueIdentifier>{851ae315-a703-481a-9430-20f792eabb10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Tools\Pugi">
+      <UniqueIdentifier>{aa695c46-d3f6-44e7-adc7-988b3c506cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Tools\Video">
+      <UniqueIdentifier>{300d30ba-332e-41a1-b8eb-ef1a30a26aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Tools\Time">
+      <UniqueIdentifier>{ac70dfe2-b28b-4923-8e38-7f3798c70b45}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

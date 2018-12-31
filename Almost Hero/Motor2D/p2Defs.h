@@ -9,6 +9,7 @@
 #undef NULL
 #endif
 #define NULL  0
+#define NULL_RECT {0,0,0,0}
 
 // Deletes a buffer
 #define RELEASE( x ) \
@@ -49,6 +50,9 @@ template <class VALUE_TYPE> void SWAP(VALUE_TYPE& a, VALUE_TYPE& b)
 }
 
 // Standard string size
+#define NULLRECT {0,0,0,0}
+#define NULLCOLOR {0,0,0,0}
+#define NULLPOINT {0,0}
 #define SHORT_STR	32
 #define MID_STR		255
 #define HUGE_STR	8192

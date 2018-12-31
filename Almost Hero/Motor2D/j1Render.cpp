@@ -56,6 +56,7 @@ bool j1Render::Start()
 {
 	LOG("render start");
 	// back background
+	SDL_RenderSetLogicalSize(renderer, 1280, 720);
 	SDL_RenderGetViewport(renderer, &viewport);
 	return true;
 }
@@ -112,26 +113,6 @@ bool j1Render::CleanUp()
 	return true;
 }
 
-// Load Game State
-bool j1Render::Load(pugi::xml_node& data)
-{
-	camera.x = data.child("camera").attribute("x").as_int();
-	camera.y = data.child("camera").attribute("y").as_int();
-
-	return true;
-}
-
-// Save Game State
-bool j1Render::Save(pugi::xml_node& data) const
-{
-	pugi::xml_node cam = data.append_child("camera");
-
-	cam.append_attribute("x") = camera.x;
-	cam.append_attribute("y") = camera.y;
-
-	return true;
-}
-
 void j1Render::SetBackgroundColor(SDL_Color color)
 {
 	background = color;
@@ -159,7 +140,7 @@ iPoint j1Render::ScreenToWorld(int x, int y) const
 }
 
 // Blit to screen
-bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale_, float speed, double angle, int pivot_x, int pivot_y) const
+bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale_, float speed, double angle, int pivot_x, int pivot_y,SDL_RendererFlip Flip, bool center) const
 {
 	bool ret = true;
 	float scale = scale_;
@@ -179,12 +160,12 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 	rect.w *= scale;
 	rect.h *= scale;
 
-	if (scale == 1.0f) {
+	if (center==false) {
 
 		rect.x = (int)(camera.x * speed) + x;
 		rect.y = (int)(camera.y * speed) + y;
 	}
-	else {
+	else  {
 
 		rect.x = (int)(camera.x * speed) + x - rect.w * 0.5f;
 		rect.y = (int)(camera.y * speed) + y - rect.h * 0.5f;
@@ -200,7 +181,7 @@ bool j1Render::Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section,
 		p = &pivot;
 	}
 
-	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, SDL_FLIP_NONE) != 0)
+	if(SDL_RenderCopyEx(renderer, texture, section, &rect, angle, p, Flip) != 0)
 	{
 		LOG("Cannot blit to screen. SDL_RenderCopy error: %s", SDL_GetError());
 		ret = false;

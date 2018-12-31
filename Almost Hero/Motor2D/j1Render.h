@@ -28,10 +28,6 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	// Load / Save
-	bool Load(pugi::xml_node&);
-	bool Save(pugi::xml_node&) const;
-
 	// Utils
 	void SetViewPort(const SDL_Rect& rect);
 	void ResetViewPort();
@@ -49,7 +45,7 @@ public:
 	j1Timer CameraShake_Time;
 
 	// Draw & Blit
-	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX) const;
+	bool Blit(SDL_Texture* texture, int x, int y, const SDL_Rect* section, float scale = 1.0f, float speed = 1.0f, double angle = 0, int pivot_x = INT_MAX, int pivot_y = INT_MAX, SDL_RendererFlip Flip=SDL_FLIP_NONE,bool center=false) const;
 	bool DrawQuad(const SDL_Rect& rect, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, float scale_= 1.0f, bool filled = true, bool use_camera = true) const;
 	bool DrawLine(int x1, int y1, int x2, int y2, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;
 	bool DrawCircle(int x1, int y1, int redius, Uint8 r, Uint8 g, Uint8 b, Uint8 a = 255, bool use_camera = true) const;

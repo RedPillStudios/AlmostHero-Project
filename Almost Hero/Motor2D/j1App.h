@@ -18,6 +18,10 @@ class j1Audio;
 class j1Scene;
 class j1Collisions;
 class Note;
+class j1Particles;
+class j1Fonts;
+class j1Gui;
+class Video;
 
 class j1App
 {
@@ -52,7 +56,7 @@ public:
 
 	void LoadGame(const char* file);
 	void SaveGame(const char* file) const;
-	void GetSaveGames(p2List<p2SString>& list_to_fill) const;
+	bool GetSaves(const char* path) const;
 
 private:
 
@@ -89,6 +93,13 @@ public:
 	j1Scene*			scene = NULL;
 	j1Collisions*		collisions = NULL;
 	Note*				note = NULL;
+	j1Particles*		particles = NULL;
+	j1Fonts*			font = NULL;
+	j1Gui*				gui = NULL;
+	Video*				video = NULL;
+
+
+	int					save_iteration = 0;
 
 private:
 

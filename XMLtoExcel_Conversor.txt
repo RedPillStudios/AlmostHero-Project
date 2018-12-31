@@ -1,0 +1,5 @@
+This is an online XML to Excel conversor. Just upload the XML file you want to convert, select "Vertical bar" as a file delimitator and run conversion.
+Then download and modify excel as wanted (deleting useless xml labels...)
+
+
+https://conversiontools.io/conversion/convert_xml_to_excel

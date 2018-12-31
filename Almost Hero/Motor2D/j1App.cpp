@@ -10,9 +10,13 @@
 #include "j1Textures.h"
 #include "j1Audio.h"
 #include "j1Scene.h"
+#include "j1Particles.h"
 #include "j1Collisions.h"
 #include "Note.h"
+#include "j1Fonts.h"
+#include "j1Gui.h"
 #include "j1App.h"
+#include "Video.h"
 
 // Constructor
 j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
@@ -27,17 +31,24 @@ j1App::j1App(int argc, char* args[]) : argc(argc), args(args)
 	scene = new j1Scene();
 	collisions = new j1Collisions();
 	note = new Note();
-
+	particles = new j1Particles();
+	font = new j1Fonts();
+	gui = new j1Gui();
+	video = new Video();
+  
 	// Ordered for awake / Start / Update
 	// Reverse order of CleanUp
 	AddModule(input);
 	AddModule(win);
 	AddModule(tex);
 	AddModule(audio);
+	AddModule(gui);
+	AddModule(video);
 	AddModule(scene);
 	AddModule(note);
+	AddModule(particles);
 	AddModule(collisions);
-
+	AddModule(font);
 
 	// render last to swap buffer
 	AddModule(render);
@@ -125,6 +136,23 @@ bool j1App::Start()
 	}
 	startup_time.Start();
 
+	pugi::xml_document data;
+	pugi::xml_parse_result result = data.load_file("saved_data.xml");
+
+	if (result != NULL) {
+
+		pugi::xml_node node = data.child("game_state");
+
+		while (node) {
+
+			save_iteration = node.attribute("iteration").as_int();
+			node = node.next_sibling("game_state");
+		}
+
+		save_iteration++;
+		data.reset();
+	}
+
 	PERF_PEEK(ptimer);
 
 	return ret;
@@ -156,7 +184,6 @@ bool j1App::Update()
 pugi::xml_node j1App::LoadConfig(pugi::xml_document& config_file) const
 {
 	pugi::xml_node ret;
-
 	pugi::xml_parse_result result = config_file.load_file("config.xml");
 
 	if(result == NULL)
@@ -174,7 +201,6 @@ void j1App::PrepareUpdate()
 	last_sec_frame_count++;
 
 	dt = (float)frame_time.ReadSec();
-	LOG("DT: %f ms CURRENT FRAME TIME: %f", dt, (float)frame_time.Read());
 	
 	frame_time.Start();
 }
@@ -206,8 +232,10 @@ void j1App::FinishUpdate()
 	iPoint map_coordinates(x - App->render->camera.x, y - App->render->camera.y);
 
 	static char title[256];
-	sprintf_s(title, 256, "Mouse: %d,%d Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i, dt: %f  Time since startup: %.3f Frame Count: %lu", map_coordinates.x, map_coordinates.y,
-		avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+	//sprintf_s(title, 256, "Mouse: %d,%d Av.FPS: %.2f Last Frame Ms: %02u Last sec frames: %i, dt: %f  Time since startup: %.3f Frame Count: %lu", map_coordinates.x, map_coordinates.y,
+	//	avg_fps, last_frame_ms, frames_on_last_update, dt, seconds_since_startup, frame_count);
+
+	sprintf_s(title, 256, "ALMOST HERO v0.5 - PROTOTYPE VERSION");
 	App->win->SetTitle(title);
 
 	double ptime = ptimer.ReadMs();
@@ -215,7 +243,7 @@ void j1App::FinishUpdate()
 	if (last_frame_ms < capped_ms)
 		SDL_Delay(capped_ms - last_frame_ms);
 
-	LOG("Waited for %i and got back in %f", capped_ms - last_frame_ms, ptimer.ReadMs() - ptime);
+	//LOG("Waited for %i and got back in %f", capped_ms - last_frame_ms, ptimer.ReadMs() - ptime);
 
 }
 
@@ -334,6 +362,7 @@ void j1App::LoadGame(const char* file)
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list
+	load_game = file;
 	want_to_load = true;
 	//load_game.create("%s%s", fs->GetSaveDirectory(), file);
 }
@@ -343,15 +372,33 @@ void j1App::SaveGame(const char* file) const
 {
 	// we should be checking if that file actually exist
 	// from the "GetSaveGames" list ... should we overwrite ?
-
 	want_to_save = true;
-	save_game.create(file);
+
+	if (GetSaves(file) == false)
+		save_game.create(file);
+	else
+		save_game = file;
 }
 
 // ---------------------------------------
-void j1App::GetSaveGames(p2List<p2SString>& list_to_fill) const
+bool j1App::GetSaves(const char* path) const
 {
-	// need to add functionality to file_system module for this to work
+
+	bool ret = false;
+
+	pugi::xml_document data;
+	pugi::xml_parse_result result = data.load_file(path);
+
+	if (result != NULL) {
+
+		LOG("SAVES FOUND");
+		ret = true;
+	}
+	else
+		LOG("saves NOT found");
+
+	data.reset();
+	return ret;
 }
 
 bool j1App::LoadGameNow()
@@ -363,7 +410,7 @@ bool j1App::LoadGameNow()
 
 	pugi::xml_parse_result result = data.load_file(load_game.GetString());
 
-	if(result != NULL)
+	if (result != NULL)
 	{
 		LOG("Loading new Game State from %s...", load_game.GetString());
 
@@ -372,14 +419,14 @@ bool j1App::LoadGameNow()
 		p2List_item<j1Module*>* item = modules.start;
 		ret = true;
 
-		while(item != NULL && ret == true)
+		while (item != NULL && ret == true)
 		{
 			ret = item->data->Load(root.child(item->data->name.GetString()));
 			item = item->next;
 		}
 
 		data.reset();
-		if(ret == true)
+		if (ret == true)
 			LOG("...finished loading");
 		else
 			LOG("...loading process interrupted with error on module %s", (item != NULL) ? item->data->name.GetString() : "unknown");
@@ -400,24 +447,27 @@ bool j1App::SavegameNow() const
 	// xml object were we will store all data
 	pugi::xml_document data;
 	pugi::xml_node root;
-	
+
+	//if(GetSaves(save_game.GetString()) == true)
+	data.load_file(save_game.GetString());
+
 	root = data.append_child("game_state");
+	root.append_attribute("iteration") = save_iteration;
+	App->save_iteration++;
 
 	p2List_item<j1Module*>* item = modules.start;
 
-	while(item != NULL && ret == true)
+	while (item != NULL && ret == true)
 	{
-		ret = item->data->Save(root.append_child(item->data->name.GetString()));
+		if (item->data == scene)
+			ret = item->data->Save(root.append_child(item->data->name.GetString()));
+
 		item = item->next;
 	}
 
-	if(ret == true)
+	if (ret == true)
 	{
-		std::stringstream stream;
-		data.save(stream);
-
-		// we are done, so write data to disk
-		//fs->Save(save_game.GetString(), stream.str().c_str(), stream.str().length());
+		data.save_file(save_game.GetString());
 		LOG("... finished saving", save_game.GetString());
 	}
 	else
