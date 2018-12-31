@@ -656,7 +656,7 @@ void j1Scene::HandleGeneralInput() {
 
 void j1Scene::HandleGameScreen(float dt) {
 
-	if ((videostart.ReadMs() - pauseTimer.ReadMs()) >= 3600 && play_video) {
+	if ((videostart.ReadMs()) >= (3600 + pauseTimer.ReadMs()) && play_video) {
 
 		play_video = false;
 		App->audio->PlayMusic("audio/music/GodDamn_Song3.ogg",0);
