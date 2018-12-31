@@ -191,6 +191,7 @@ bool j1Scene::Start()
 	Game_Over_txtr = App->tex->Load("textures/GameOver_Image.png");
 
 	Failnote_SFX = App->audio->LoadFx("audio/fx/fail_notes_effects.wav");
+	gameOver_FX = App->audio->LoadFx("audio/fx/Guitarra_chunga_para_Lucho__Co.wav");
 
 	//Pushbacks
 	LoadPushbacks();
@@ -239,6 +240,9 @@ bool j1Scene::PreUpdate()
 			GameOverScene->isActive = true;
 			App->SaveGame("saved_data.xml");
 			ChangeScreen(GAME_OVER);
+			Quit->isActive = !Quit->isActive;
+
+			
 		}
 	}
 
@@ -538,8 +542,11 @@ bool j1Scene::PostUpdate()
 	if (current_screen == GAME_OVER) {
 
 		SDL_Color white_col = { 255, 255, 255, 255 };
-
+		
 		float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->deleted_notes) * 100.0f;
+		if (App->note->deleted_notes == 0)
+			hit_percentage = 0;
+
 		sprintf(hit_percentage_text, "%.2f", hit_percentage);
 		App->font->CalcSize(hit_percentage_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 		App->render->Blit(App->font->Print(hit_percentage_text, white_col, App->font->fonts.end->data), 900, 365, &scoreRect, 0.7, false);
@@ -555,6 +562,7 @@ bool j1Scene::PostUpdate()
 		sprintf(total_created_notes_text, "%d", App->note->total_song_notes);
 		App->font->CalcSize(total_created_notes_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 		App->render->Blit(App->font->Print(total_created_notes_text, white_col, App->font->fonts.end->data), 900, 589, &scoreRect, 0.7, false);
+
 		SDL_Rect img_rect = { 0, 0, 1280, 720 };
 		App->render->Blit(Game_Over_txtr, 0, 70, &img_rect);
 	}
@@ -708,7 +716,7 @@ void j1Scene::HandleGameScreen(float dt) {
 
 		PowerUp_notes_counter = 40;
 
-		if (App->input->GetKey(SDL_SCANCODE_SPACE)) {
+		if (App->input->GetKey(SDL_SCANCODE_RCTRL)) {
 			PowerUpActivated = true;
 			times_PU_used++;
 		}
@@ -768,7 +776,7 @@ void j1Scene::HandleGameScreen(float dt) {
 
 	sprintf(score_text, "%d", score);
 	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
-	App->render->Blit(App->font->Print(score_text, { 30,119,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
+	App->render->Blit(App->font->Print(score_text, { 255,255,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
 
 	p2List_item<Note*> *notes_item = notes.start;
 
@@ -1256,6 +1264,11 @@ bool j1Scene::Save(pugi::xml_node& data) const
 	float hit_percentage = ((float)App->note->total_smashed_notes / (float)App->note->deleted_notes) * 100.0f;
 	float hit_percentage_created = ((float)App->note->total_smashed_notes / (float)App->note->total_song_notes) * 100.0f;
 
+	if (App->note->deleted_notes == 0)
+		hit_percentage = 0;
+	if (App->note->total_song_notes)
+		hit_percentage_created = 0;
+
 	data.child("END_DATA").append_attribute("score") = score;
 	data.child("END_DATA").append_attribute("total_smashed_notes") = App->note->total_smashed_notes;
 	data.child("END_DATA").append_attribute("total_song_notes_before_quiting_or_ending") = App->note->total_song_notes;
@@ -1357,6 +1370,7 @@ void j1Scene::ChangeScreen(int screen) {
 
 	else if (screen == GAME_OVER) {
 
+		App->audio->PlayFx(gameOver_FX);
 		App->audio->PlayMusic("audio/music/MainMenu_Sound.ogg", 1);
 		Aux_Screen = GAME_OVER;
 		current_screen = GAME_OVER;

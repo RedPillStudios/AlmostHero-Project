@@ -73,7 +73,8 @@ public:
 	bool failnote = false;
 	bool ActivatePlaytestPowerUp = true;
 	bool ActivatePlaytestBoosterCentered = true;
-
+	
+	uint gameOver_FX;
 	int times_PU_used = 0;
 
 private:
