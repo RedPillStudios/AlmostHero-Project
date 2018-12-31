@@ -167,6 +167,9 @@ private:
 	UI_Element* Boosters_Position_button;
 	UI_Element* PowerUpActive_button;
 
+	UI_Element* Pause_WarnOnVideo;
+	UI_Element* Pause_WarnOnVideo2;
+
 	UI_Element* versionLabel;
 	
 	UI_Element* Tip1;
@@ -195,6 +198,8 @@ private:
 	j1PerfTimer videostart;
 	j1PerfTimer read_next_array_pos;
 	j1Timer end_timer;
+	j1PerfTimer pauseTimer;
+	int itP = 0;
 
 	int counter = 0;
 	int lastframe = 0;

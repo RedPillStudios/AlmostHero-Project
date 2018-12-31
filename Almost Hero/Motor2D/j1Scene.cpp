@@ -131,9 +131,13 @@ bool j1Scene::Start()
 	Tip7->isActive = false;
 	Tip8 = App->gui->Add_UIElement(LABEL, iPoint(35, 640), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.0f, SDL_Color{ 255,255,255,255 }, nullptr, "Tip: If you don't fail any note you'll fly high like Carrero");
 	Tip8->isActive = false;
-	TipPause = App->gui->Add_UIElement(LABEL, iPoint(340, 500), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.3f, SDL_Color{ 255,255,255,255 }, nullptr, "PRess Esc to resume the game");
+	TipPause = App->gui->Add_UIElement(LABEL, iPoint(400, 175), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.3f, SDL_Color{ 255,255,255,255 }, nullptr, "PRess Esc to resume the game");
 	TipPause->isActive = false;
 
+	Pause_WarnOnVideo = App->gui->Add_UIElement(LABEL, iPoint(145, 50), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "They Video will not keep playing. Sorry for the inconveniance");
+	Pause_WarnOnVideo->isActive = false;
+	Pause_WarnOnVideo2 = App->gui->Add_UIElement(LABEL, iPoint(80, 85), NULL_RECT, NONE_LOGIC, NULL_RECT, NULL_RECT, 1.2f, SDL_Color{ 255,255,255,255 }, nullptr, "this is a prototype under construction if you play again, video will too");
+	Pause_WarnOnVideo2->isActive = false;
 
 	Pause = App->gui->Add_UIElement(BAR, iPoint(400, 180), { 5, 548, 553, 224 }, BLITTING, { 5, 772, 553, 224 });
 	Pause->isActive = false;
@@ -162,6 +166,8 @@ bool j1Scene::Start()
 	UI_Elements_List.add(versionLabel);
 	UI_Elements_List.add(Feedback);
 	UI_Elements_List.add(Pause);
+	/*UI_Elements_List.add(Pause_WarnOnVideo);
+	UI_Elements_List.add(Pause_WarnOnVideo2);*/
 
 	smViolet.Current_anim = &smViolet.Standard_anim;
 	smBlue.Current_anim = &smBlue.Standard_anim;
@@ -247,10 +253,13 @@ bool j1Scene::PreUpdate()
 
 	if (current_screen == GAME && App->input->GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN) {
 
+		pauseTimer.Start();
 		Pause->isActive = !Pause->isActive;
 		TipPause->isActive = !TipPause->isActive;
 		Quit->isActive =!Quit->isActive;
 		PauseGame = !PauseGame;
+		Pause_WarnOnVideo->isActive = !Pause_WarnOnVideo->isActive;
+		Pause_WarnOnVideo2->isActive = !Pause_WarnOnVideo2->isActive;
 	}
 
 	lastMousePos = newMousePos;
@@ -413,7 +422,11 @@ bool j1Scene::PreUpdate()
 						if(App->audio->MusicPaused() == true)
 							App->audio->ResumeMusic();
 						Pause->isActive = false;
+						Pause_WarnOnVideo->isActive = false;
+						Pause_WarnOnVideo2->isActive = false;
 						TipPause->isActive = false;
+						Pause_WarnOnVideo->isActive = false;
+						Pause_WarnOnVideo2->isActive = false;
 						GameOverScene->isActive=true;
 						App->SaveGame("saved_data.xml");
 						ChangeScreen(GAME_OVER);
@@ -643,7 +656,7 @@ void j1Scene::HandleGeneralInput() {
 
 void j1Scene::HandleGameScreen(float dt) {
 
-	if (videostart.ReadMs() >= 3600 && play_video) {
+	if ((videostart.ReadMs() - pauseTimer.ReadMs()) >= 3600 && play_video) {
 
 		play_video = false;
 		App->audio->PlayMusic("audio/music/GodDamn_Song3.ogg",0);
