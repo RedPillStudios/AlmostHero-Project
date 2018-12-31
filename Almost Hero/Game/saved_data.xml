@@ -1,20 +1,25 @@
 <?xml version="1.0"?>
-<game_state>
-	<input />
-	<window />
-	<textures />
-	<audio />
-	<gui />
-	<video />
+<game_state iteration="0">
 	<scene>
-		<scene>
-			<END_DATA score:="0" total_smashed_notes:="0" total_song_notes_before_quiting_or_ending:="9" total_song_notes_deleted:="0" lost_notes:="9" hit_percentage:="-nan(ind)" hit_percentage_referral_notes_created:="0" />
-			<TIMER time(min):="0" time(s):="6" />
-		</scene>
+		<END_DATA score="18500" total_smashed_notes="74" total_song_notes_before_quiting_or_ending="124" lost_notes="50" hit_percentage="59.6774216" game_mode="2" />
+		<TIMER time_min="0" time_s="33" />
 	</scene>
-	<Note />
-	<Particles />
-	<:anonymous />
-	<fonts />
-	<renderer />
+</game_state>
+<game_state iteration="1">
+	<scene>
+		<END_DATA score="8750" total_smashed_notes="109" total_song_notes_before_quiting_or_ending="178" lost_notes="69" hit_percentage="61.2359543" game_mode="1" />
+		<TIMER time_min="0" time_s="17" />
+	</scene>
+</game_state>
+<game_state iteration="2">
+	<scene>
+		<END_DATA score="0" total_smashed_notes="0" total_song_notes_before_quiting_or_ending="13" lost_notes="13" hit_percentage="0" game_mode="1" />
+		<TIMER time_min="0" time_s="6" />
+	</scene>
+</game_state>
+<game_state iteration="3">
+	<scene>
+		<END_DATA score="25250" total_smashed_notes="93" total_song_notes_before_quiting_or_ending="144" lost_notes="51" hit_percentage="64.5833282" game_mode="2" />
+		<TIMER time_min="0" time_s="35" />
+	</scene>
 </game_state>

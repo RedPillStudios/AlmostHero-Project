@@ -25,8 +25,6 @@ bool Note::Start() {
 
 	int w, h;
 	App->font->CalcSize("SCORE", w, h);
-	//App->gui->CreateUIElement({ 0, 0, w, h }, iPoint(0, 20), App->font->Print("SCORE", { 255, 0, 0, 255 }));
-
 
 	return true;
 }
@@ -40,6 +38,45 @@ bool Note::CleanUp() {
 
 // Called each loop iteration
 bool Note::Update(float dt) {
+
+	if (note_collider != nullptr) {
+
+		if (App->scene->smViolet.smasher_collider != nullptr && nColor == NOTE_COLOR::NOTE_VIOLET) {
+
+			if (App->scene->smViolet.smasher_collider->CheckCollision(note_collider->rect) == true)
+				vColliding = true;
+			else
+				vColliding = false;
+		}
+
+		if (App->scene->smBlue.smasher_collider != nullptr && nColor == NOTE_COLOR::NOTE_BLUE) {
+
+			if (App->scene->smBlue.smasher_collider->CheckCollision(note_collider->rect) == true)
+				bColliding = true;
+			else
+				bColliding = false;
+		}
+
+		if (App->scene->smYellow.smasher_collider != nullptr && nColor == NOTE_COLOR::NOTE_YELLOW) {
+
+			if (App->scene->smYellow.smasher_collider->CheckCollision(note_collider->rect) == true)
+				yeColliding = true;
+			else
+				yeColliding = false;
+		}
+
+		if (App->scene->smPink.smasher_collider != nullptr && nColor == NOTE_COLOR::NOTE_PINK) {
+
+			if (App->scene->smPink.smasher_collider->CheckCollision(note_collider->rect) == true)
+				piColliding = true;
+			else
+				piColliding = false;
+		}
+	}
+
+	if (App->scene->failnote = true && failTime.Read() >= 500)
+		App->scene->failnote = false;
+
 	if (App->scene->PauseGame == false) {
 		if (scale <= 0.65f)
 			scale += 0.0020f;
@@ -148,27 +185,31 @@ void Note::DestroyNote(Note* note) {
 
 void Note::OnCollision(Collider *c1, Collider *c2) {
 
-	colliding = true;
-
 	if (c1->type == COLLIDER_NOTE && c2->type == COLLIDER_STATIC || c1->type == COLLIDER_STATIC && c2->type == COLLIDER_NOTE) { //If for some reason collision fails, try to check both c1/c2 and c2/c1 instead of only c1/c2
 		if (App->scene->PowerUpActivated==false) {
+
 			if (General_collided_timer.Read() >= 100) {
+
 				if (App->scene->failnote == false) {
+
+					failTime.Start();
 					App->audio->PlayFx(App->scene->Failnote_SFX);
-					App->audio->ControlMUSVolume(3);
 					App->scene->failnote = true;
 				}
+
 				DestroyNote(App->scene->notes.start->data);
 				PERF_START(General_collided_timer);
 				numNotes = 0;
+				App->scene->PowerUp_notes_counter--;
+				
 
 				if (App->render->DoCameraShake == false) {
+
 					App->render->DoCameraShake = true;
 					App->render->power = 2.0f;
 					App->render->Time_Doing_Shake = 0.2f;
 					PERF_START(App->render->CameraShake_Time);
 				}
-				colliding = false;
 			}
 		}
 	}
@@ -187,12 +228,15 @@ void Note::CollisionInput1(Collider* c2) {
 
 	if (c2->type == COLLIDER_SMASHER_VIOLET) {
 
+		vColliding = true;
+
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_1) == KEY_REPEAT) {
 			if (Violet_collided_timer.Read() >= 100) {
 
 				p2List_item<Note*> *item = App->scene->notes.start;
 				for (; item; item = item->next) {
 					if (item->data->nColor == NOTE_VIOLET) {
+
 						App->particles->AddParticle(App->particles->Note_press_Succes, c2->rect.x+15, c2->rect.y-80 , COLLIDER_NONE,fPoint(0,0),0.7f);
 						DestroyNote(item->data);
 						App->audio->ControlMUSVolume(App->scene->volume);
@@ -212,6 +256,7 @@ void Note::CollisionInput1(Collider* c2) {
 
 	if (c2->type == COLLIDER_SMASHER_BLUE) {
 
+		bColliding = true;
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_2) == KEY_REPEAT) {
 
 			if (Blue_collided_timer.Read() >= 100) {
@@ -238,6 +283,7 @@ void Note::CollisionInput1(Collider* c2) {
 
 	if (c2->type == COLLIDER_SMASHER_YELLOW) {
 
+		yeColliding = true;
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_3) == KEY_REPEAT) {
 
 			if (Yellow_collided_timer.Read() >= 100) {
@@ -264,6 +310,7 @@ void Note::CollisionInput1(Collider* c2) {
 
 	if (c2->type == COLLIDER_SMASHER_PINK) {
 
+		piColliding = true;
 		if (App->input->GetKey(SDL_SCANCODE_RETURN) == KEY_DOWN && App->input->GetKey(SDL_SCANCODE_4) == KEY_REPEAT) {
 
 			if (Pink_collided_timer.Read() >= 100) {

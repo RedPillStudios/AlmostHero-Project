@@ -77,10 +77,8 @@ bool j1Audio::CleanUp()
 
 	return true;
 }
-//bool j1Audio::StopFx(unsigned int id) {
-//	Mix_FreeChunk(item->data);
-//}
-// Play a music file
+
+
 bool j1Audio::PlayMusic(const char* path, float fade_time)
 {
 	bool ret = true;
@@ -186,7 +184,6 @@ void j1Audio::ControlVolume(int vol) {
 void j1Audio::ControlMUSVolume(int vol) {
 
 	Mix_VolumeMusic(vol);
-
 }
 
 void j1Audio::ControlSFXVolume(int vol) {
@@ -194,4 +191,42 @@ void j1Audio::ControlSFXVolume(int vol) {
 	for (int i = 0; i < fx.count(); i++)
 		Mix_VolumeChunk(fx[i], vol);
 
+}
+
+void j1Audio::PauseMusic() {
+
+	Mix_PauseMusic();
+}
+
+void j1Audio::ResumeMusic() {
+
+	Mix_ResumeMusic();
+}
+
+void j1Audio::PauseChannel(int channel) {
+
+	Mix_Pause(channel);
+}
+
+void j1Audio::ResumeChannel(int channel) {
+
+	ResumeChannel(channel);
+}
+
+bool j1Audio::ChannelPaused(int channel) {
+
+	if (channel == -1 && Mix_Paused(channel) != 0)
+		return true;
+	else if (channel != -1 && Mix_Paused(channel) == 1)
+		return true;
+
+	return false;
+}
+
+bool j1Audio::MusicPaused() {
+
+	if (Mix_PausedMusic() == 1)
+		return true;
+
+	return false;
 }

@@ -74,6 +74,8 @@ public:
 	bool ActivatePlaytestPowerUp = true;
 	bool ActivatePlaytestBoosterCentered = true;
 
+	int times_PU_used = 0;
+
 private:
 	
 	Smasher CreateSmasher(COLLIDER_TYPE smasher_collider, pugi::xml_node &node, const char *color);
@@ -85,7 +87,7 @@ private:
 	void ReadArray(iPoint4d vec);
 	void LoadSongArray();
 
-	bool Save(pugi::xml_node& data_) const;
+	bool Save(pugi::xml_node& data) const;
 	void ChangeScreen(int screen);
 
 	void BoosterAnim(Animation Booster);
@@ -96,6 +98,8 @@ private:
 	void HandleGameScreen(float dt);
 	
 	void LoadPushbacks();
+	bool PushFailure2();
+	bool PushFailure();
 
 private:
 
@@ -120,14 +124,6 @@ private:
 	//Notes deleter
 	SDL_Rect Bottom_Limit;
 	Collider* Bottom_coll;
-
-	//Note Smashers
-	Smasher smBlue;
-	Smasher smPink;
-	Smasher smViolet;
-	Smasher smYellow;
-
-
 	
 	//Guitar animation
 	Animation Guitar;
@@ -177,6 +173,9 @@ private:
 	UI_Element* Tip3;
 	UI_Element* Tip4;
 	UI_Element* Tip5;
+	UI_Element* Tip6;
+	UI_Element* Tip7;
+	UI_Element* Tip8;
 	UI_Element* TipPause;
 	UI_Element* Feedback;
 
@@ -193,11 +192,12 @@ private:
 	p2DynArray<iPoint4d> notes_positions;
 
 	j1PerfTimer videostart;
-
 	j1PerfTimer read_next_array_pos;
-	
+	j1Timer end_timer;
+
 	int counter = 0;
 	int lastframe = 0;
+	bool keep_reading = true;
 
 	SDL_Rect scoreRect = { 0, 0, 20, 20 };
 	char score_text[100];
@@ -236,6 +236,13 @@ public:
 	SDL_Rect Credits_Rect;
 	bool creditsisActive;
 	bool PauseGame;
+
+	//Note Smashers
+	Smasher smBlue;
+	Smasher smPink;
+	Smasher smViolet;
+	Smasher smYellow;
+
 
 private:
 

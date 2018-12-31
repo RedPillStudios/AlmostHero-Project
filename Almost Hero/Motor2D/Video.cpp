@@ -197,7 +197,6 @@ void Video::PlayVideo(const char *fname, SDL_Rect r)
 	LoadVideo(fname);
 
 	// Playing video ---------------------
-
 	baseticks = SDL_GetTicks();
 	want_to_play = true;
 }

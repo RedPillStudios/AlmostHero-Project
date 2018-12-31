@@ -44,7 +44,12 @@ public:
 
 public:
 
-	bool colliding = false;
+	bool vColliding = false;
+	bool bColliding = false;
+	bool yeColliding = false;
+	bool piColliding = false;
+
+
 	Note* CreateNote(NOTE_COLOR color);
 	void DestroyNote(Note* note);
 	void OnCollision(Collider* c1, Collider* c2);
@@ -61,6 +66,8 @@ public:
 	j1Timer Yellow_collided_timer;
 	j1Timer Pink_collided_timer;
 	j1Timer General_collided_timer;
+	j1Timer failTime;
+	j1Timer failSound_dt;
 
 	int numNotes = 0;
 
@@ -70,9 +77,7 @@ public:
 
 public:
 
-
 	//Notes attributes
-	//fPoint velocity = fPoint(-0.73f, 2.5f);
 	fPoint velocity = fPoint(0.0f, 0.2f);
 	fPoint initial_pos = fPoint(595.0f, 280.0f);
 	fPoint position;
@@ -80,7 +85,6 @@ public:
 	fPoint maxVelocity = fPoint(0.0f, 5.0f);
 
 	Collider *note_collider = nullptr;
-	Collider *last_collided = nullptr;
 	NOTE_COLOR nColor = NOTE_NON;
 
 
