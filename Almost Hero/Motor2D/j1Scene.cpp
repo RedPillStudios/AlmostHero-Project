@@ -791,9 +791,9 @@ void j1Scene::HandleGameScreen(float dt) {
 	App->font->CalcSize(score_text, scoreRect.w, scoreRect.h, App->font->fonts.end->data);
 	App->render->Blit(App->font->Print(score_text, { 255,255,255,255 }, App->font->fonts.end->data), 900, 400, &scoreRect, 1, false);
 
-	p2List_item<Note*> *notes_item = notes.start;
+	p2List_item<Note*> *notes_item = notes.end;
 
-	for (; notes_item != nullptr; notes_item = notes_item->next)
+	for (; notes_item != nullptr; notes_item = notes_item->prev)
 		notes_item->data->Update(dt);
 }
 
